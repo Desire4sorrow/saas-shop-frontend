@@ -1,4 +1,4 @@
-# saas-market
+# SaasMarket
 
 ## Project setup
 ```
