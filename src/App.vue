@@ -1,10 +1,11 @@
 <template>
-  <img alt="Vue logo" src="./assets/Logo.png">
+  <img alt="Vue logo" src="./assets/image/logo.png">
   <HelloWorld msg="Saas Market Project"/>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import 'bootstrap/dist/css/bootstrap.css'
 
 export default {
   name: 'App',
