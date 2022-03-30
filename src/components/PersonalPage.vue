@@ -1,5 +1,5 @@
 <template>
-    <div class="lk">
+    <div>
         <lk-header />
         <lk-content />
     </div>
@@ -19,11 +19,5 @@ export default {
 </script>
 
 <style>
-.lk {
-    height: 100vh;
-    display: flex;
-    margin: 0 auto;
-    flex-direction:column;
-    align-items:stretch;
-}
+
 </style>
