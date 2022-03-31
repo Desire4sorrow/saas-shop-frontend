@@ -11,7 +11,11 @@
             />
         </div>
         <div class="actions">
-            <lk-product-actions />
+            <lk-product-actions
+                :add_licenses_caption="add_licenses_caption"
+                :change_tariff_caption="change_tariff_caption"
+                :payment_method_caption="payment_method_caption"
+            />
         </div>
         <div class="bills">
             <lk-product-bills />
@@ -33,7 +37,11 @@ export default {
             price: '3 000 ₽ / лицензия',
             total_sum: '30 000 ₽',
             payment_method: 'Расчётный счёт',
-            next_payment_date: '26 августа 2021'
+            next_payment_date: '26 августа 2021',
+
+            change_tariff_caption: 'Изменить тариф',
+            add_licenses_caption: 'Добавить лицензии',
+            payment_method_caption: 'Способ оплаты'
         }
     }
 }

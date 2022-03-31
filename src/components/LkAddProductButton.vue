@@ -1,7 +1,7 @@
 <template>
-    <div class="add-product-button">
-        <div class="add-product-caption">Добавить продукт</div>
-    </div>
+    <a class="add-product-button" href="#">
+        <span class="add-product-caption">Добавить продукт</span>
+    </a>
 </template>
 
 <script>
@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .add-product-button {
     display: flex;
     align-items: center;
@@ -23,6 +23,12 @@ export default {
     font-size: 14px;
     line-height: 24px;
     color: rgba(0, 0, 0, 0.56);
+    text-decoration: none;
+}
+
+.add-product-button:hover {
+    background: #edeff0;
+    color: rgba(0, 0, 0, 0.76);
 }
 
 .add-product-caption {

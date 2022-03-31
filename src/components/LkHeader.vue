@@ -2,7 +2,9 @@
     <div class="container-fluid lk-header">
         <lk-header-logo />
         <nav-bar />
-        <div class="avatar"></div>
+        <div class="avatar">
+            <a href="#"><img class="avatar-image" src="@/assets/image/avatar.png" alt=""></a>
+        </div>
     </div>
 </template>
 
@@ -32,10 +34,15 @@ export default {
 }
 
 .avatar {
-    width: 32px;
+    /* width: 32px;
     height: 32px;
-    border-radius: 50%;
-    background: rgb(255, 188, 112);
+    border-radius: 50%; */
+    /* background: rgb(255, 188, 112); */
     display: inline-block;
+}
+
+.avatar-image {
+    width: 32px;
+    border-radius: 50%;
 }
 </style>
