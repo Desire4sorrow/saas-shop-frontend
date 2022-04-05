@@ -1,34 +1,46 @@
 <template>
-    <nav>
-        <div class="container-fluid navbar-r">
-        <span class="nav-text">Реквизиты для оплаты</span>
+  <div class="header">
+    <div class="container">
+      <div class="title-container">Реквизиты для оплаты</div>
     </div>
-    </nav>
-    <div class="form-r">
-        <div class="mb-3">
-            <label for="formGroupExampleInput" class="form-label">Название организации</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Введите название организации">
+  </div>
+  <div class="container">
+    <form class="form-details">
+      <div class="form-container">
+        <div class="form-group">
+          <label class="form-label">
+            <span class="title">Название организации</span>
+            <input type="text" class="form-control" placeholder="Введите название организации" required>
+          </label>
         </div>
-        <div class="mb-3">
-            <label for="formGroupExampleInput2" class="form-label">ОГРН</label>
-            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Введите ОГРН">
+        <div class="form-group">
+          <label class="form-label">
+            <span class="title">ОГРН</span>
+            <input type="text" class="form-control" placeholder="Введите ОГРН" required>
+          </label>
         </div>
-        <div class="mb-3">
-            <label for="formGroupExampleInput3" class="form-label">ИНН</label>
-            <input type="text" class="form-control" id="formGroupExampleInput3" placeholder="Введите ИНН">
+        <div class="form-group">
+          <label class="form-label">
+            <span class="title">ИНН</span>
+            <input type="text" class="form-control" placeholder="Введите ИНН" required>
+          </label>
         </div>
-        <div class="mb-3">
-            <label for="formGroupExampleInput4" class="form-label">КПП</label>
-            <input type="text" class="form-control" id="formGroupExampleInput4" placeholder="Введите КПП">
-        </div>    
-        <div class="mb-3">
-            <label for="formGroupExampleInput5" class="form-label">Юридический адрес</label>
-            <input type="text" class="form-control" id="formGroupExampleInput5" placeholder="Введите юридический адрес">
+        <div class="form-group">
+          <label class="form-label">
+            <span class="title">КПП</span>
+            <input type="text" class="form-control" placeholder="Введите КПП" required>
+          </label>
         </div>
-    </div>
-    <div class="btn-rr">
-        <a class="btn btn-r btn-primary" href="#" role="button">Сформировать счёт</a>
-    </div>    
+        <div class="form-group">
+          <label class="form-label">
+            <span class="title">Юридический адрес</span>
+            <input type="text" class="form-control" placeholder="Введите юридический адрес" required>
+          </label>
+        </div>
+      </div>
+      <button class="btn button-details" role="button">Сформировать счёт</button>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -38,66 +50,73 @@ export default {
 </script>
 
 <style scoped>
-.nav {
-    height: 100%;
-    border: 1px solid green;
-    display: inline-block;
-}
-
-.btn-r {
-    width: 600px; 
-}
-
-.btn-rr {
-    width: 600px;
-    margin: 0 auto 0 auto;  
-    justify-content:center;
-    align-items: center; 
-}
-
-.form-r {
-    width: 600px;
-    height: 496px;
-    background: #FFFFFF;
-    border: 1px solid #E0E0E0;
-    margin: 41px auto 0 auto;
-    justify-content:center;
-    align-items: center;
-}
-
-.navbar-r {
-    display: flex;
-    flex-direction:row;
-    justify-content:center;
-    align-items: center;
-    background: #FFFFFF;
-    padding: 16px 0 16px 0;
+.header {
+    background: #fff;
+    padding: 16px 0;
     border-bottom: 1px solid #E0E0E0;
 }
 
-.nav-text {
-    font-family: 'Manrope';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: -0.468947px;
-    color: rgba(0, 0, 0, 0.87);
-    display: flex;
-    text-align: center;
+.header .title-container
+{
+  text-align: center;
+  font-weight: 600;
+  font-family: 'Manrope', sans-serif;
 }
 
-.nav_link {
-    height: 100%;
-    padding: 0 13px;
-    display: inline-block;
-    text-decoration: none;
-    font-family: 'Manrope';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 15px;
-    line-height: 20px;
-    letter-spacing: -0.468947px;
-    color: rgba(0, 0, 0, 0.56);
+.form-details {
+  width: 600px;
+  margin: 41px auto 0;
+}
+
+.form-details .form-container
+{
+  background: #fff;
+  border: 1px solid #E0E0E0;
+  border-radius: 5px;
+  padding: 16px;
+}
+
+.form-group:not(:last-child)
+{
+  margin-bottom: 16px;
+}
+
+.form-label
+{
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.form-label .title
+{
+  font: 500 12px 'Manrope', sans-serif;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+.form-control
+{
+  padding: 14px 16px;
+}
+
+.form-control:focus
+{
+  box-shadow: none;
+  border-color: #ff9700;
+}
+
+.button-details
+{
+  background-color: #ff9700;
+  color: #fff;
+  font: 600 14px 'Manrope', sans-serif;
+  width: 100%;
+  padding: 12px 0;
+  margin-top: 16px;
+}
+
+.button-details:hover
+{
+  background-color: #d98200;
 }
 </style>
