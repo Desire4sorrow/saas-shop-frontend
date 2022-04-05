@@ -9,9 +9,6 @@
         <router-link to="/details">Реквизиты</router-link>
       </li>
       <li class="nav-item">
-        <router-link to="/signin">Форма входа</router-link>
-      </li>
-      <li class="nav-item">
         <router-link to="/profile">ЛК</router-link>
       </li>
     </ul>

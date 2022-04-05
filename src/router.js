@@ -1,7 +1,6 @@
 import HomePage from './components/HomePage.vue'
 import PaymentMethod from './components/PaymentMethod.vue'
 import PaymentDetails from './components/PaymentDetails.vue'
-import SignIn from './components/SignIn.vue'
 import PersonalPage from './components/PersonalPage.vue'
 
 export const routes = [
@@ -19,11 +18,6 @@ export const routes = [
         path: '/details',
         name: PaymentDetails,
         component: PaymentDetails,
-    },
-    {
-        path: '/signin',
-        name: SignIn,
-        component: SignIn,
     },
     {
         path: '/profile',
