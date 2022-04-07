@@ -32,7 +32,7 @@ jobs:
        uses: docker/login-action@v1
        with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ random762581 }}
+          password: random762581
      - name: Build and push
        uses: docker/build-push-action@v2
        with:
