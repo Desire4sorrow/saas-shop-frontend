@@ -32,6 +32,7 @@ jobs:
         host: testvm.plotpad.ru
         username: student
         password: egEdmXr8jD
-        script: whoami
+        script: |
+            whoami
             docker stop frontend
             docker run --rm -d -p 1337:8080 --name frontend docker14538/frontend 
