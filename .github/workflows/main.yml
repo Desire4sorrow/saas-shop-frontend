@@ -26,3 +26,10 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:latest
+     - name: executing remote ssh commands using password
+       uses: appleboy/ssh-action@master
+       with:
+        host: testvm.plotpad.ru
+        username: student
+        password: egEdmXr8jD
+        script: whoami
