@@ -18,7 +18,7 @@ jobs:
        uses: docker/login-action@v1
        with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: random762581
+          password: 7ef009df-6f83-4bef-8f5b-50333734a6c4
      - name: Set up Docker Buildx
        uses: docker/setup-buildx-action@v1
      - name: Build and push
@@ -32,7 +32,7 @@ jobs:
        uses: docker/login-action@v1
        with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: random762581
+          password: 7ef009df-6f83-4bef-8f5b-50333734a6c4
      - name: Build and push
        uses: docker/build-push-action@v2
        with:
