@@ -1,5 +1,7 @@
 import * as Vue from 'vue'
 import * as Router from 'vue-router'
+import axios from 'axios';
+import VueAxios from 'vue-axios'
 
 import App from './App.vue'
 import {routes} from './router'
@@ -10,4 +12,4 @@ const router = Router.createRouter({
     routes,
 })
 
-Vue.createApp(App).use(router).mount('#app')
+Vue.createApp(App).use(router, VueAxios, axios).mount('#app')

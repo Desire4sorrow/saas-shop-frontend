@@ -1,21 +1,8 @@
 <template>
     <div>
         <div class="general-info">
-            <lk-general-product-info 
-                :tariff="tariff"
-                :type="type"
-                :price="price"
-                :total_sum="total_sum"
-                :payment_method="payment_method"
-                :next_payment_date="next_payment_date"
-            />
         </div>
         <div class="actions">
-            <lk-product-actions
-                :add_licenses_caption="add_licenses_caption"
-                :change_tariff_caption="change_tariff_caption"
-                :payment_method_caption="payment_method_caption"
-            />
         </div>
         <div class="bills">
             <lk-product-bills />
@@ -24,11 +11,9 @@
 </template>
 
 <script>
-import LkGeneralProductInfo from './LkGeneralProductInfo.vue'
-import LkProductActions from './LkProductActions.vue'
 import LkProductBills from './LkProductBills.vue'
 export default {
-    components: { LkGeneralProductInfo, LkProductActions,
+    components: {
     LkProductBills },
     data() {
         return {
