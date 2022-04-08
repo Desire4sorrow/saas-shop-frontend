@@ -1,7 +1,7 @@
 <template>
   <div class="col-xl-4">
     <button type="button" class="change-card"  data-bs-toggle="modal" data-bs-target="#modalChangeLicenses">
-      <span class="title">Изменить количество лицензий</span>
+      <span class="title">Изменить количество лицензий 1</span>
       <span class="image-container">
         <img class="image" src="@/assets/image/icon/user.svg" alt="">
       </span>
