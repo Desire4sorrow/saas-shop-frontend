@@ -1,0 +1,40 @@
+name: Ci
+
+on:
+  push:
+    branches:
+      - 'main'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Шаги представляют собой последовательность задач, которые будут выполняться как часть задания.
+    steps:
+     - name: Checkout 
+       uses: actions/checkout@v2
+        
+     - name: Login to Docker Hub
+       uses: docker/login-action@v1
+       with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: 7ef009df-6f83-4bef-8f5b-50333734a6c4
+     - name: Set up Docker Buildx
+       uses: docker/setup-buildx-action@v1
+     - name: Build and push
+       uses: docker/build-push-action@v2
+       with:
+        context: .
+        file: ./Dockerfile
+        builder: ${{ steps.buildx.outputs.name }}
+        push: true
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:latest
+        cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/frontend:buildcache
+        cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/frontend:buildcache,mode=max
+     - name: executing remote ssh commands using password
+       uses: appleboy/ssh-action@master
+       with:
+        host: testvm.plotpad.ru
+        username: student
+        password: egEdmXr8jD
+        script: |
+            docker stop frontend
+            docker run --rm -d -p 1337:8080 --name frontend docker14538/frontend 
