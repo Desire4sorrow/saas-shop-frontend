@@ -26,7 +26,7 @@ export default {
         "user_id": 1,
         "name": "Стройконтроль",
         "app_host": "a101.sk.ru",
-        "licenses_count": 8,
+        "licenses_count": 6,
         "ops_status": "not_active",
         "orders": [
           {
