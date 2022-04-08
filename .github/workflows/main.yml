@@ -24,11 +24,11 @@ jobs:
        with:
         context: .
         file: ./Dockerfile
-#         builder: ${{ steps.buildx.outputs.name }}
+        builder: ${{ steps.buildx.outputs.name }}
         push: true
         tags: ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:latest
-#         cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/frontend:buildcache
-#         cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/frontend:buildcache,mode=max
+        cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/frontend:buildcache
+        cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/frontend:buildcache,mode=max
      - name: executing remote ssh commands using password
        uses: appleboy/ssh-action@master
        with:
