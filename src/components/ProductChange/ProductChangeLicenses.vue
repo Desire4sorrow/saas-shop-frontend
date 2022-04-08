@@ -50,7 +50,9 @@ export default {
   name: 'ProductChangeLicenses',
   props: ['countLicenses', 'maxLicenses'],
   methods: {
+    countPlus: function () {
 
+    }
   },
 }
 </script>
@@ -139,9 +141,14 @@ export default {
   color: #F15D48;
   font-weight: 500;
   padding: 16px;
-  display: flex;
   justify-content: space-between;
   align-items: center;
+  display: none;
+}
+
+.input-warning .active
+{
+  display: flex;
 }
 
 .input-warning .image-container
