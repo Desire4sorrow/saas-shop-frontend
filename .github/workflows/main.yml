@@ -37,4 +37,5 @@ jobs:
         password: egEdmXr8jD
         script: |
             docker stop frontend
+            docker image rm docker14538/frontend 
             docker run --rm -d -p 1337:8080 --name frontend docker14538/frontend 
