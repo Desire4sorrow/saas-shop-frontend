@@ -10,12 +10,7 @@ export default {
   name: 'App',
   props: {
       keycloak: Keycloak
-    },
-  mounted() {
-    fetch('https://localhost:5001/api/authtest/some-data')
-    .then(res => res.json())
-    .then(json => console.log(json));
-  }
+    }
 }
 </script>
 
