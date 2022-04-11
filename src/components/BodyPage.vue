@@ -28,6 +28,7 @@ export default {
         "app_host": "a101.sk.ru",
         "licenses_count": 6,
         "ops_status": "not_active",
+        "next_pay_date": "2022-04-27T09:15:43.719Z",
         "orders": [
           {
             "order_id": 2,
@@ -46,6 +47,7 @@ export default {
               "period": 30,
               "price": 1000
             },
+            "licenses_count": 6,
             "operation_type": "buy",
             "payment_method": "bank_card",
             "payment_status": "success",
@@ -59,8 +61,8 @@ export default {
               "created_at": "2022-03-27T09:15:43.719Z"
             },
             "work_at": "2022-03-27T09:15:43.719Z",
-            "paid_at ": "2022-03-27T09:15:43.719Z",
-            "created_at ": "2022-03-27T09:15:43.719Z"
+            "paid_at": "2022-03-27T09:15:43.719Z",
+            "created_at": "2022-03-27T09:15:43.719Z"
           }
         ]
       },
@@ -71,6 +73,7 @@ export default {
         "app_host": "test.sk.ru",
         "licenses_count": 5,
         "ops_status": "active",
+        "next_pay_date": "2023-03-27T09:15:43.719Z",
         "orders": [
           {
             "order_id": 3,
@@ -89,8 +92,9 @@ export default {
               "period": 365,
               "price": 1000
             },
+            "licenses_count": 5,
             "operation_type": "buy",
-            "payment_method": "bank_card",
+            "payment_method": "details_payment",
             "payment_status": "success",
             "need_change_workspace": false,
             "act_document": null,
@@ -102,8 +106,8 @@ export default {
               "created_at": "2022-03-27T09:15:43.719Z"
             },
             "work_at": "2022-03-27T09:15:43.719Z",
-            "paid_at ": "2022-03-27T09:15:43.719Z",
-            "created_at ": "2022-03-27T09:15:43.719Z"
+            "paid_at": "2022-03-27T09:15:43.719Z",
+            "created_at": "2022-03-27T09:15:43.719Z"
           }
         ]
       },
@@ -114,6 +118,7 @@ export default {
         "app_host": "a101.us.ru",
         "licenses_count": 6,
         "ops_status": "active",
+        "next_pay_date": "2022-04-27T09:15:43.719Z",
         "orders": [
           {
             "order_id": 5,
@@ -132,6 +137,7 @@ export default {
               "period": 30,
               "price": 1000
             },
+            "licenses_count": 6,
             "operation_type": "buy",
             "payment_method": "bank_card",
             "payment_status": "success",
@@ -145,8 +151,8 @@ export default {
               "created_at": "2022-03-27T09:15:43.719Z"
             },
             "work_at": "2022-03-27T09:15:43.719Z",
-            "paid_at ": "2022-03-27T09:15:43.719Z",
-            "created_at ": "2022-03-27T09:15:43.719Z"
+            "paid_at": "2022-03-27T09:15:43.719Z",
+            "created_at": "2022-03-27T09:15:43.719Z"
           }
         ]
       },

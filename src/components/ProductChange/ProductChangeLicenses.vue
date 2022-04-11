@@ -8,25 +8,25 @@
     </button>
   </div>
 
-  <div class="modal fade" id="modalChangeLicenses" data-bs-backdrop="static"
-       data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" id="modalChangeLicenses" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
       <form class="modal-content">
         <div class="modal-header">
           <div class="modal-title">Изменение количества лицензий</div>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close"
+                  data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="input-container">
             <div class="title">Кол-во лицензий:</div>
             <div class="input-control">
-              <div class="control-minus"></div>
+              <div class="control-minus" @click="countMinus()"></div>
               <input class="input"
-                     type="number" name="count" min="1" :max="maxLicenses" :value="countLicenses">
-              <div class="control-plus"></div>
+                     type="number" name="count" min="1" :max="maxLicenses" :value="countLicensesLocal">
+              <div class="control-plus" @click="countPlus()"></div>
             </div>
           </div>
-          <div class="input-warning">
+          <div class="input-warning" :class="{active: this.active}">
             <div class="image-container">
               <img class="image" src="@/assets/image/icon/warning.svg" alt="">
             </div>
@@ -38,7 +38,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn button-close" data-bs-dismiss="modal">Отменить</button>
-          <button type="button" class="btn button-check" disabled>Изменить</button>
+          <button type="button" class="btn button-check" ref="buttonChanged" disabled>Изменить</button>
         </div>
       </form>
     </div>
@@ -49,9 +49,45 @@
 export default {
   name: 'ProductChangeLicenses',
   props: ['countLicenses', 'maxLicenses'],
+  data() {
+    let active = false;
+    let countLicensesLocal = this.countLicenses;
+
+    return { active, countLicensesLocal }
+  },
   methods: {
     countPlus: function () {
+      let currentValue = this.countLicensesLocal;
+      currentValue += 1;
 
+      if (!(this.maxLicenses >= currentValue)) return;
+      if (currentValue === this.countLicenses) {
+        this.$refs.buttonChanged.disabled = true;
+        this.countLicensesLocal = currentValue;
+        this.active = false;
+        return;
+      }
+
+      this.$refs.buttonChanged.disabled = false;
+      this.countLicensesLocal = currentValue;
+    },
+    countMinus: function () {
+      let currentValue = this.countLicensesLocal;
+      currentValue -= 1;
+
+      if (currentValue < 1) return;
+      if (currentValue < this.countLicenses) {
+        this.active = true;
+      }
+      if (currentValue === this.countLicenses) {
+        this.$refs.buttonChanged.disabled = true;
+        this.countLicensesLocal = currentValue;
+        this.active = false;
+        return;
+      }
+
+      this.$refs.buttonChanged.disabled = false;
+      this.countLicensesLocal = currentValue;
     }
   },
 }
@@ -93,7 +129,7 @@ export default {
 
 .button-check
 {
-  width: 100px;
+  min-width: 100px;
   height: 40px;
   background-color: #FF9900;
   color: #fff;
@@ -146,7 +182,7 @@ export default {
   display: none;
 }
 
-.input-warning .active
+.input-warning.active
 {
   display: flex;
 }

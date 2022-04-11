@@ -2,16 +2,18 @@
   <div class="row">
     <div class="col-sm-6 col-md-3">
       <ProductCardItem v-for="product in productList"
-                   :key="product.user_id"
-                   :active="productSelected === product"
-                   :onclick="onclickProduct"
-                   :product="product"/>
+                       :key="product.user_id"
+                       :active="productSelected === product"
+                       :onclick="onclickProduct"
+                       :product="product" />
       <a class="btn button-product-addition" href="#">
         Добавить продукт
       </a>
     </div>
     <div class="col-md-9">
-      <ProductItemData :product="productSelected"/>
+      <ProductItemData
+          :key="productSelected"
+          :product="productSelected"/>
     </div>
   </div>
 </template>

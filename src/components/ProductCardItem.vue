@@ -1,7 +1,7 @@
 <template>
   <div class="product-card"
-       v-bind:class="{active: active}"
-       v-on:click="onclick(product)">
+       :class="{active: active}"
+       @click="onclick(product)">
     <div class="title-card">
       <div class="title-box">
         <div class="title">{{ product.name }}</div>
@@ -22,9 +22,9 @@
       </div>
       <div class="progress">
         <div class="progress-bar" role="progressbar"
-             v-bind:style="'width: ' + countLicense() + '%'"
-             v-bind:aria-valuenow="product.licenses_count" aria-valuemin="0"
-             v-bind:aria-valuemax="product.orders[0].tariff_variant.tariff.maximum_licenses_count"></div>
+             :style="'width: ' + countLicense() + '%'"
+             :aria-valuenow="product.licenses_count" aria-valuemin="0"
+             :aria-valuemax="product.orders[0].tariff_variant.tariff.maximum_licenses_count"></div>
       </div>
     </div>
   </div>
