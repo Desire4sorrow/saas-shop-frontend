@@ -2,11 +2,12 @@
   <div class="product-description-container">
     <div class="row product-description-row">
       <ProductDescriptionItem :title="'Тариф'" :subtitle="product.orders[0].tariff_variant.tariff.name"/>
-      <ProductDescriptionItem :title="'Цена'" :subtitle="onePrice()"/>
-      <ProductDescriptionItem :title="'Способ оплаты'" :subtitle="paymentMethod()"/>
-      <ProductDescriptionItem :title="'Тип'" :subtitle="typePeriod()"/>
-      <ProductDescriptionItem :title="'Общая сумма'" :subtitle="totalPrice()"/>
-      <ProductDescriptionItem :title="'Следующая оплата'" :subtitle="'Скоро'"/>
+      <ProductDescriptionItem :title="'Цена'" :subtitle="onePrice(this.product.orders[0].tariff_variant.price)"/>
+      <ProductDescriptionItem :title="'Способ оплаты'" :subtitle="paymentMethod(this.product.orders[0].payment_method)"/>
+      <ProductDescriptionItem :title="'Тип'" :subtitle="typePeriod(this.product.orders[0].tariff_variant.period)"/>
+      <ProductDescriptionItem :title="'Общая сумма'"
+                              :subtitle="totalPrice(this.product.orders[0].tariff_variant.period, this.product.orders[0].tariff_variant.price, this.product.licenses_count)"/>
+      <ProductDescriptionItem :title="'Следующая оплата'" :subtitle="date(product.next_pay_date)"/>
     </div>
   </div>
   <div class="product-cards-container">
@@ -16,13 +17,16 @@
       <ProductChangeLicenses
           :countLicenses="product.licenses_count"
           :maxLicenses="product.orders[0].tariff_variant.tariff.maximum_licenses_count"/>
-      <ProductChangePayment />
+      <ProductChangePayment
+          :methodPayment="product.orders[0].payment_method"/>
     </div>
   </div>
   <div class="product-cards-container">
     <div class="title">Счета и документы</div>
     <div class="row">
-      <CardBills />
+      <CardBills v-for="order in product.orders"
+                 :key="order" :order="order"
+                 :date="date" :totalPrice="totalPrice" :period="typePeriod" :onePrice="onePrice" :method="paymentMethod"/>
     </div>
   </div>
 </template>
@@ -44,24 +48,34 @@ export default {
     ProductChangeTariff,
   },
   props: ['product'],
+  data() {
+    let month = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября','ноября', 'декабря'];
+
+    return { month }
+  },
   methods: {
-    onePrice: function () {
-      return this.product.orders[0].tariff_variant.price.toLocaleString() + ' ₽ / лицензия'
+    onePrice: function (value) {
+      return value.toLocaleString() + ' ₽ / лицензия'
     },
-    paymentMethod: function () {
-      if (this.product.orders[0].payment_method === 'bank_card') return 'Банковская карта'
-      if (this.product.orders[0].payment_method === null) return 'Расчётный счёт'
+    paymentMethod: function (value) {
+      if (value === 'bank_card') return 'Банковская карта'
+      if (value === 'details_payment') return 'Расчётный счёт'
     },
-    typePeriod: function () {
-      if (this.product.orders[0].tariff_variant.period === 30) return 'Месячный'
-      if (this.product.orders[0].tariff_variant.period === 365) return 'Годовой'
+    typePeriod: function (period) {
+      if (period === 30) return 'Месячный'
+      if (period === 365) return 'Годовой'
     },
-    totalPrice: function () {
-      if (this.typePeriod() === 'Годовой')
+    totalPrice: function (period, count, price) {
+      if (this.typePeriod(period) === 'Годовой')
       {
-        return ((this.product.orders[0].tariff_variant.price * this.product.licenses_count) * 12).toLocaleString() + ' ₽'
+        return ((price * count) * 12).toLocaleString() + ' ₽'
       }
-      return (this.product.orders[0].tariff_variant.price * this.product.licenses_count).toLocaleString() + ' ₽'
+      return (price * count).toLocaleString() + ' ₽'
+    },
+    date: function (dateJSON) {
+      let date = new Date(dateJSON);
+
+      return date.getDate() + ' ' + this.month[date.getMonth()] + ' ' + date.getFullYear();
     }
   }
 }
