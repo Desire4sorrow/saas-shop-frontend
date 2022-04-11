@@ -1,12 +1,16 @@
 <template>
-  <router-view></router-view>
+  <router-view :keycloaks=keycloak></router-view>
 </template>
 
 <script>
 import '../node_modules/bootstrap/dist/css/bootstrap.css'
+import Keycloak from 'keycloak-js'
 
 export default {
   name: 'App',
+  props: {
+      keycloak: Keycloak
+    }
 }
 </script>
 
