@@ -60,7 +60,7 @@
         <a href="#" class="btn button-card error" v-else-if="isError">
           Ошибка оплаты
         </a>
-        <a href="#" class="btn button-card" v-else>
+        <a href="#" class="btn button-card" v-else @click="doPayment()">
           Оплатить
         </a>
       </div>
@@ -69,6 +69,9 @@
 </template>
 
 <script>
+import axios from "axios";
+var qs = require('qs');
+
 export default {
   props: ['order', 'date', 'totalPrice', 'period', 'onePrice', 'method'],
   data() {
@@ -77,6 +80,35 @@ export default {
     let isError = (this.order.payment_status === 'fail');
 
     return { isWaiting, isSuccess, isError }
+  },
+  methods: {
+    doPayment: async function() {
+      var data = qs.stringify({
+        'tariff_variant_id': '1',
+        'workspace_name': 'google',
+        'licenses_count': '10',
+        'payment_method': 'bank_card',
+        'requisites': '{\n    "organization_name": "ООО \\"Хомячки\\"",\n    "organization_address": "424006, РФ, Республика Марий Эл, г. Йошкар-Ола, улица Карла Маркса, дом 109б кабинет 506",\n    "ogrn": "1027700132195",\n    "inn": "7707083893",\n    "kpp": "773601001"\n  }\n'
+      });
+      var config = {
+        method: 'post',
+        url: 'http://localhost:4964/api/order/create',
+        headers: {
+          Authorization: 'Bearer ' + window.keycloak.token,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data : data
+      };
+
+      axios(config)
+          .then(function (response) {
+            console.log(response)
+            location.href = response.data.pay_form_url;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    }
   }
 }
 </script>
