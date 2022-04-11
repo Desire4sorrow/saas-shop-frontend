@@ -50,7 +50,7 @@ export default {
             "licenses_count": 6,
             "operation_type": "buy",
             "payment_method": "bank_card",
-            "payment_status": "success",
+            "payment_status": "not_paid",
             "need_change_workspace": false,
             "act_document": null,
             "offer_invoice_document": {
@@ -140,7 +140,7 @@ export default {
             "licenses_count": 6,
             "operation_type": "buy",
             "payment_method": "bank_card",
-            "payment_status": "success",
+            "payment_status": "waiting",
             "need_change_workspace": false,
             "act_document": null,
             "offer_invoice_document": {

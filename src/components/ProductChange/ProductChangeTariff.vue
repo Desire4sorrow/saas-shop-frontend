@@ -17,24 +17,7 @@
                   data-bs-dismiss="modal" aria-label="Close" @click="close()"></button>
         </div>
         <div class="modal-body">
-          <div class="input-container">
-            <div class="title">Кол-во лицензий:</div>
-            <div class="input-control">
-              <div class="control-minus" @click="countMinus()"></div>
-              <input class="input"
-                     type="number" name="count" min="1" :max="maxLicenses" :value="countLicensesLocal">
-              <div class="control-plus" @click="countPlus()"></div>
-            </div>
-          </div>
-          <div class="input-warning" :class="{active: this.active}">
-            <div class="image-container">
-              <img class="image" src="@/assets/image/icon/warning.svg" alt="">
-            </div>
-            <div class="title">
-              Если вы уменьшите количество лицензий,
-              некоторые пользователи потеряют доступ к лицензионным функциям.
-            </div>
-          </div>
+          Тут должно быть изменение тарифа ...
         </div>
         <div class="modal-footer">
           <button type="button" class="btn button-close" data-bs-dismiss="modal" @click="close()">Отменить</button>

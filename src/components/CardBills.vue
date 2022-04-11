@@ -51,7 +51,18 @@
           <div class="item-title">Способ оплаты</div>
           <div class="item-description">{{ method(this.order.payment_method) }}</div>
         </div>
-        <a href="#" class="btn button-card">Оплатить</a>
+        <a href="#" class="btn button-card waiting" v-if="isWaiting">
+          Ожидает подтверждения
+        </a>
+        <a href="#" class="btn button-card success" v-else-if="isSuccess">
+          Оплачен
+        </a>
+        <a href="#" class="btn button-card error" v-else-if="isError">
+          Ошибка оплаты
+        </a>
+        <a href="#" class="btn button-card" v-else>
+          Оплатить
+        </a>
       </div>
     </div>
   </div>
@@ -61,7 +72,11 @@
 export default {
   props: ['order', 'date', 'totalPrice', 'period', 'onePrice', 'method'],
   data() {
+    let isWaiting = (this.order.payment_status === 'waiting');
+    let isSuccess = (this.order.payment_status === 'success');
+    let isError = (this.order.payment_status === 'fail');
 
+    return { isWaiting, isSuccess, isError }
   }
 }
 </script>
@@ -207,5 +222,29 @@ export default {
   width: 100%;
   border-radius: 5px;
   padding: 8px 2px;
+  background-color: #FF9900;
+  color: #fff;
+  margin-top: 8px;
+}
+
+.button-card.waiting{
+  background-color: #F5F5F5;
+  color: rgba(0, 0, 0, 0.56);
+  cursor: default;
+  pointer-events: none;
+}
+
+.button-card.success{
+  background-color: #EEF9E8;
+  color: #6DCC3D;
+  cursor: default;
+  pointer-events: none;
+}
+
+.button-card.error{
+  background-color: #f9e8e8;
+  color: #cc3d3d;
+  cursor: default;
+  pointer-events: none;
 }
 </style>
