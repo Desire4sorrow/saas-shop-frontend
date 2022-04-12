@@ -33,7 +33,7 @@ jobs:
        uses: appleboy/ssh-action@master
        with:
         host: testvm.plotpad.ru
-        username: ${{ secrets.USER }}
+        username: student
         password: egEdmXr8jD
         script: |
             docker stop frontend
