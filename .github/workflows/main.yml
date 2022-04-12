@@ -34,7 +34,7 @@ jobs:
        with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
-        password: ${{ secrets.PASSWORD }}
+        password: egEdmXr8jD
         script: |
             docker stop frontend
             docker image rm ${{ secrets.DOCKER_HUB_USERNAME }}/frontend 
