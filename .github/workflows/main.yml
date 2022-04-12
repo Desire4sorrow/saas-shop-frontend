@@ -37,5 +37,6 @@ jobs:
         password: egEdmXr8jD
         script: |
             docker-compose down
-            docker-compose image rm ${{ secrets.DOCKER_HUB_USERNAME }}/frontend 
+            docker-compose images rm ${{ secrets.DOCKER_HUB_USERNAME }}/frontend 
+            cd /home/student/compose
             docker-compose up --rm -d 
