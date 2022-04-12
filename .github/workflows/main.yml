@@ -36,6 +36,6 @@ jobs:
         username: student
         password: egEdmXr8jD
         script: |
-            docker stop frontend
-            docker image rm ${{ secrets.DOCKER_HUB_USERNAME }}/frontend 
-            docker run --rm -d -p 1337:8080 --name frontend ${{ secrets.DOCKER_HUB_USERNAME }}/frontend 
+            docker-compose down
+            docker-compose image rm ${{ secrets.DOCKER_HUB_USERNAME }}/frontend 
+            docker-compose up --rm -d 
