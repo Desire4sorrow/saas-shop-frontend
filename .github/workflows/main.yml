@@ -16,7 +16,7 @@ jobs:
        uses: docker/login-action@v1
        with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: 7ef009df-6f83-4bef-8f5b-50333734a6c4
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
      - name: Set up Docker Buildx
        uses: docker/setup-buildx-action@v1
      - name: Build and push
@@ -32,10 +32,10 @@ jobs:
      - name: executing remote ssh commands using password
        uses: appleboy/ssh-action@master
        with:
-        host: testvm.plotpad.ru
-        username: student
-        password: egEdmXr8jD
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.PASSWORD }}
         script: |
             docker stop frontend
-            docker image rm docker14538/frontend 
-            docker run --rm -d -p 1337:8080 --name frontend docker14538/frontend 
+            docker image rm ${{ secrets.DOCKER_HUB_USERNAME }}/frontend 
+            docker run --rm -d -p 1337:8080 --name frontend ${{ secrets.DOCKER_HUB_USERNAME }}/frontend 
