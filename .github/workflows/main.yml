@@ -38,5 +38,5 @@ jobs:
         script: |
             cd /home/student/compose
             docker-compose down
-            docker-compose images rm ${{ secrets.DOCKER_HUB_USERNAME }}/frontend 
+            docker rm ${{ secrets.DOCKER_HUB_USERNAME }}/frontend 
             docker-compose up -d
