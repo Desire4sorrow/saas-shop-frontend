@@ -32,9 +32,9 @@ jobs:
      - name: executing remote ssh commands using password
        uses: appleboy/ssh-action@master
        with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
-        password: ${{ secrets.PASSWORD }}
+        host: testvm.plotpad.ru
+        username: student
+        password: egEdmXr8jD
         script: |
             cd /home/student/compose
             docker-compose down
