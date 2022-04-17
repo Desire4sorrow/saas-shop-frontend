@@ -13,44 +13,43 @@ const router = Router.createRouter({
     routes,
 })
 
+Vue.createApp(App).use(router, VueAxios, axios).mount('#app')
+
 let initOptions = {
-    url : 'http://localhost:8080',
+    url : 'https://testvm.plotpad.ru:8443/',
     realm : 'saas-shop',
     clientId : 'saas-shop-client',
     onLoad  : 'login-required',
     checkLoginIframe: false
-}
+  }
 
-Vue.createApp(App).use(router, VueAxios, axios).mount('#app')
-
-let keycloak = Keycloak(initOptions);
-window.keycloak = keycloak
+  let keycloak = Keycloak(initOptions);
 
 keycloak.init({onLoad: initOptions.onLoad}).then( auth => {
     if (!auth) {
-        window.location.reload();
+      window.location.reload();
     } else {
 
-        new Vue({
-            render: h => h(App, { props : {keycloak: keycloak}}),
-        }).$mount('#app')
+      new Vue({
+        render: h => h(App, { props : {keycloak: keycloak}}),
+      }).$mount('#app')
     }
 
-    setInterval(() => {
-        keycloak.updateToken(70).then((refreshed) => {
-            if (refreshed) {
-                Vue.$log.info('Token refreshed' + refreshed);
-            } else {
-                Vue.$log.warn('Token not refreshed, valid for '
-                    + Math.round(keycloak.tokenParsed.exp
-                        + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
-            }
-        }).catch(() => {
-            Vue.$log.error('Failed to refresh token');
-        });
+     setInterval(() => {
+      keycloak.updateToken(70).then((refreshed) => {
+        if (refreshed) {
+          Vue.$log.info('Token refreshed' + refreshed);
+        } else {
+          Vue.$log.warn('Token not refreshed, valid for '
+            + Math.round(keycloak.tokenParsed.exp
+            + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
+        }
+      }).catch(() => {
+        Vue.$log.error('Failed to refresh token');
+      });
     }, 6000)
 
-}).catch(() => {
+    }).catch(() => {
     Vue.$log.error("Authenticated Failed");
 });
 
