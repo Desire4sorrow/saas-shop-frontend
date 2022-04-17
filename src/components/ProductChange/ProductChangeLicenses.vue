@@ -64,8 +64,6 @@ export default {
     changeLicenses: function (){
       let data = {
         order_id: this.product.order_id,
-        workspace_name: this.product.name,
-        tariff_variant_id: this.product.tariff_variant_id,
         licenses_count: this.countLicensesLocal,
       }
 
