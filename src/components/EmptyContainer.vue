@@ -3,7 +3,7 @@
     <div class="title">
       У вас пока нет ни одного продукта. Чтобы перейти на наш сайт и выбрать продукт, нажмите на кнопку.
     </div>
-    <a href="#" class="btn button">Добавить продукт</a>
+    <a href="https://mrspro.ru/" class="btn button">Добавить продукт</a>
   </div>
 </template>
 

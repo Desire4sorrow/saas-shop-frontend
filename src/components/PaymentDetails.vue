@@ -1,9 +1,4 @@
 <template>
-  <div class="header">
-    <div class="container">
-      <div class="title-container">Реквизиты для оплаты</div>
-    </div>
-  </div>
   <div class="container">
     <form class="form-details">
       <div class="form-container">
@@ -50,19 +45,6 @@ export default {
 </script>
 
 <style scoped>
-.header {
-    background: #fff;
-    padding: 16px 0;
-    border-bottom: 1px solid #E0E0E0;
-}
-
-.header .title-container
-{
-  text-align: center;
-  font-weight: 600;
-  font-family: 'Manrope', sans-serif;
-}
-
 .form-details {
   width: 600px;
   margin: 41px auto 0;

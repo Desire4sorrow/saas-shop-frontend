@@ -9,7 +9,7 @@ export const routes = [
         component: HomePage,
     },
     {
-        path: '/method',
+        path: '/account/method',
         name: PaymentMethod,
         component: PaymentMethod,
     },

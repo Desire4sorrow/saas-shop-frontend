@@ -22,7 +22,9 @@
             <div class="input-control">
               <div class="control-minus" @click="countMinus()"></div>
               <input class="input"
-                     type="number" name="count" min="1" :max="maxLicenses" :value="countLicensesLocal">
+                     type="number" name="count" min="1"
+                     :max="product.orders[0].tariff_variant.tariff.maximum_licenses_count"
+                     :value="countLicensesLocal">
               <div class="control-plus" @click="countPlus()"></div>
             </div>
           </div>
@@ -38,7 +40,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn button-close" data-bs-dismiss="modal">Отменить</button>
-          <button type="button" class="btn button-check" ref="buttonChanged" disabled>Изменить</button>
+          <button type="button" class="btn button-check" ref="buttonChanged" disabled @click="changeLicenses()">Изменить</button>
         </div>
       </form>
     </div>
@@ -46,22 +48,41 @@
 </template>
 
 <script>
+import {HTTP} from "@/config";
+let qs = require('qs');
+
 export default {
   name: 'ProductChangeLicenses',
-  props: ['countLicenses', 'maxLicenses'],
+  props: ['product'],
   data() {
     let active = false;
-    let countLicensesLocal = this.countLicenses;
+    let countLicensesLocal = this.product.licenses_count;
 
     return { active, countLicensesLocal }
   },
   methods: {
+    changeLicenses: function (){
+      let data = {
+        order_id: this.product.order_id,
+        workspace_name: this.product.name,
+        tariff_variant_id: this.product.tariff_variant_id,
+        licenses_count: this.countLicensesLocal,
+      }
+
+      HTTP.post('/order/update', qs.stringify(data))
+          .then(function (res) {
+            console.log(res)
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    },
     countPlus: function () {
       let currentValue = this.countLicensesLocal;
       currentValue += 1;
 
-      if (!(this.maxLicenses >= currentValue)) return;
-      if (currentValue === this.countLicenses) {
+      if (!(this.product.orders[0].tariff_variant.tariff.maximum_licenses_count >= currentValue)) return;
+      if (currentValue === this.product.licenses_count) {
         this.$refs.buttonChanged.disabled = true;
         this.countLicensesLocal = currentValue;
         this.active = false;
@@ -76,10 +97,10 @@ export default {
       currentValue -= 1;
 
       if (currentValue < 1) return;
-      if (currentValue < this.countLicenses) {
+      if (currentValue < this.product.licenses_count) {
         this.active = true;
       }
-      if (currentValue === this.countLicenses) {
+      if (currentValue === this.product.licenses_count) {
         this.$refs.buttonChanged.disabled = true;
         this.countLicensesLocal = currentValue;
         this.active = false;
