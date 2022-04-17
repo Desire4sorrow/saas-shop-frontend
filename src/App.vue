@@ -1,7 +1,6 @@
 <template>
-  <router-view :keycloaks=keycloak></router-view>
   <HeaderPage />
-  <router-view></router-view>
+  <router-view :keycloaks=keycloak></router-view>
 </template>
 
 <script>

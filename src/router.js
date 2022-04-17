@@ -4,7 +4,7 @@ import PaymentDetails from './components/PaymentDetails.vue'
 
 export const routes = [
     {
-        path: '/',
+        path: '/account',
         name: HomePage,
         component: HomePage,
     },
@@ -14,7 +14,7 @@ export const routes = [
         component: PaymentMethod,
     },
     {
-        path: '/details',
+        path: '/account/details',
         name: PaymentDetails,
         component: PaymentDetails,
     }
