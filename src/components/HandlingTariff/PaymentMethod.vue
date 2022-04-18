@@ -1,7 +1,7 @@
 <template>
   <div class="container method-container">
     <div class="method-card">
-      <button class="btn link-card" @click="orderPay()">
+    <router-link :to="{ name: 'PaymentWorkspace', params: { licensesCount: this.$route.query.licenses_count, tariffId: this.$route.query.tariff_variant_id, method: 'bank_card' }}" class="btn link-card">
         <span class="image-container">
           <img src="@/assets/image/icon/credit-card.svg" alt="" class="image">
         </span>
@@ -9,7 +9,7 @@
           <span class="title">Банковская карта</span>
           <span class="subtitle">Оплата картой на сайте</span>
         </span>
-      </button>
+      </router-link>
     </div>
 <!--    <div class="method-card">
       <router-link to="/method" class="link-card">
@@ -26,12 +26,9 @@
 </template>
 
 <script>
-import {HTTP} from "@/config";
-let qs = require('qs');
-
 export default {
   name: 'PaymentMethod',
-  methods: {
+  /*methods: {
     orderPay: function () {
       let data = {
         workspace_name: 'Stas',
@@ -50,7 +47,7 @@ export default {
             console.log(error);
           });
     }
-  }
+  }*/
 }
 </script>
 

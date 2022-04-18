@@ -6,8 +6,9 @@
       <ProductDescriptionItem :title="'Способ оплаты'" :subtitle="paymentMethod(this.product.orders[0].payment_method)"/>
       <ProductDescriptionItem :title="'Тип'" :subtitle="typePeriod(this.product.orders[0].tariff_variant.period)"/>
       <ProductDescriptionItem :title="'Общая сумма'"
-                              :subtitle="this.product.total_price"/>
-      <ProductDescriptionItem :title="'Следующая оплата'" :subtitle="date(product.next_pay_date)"/>
+                              :subtitle="totalPrice(this.product.orders[0].total_price)"/>
+      <ProductDescriptionItem :title="'Следующая оплата'"
+                              :subtitle="date(this.product.orders[0].createdAt, this.product.next_pay_date)"/>
     </div>
   </div>
   <div class="product-cards-container">
@@ -24,7 +25,7 @@
     <div class="row">
       <CardBills v-for="order in product.orders"
                  :key="order" :order="order"
-                 :date="date"  :period="typePeriod" :onePrice="onePrice" :method="paymentMethod"/>
+                 :date="date" :totalPrice="totalPrice" :period="typePeriod" :onePrice="onePrice" :method="paymentMethod"/>
     </div>
   </div>
 </template>
@@ -51,6 +52,9 @@ export default {
 
     return { month }
   },
+  created() {
+    console.log(this.product.orders)
+  },
   methods: {
     onePrice: function (value) {
       return value.toLocaleString() + ' ₽ / лицензия'
@@ -63,13 +67,13 @@ export default {
       if (period === 30) return 'Месячный'
       if (period === 360) return 'Годовой'
     },
-    /*totalPrice: function (price) {
+    totalPrice: function (price) {
       return price.toLocaleString() + ' ₽'
-    },*/
-    date: function (dateJSON) {
+    },
+    date: function (dateJSON, nextPay = true) {
       let date = new Date(dateJSON);
 
-      if (this.product.next_pay_date) {
+      if (nextPay) {
         return date.getDate() + ' ' + this.month[date.getMonth()] + ' ' + date.getFullYear()
       }
       else {

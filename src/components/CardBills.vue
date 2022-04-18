@@ -3,9 +3,9 @@
     <div class="card-bills">
       <div class="header-card">
         <div class="data-header">
-          <div class="caption">{{ date(this.order.created_at) }}</div>
+          <div class="caption">{{ date(this.order.createdAt) }}</div>
           <div class="price">
-            {{ this.order.total_price }}
+            {{ totalPrice(this.order.total_price) }}
           </div>
         </div>
         <div class="menu-header">
@@ -77,7 +77,7 @@ export default {
     let isError = (this.order.payment_status === 'fail');
 
     return { isWaiting, isSuccess, isError }
-  },
+  }
 }
 </script>
 

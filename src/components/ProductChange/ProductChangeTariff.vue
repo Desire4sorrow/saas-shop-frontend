@@ -86,6 +86,7 @@
 
 export default {
   name: 'ProductChangeTariff',
+  props: ['productId'],
   /*created() {
     HTTP.get('/products/39?populate[0]=tariffs.tariff_variants')
   }*/
