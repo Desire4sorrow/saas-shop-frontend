@@ -9,7 +9,9 @@
         </div>
       </template>
       <template v-else>
-
+        <button type="button" class="btn button-prev" @click="$router.go(-1)">
+          <img src="@/assets/image/icon/arrow-back.svg" class="image" alt="">
+        </button>
         <div class="title">
           {{ title }}
         </div>
@@ -25,9 +27,6 @@ export default {
       title: '',
     }
   },
-  /*mounted() {
-    console.log(this.$route.name)
-  },*/
   watch: {
     $route: {
       immediate: true,
@@ -46,6 +45,23 @@ export default {
   background-color: #fff;
   border-bottom: 1px solid #E0E0E0;
   padding: 16px 0;
+}
+
+.button-prev
+{
+  position: absolute;
+  padding: 0;
+  left: 16px;
+}
+
+.button-prev .image
+{
+  max-width: 100%;
+}
+
+.button-prev:focus
+{
+  box-shadow: none;
 }
 
 .profile-container

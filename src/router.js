@@ -8,6 +8,9 @@ export const routes = [
         path: '/account',
         name: 'BodyPage',
         component: BodyPage,
+        meta: {
+            title: 'Личный кабинет'
+        }
     },
     {
         path: '/account/method',
@@ -21,12 +24,18 @@ export const routes = [
         path: '/account/details',
         name: 'PaymentDetails',
         component: PaymentDetails,
-        props: true
+        props: true,
+        meta: {
+            title: 'Реквизиты для оплаты'
+        }
     },
     {
         path: '/account/workspace',
         name: 'PaymentWorkspace',
         component: PaymentWorkspace,
-        props: true
+        props: true,
+        meta: {
+            title: 'Создание пространства'
+        }
     },
 ]
