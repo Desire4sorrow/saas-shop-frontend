@@ -12,5 +12,10 @@ export default {
 </script>
 
 <style scoped>
-
+.product-cards-container .title
+{
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
 </style>
