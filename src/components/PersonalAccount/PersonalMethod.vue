@@ -6,8 +6,23 @@
 </template>
 
 <script>
-export default {
+import {HTTP} from "@/config";
 
+export default {
+  data() {
+    return {
+      cardList: []
+    }
+  },
+  created() {
+    HTTP.get('/card_binding/list ')
+        .then((res) => {
+          res.data.forEach((el) => {
+            this.cardList.push(el)
+          })
+        })
+        .catch()
+  }
 }
 </script>
 
