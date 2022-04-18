@@ -1,10 +1,10 @@
 <template>
   <header class="header">
     <div class="container">
-      <template v-if="this.$route.path === '/account'
-                || this.$route.path === '/account/cabinet'
-                || this.$route.path === '/account/cabinet/profile'
-                || this.$route.path === '/account/cabinet/method'">
+      <template v-if="this.$route.path === '/'
+                || this.$route.path === '/cabinet'
+                || this.$route.path === '/cabinet/profile'
+                || this.$route.path === '/cabinet/method'">
         <div class="profile-container">
           <img class="image" src="@/assets/image/avatar.png" alt="">
           <ul class="menu">

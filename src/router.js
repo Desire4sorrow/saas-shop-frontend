@@ -8,7 +8,7 @@ import PersonalMethod from "@/components/PersonalAccount/PersonalMethod";
 
 export const routes = [
     {
-        path: '/account',
+        path: '/',
         name: 'BodyPage',
         component: BodyPage,
         meta: {
@@ -16,7 +16,7 @@ export const routes = [
         }
     },
     {
-        path: '/account/method',
+        path: '/method',
         name: 'PaymentMethod',
         component: PaymentMethod,
         meta: {
@@ -24,7 +24,7 @@ export const routes = [
         }
     },
     {
-        path: '/account/details',
+        path: '/details',
         name: 'PaymentDetails',
         component: PaymentDetails,
         props: true,
@@ -33,7 +33,7 @@ export const routes = [
         }
     },
     {
-        path: '/account/workspace',
+        path: '/workspace',
         name: 'PaymentWorkspace',
         component: PaymentWorkspace,
         props: true,
@@ -42,7 +42,7 @@ export const routes = [
         }
     },
     {
-        path: '/account/cabinet',
+        path: '/cabinet',
         name: 'PersonalAccount',
         component: PersonalAccount,
         props: true,
