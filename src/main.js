@@ -16,7 +16,7 @@ const router = Router.createRouter({
 Vue.createApp(App).use(router, VueAxios, axios).mount('#app')
 
 let initOptions = {
-    url : (location.host === 'testvm.plotpad.ru') ? 'http://testvm.plotpad.ru:8443/' : 'http://localhost:8080/',
+    url : (location.host === 'testvm.plotpad.ru') ? 'https://testvm.plotpad.ru:8443/' : 'http://localhost:8080/',
     realm : 'saas-shop',
     clientId : 'saas-shop-client',
     onLoad  : 'login-required',
