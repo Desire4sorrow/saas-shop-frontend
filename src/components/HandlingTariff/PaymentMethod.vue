@@ -27,27 +27,7 @@
 
 <script>
 export default {
-  name: 'PaymentMethod',
-  /*methods: {
-    orderPay: function () {
-      let data = {
-        workspace_name: 'Stas',
-        payment_method: 'bank_card',
-        requisites: '{}',
-      }
-      for (let key in this.$route.query) {
-        data[key] = this.$route.query[key]
-      }
 
-      HTTP.post('/order/create', qs.stringify(data))
-          .then(function (res) {
-            location.href = res.data.pay_form_url
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-    }
-  }*/
 }
 </script>
 

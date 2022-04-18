@@ -1,18 +1,41 @@
 <template>
   <header class="header">
     <div class="container">
-      <div class="profile-container">
-        <a href="/" class="link">
-          <img class="image" src="@/assets/image/avatar.png" alt="">
-        </a>
-      </div>
+      <template v-if="this.$route.path === '/account' || this.$route.path === '/account/profile'">
+        <div class="profile-container">
+          <a href="/" class="link">
+            <img class="image" src="@/assets/image/avatar.png" alt="">
+          </a>
+        </div>
+      </template>
+      <template v-else>
+        <div class="title">
+          {{ title }}
+        </div>
+      </template>
     </div>
   </header>
 </template>
 
 <script>
 export default {
-  name: 'HeaderPage'
+  data() {
+    return {
+      title: '',
+    }
+  },
+  /*mounted() {
+    console.log(this.$route.name)
+  },*/
+  watch: {
+    $route: {
+      immediate: true,
+      handler(to) {
+        document.title = to.meta.title || 'Some Default Title';
+        this.title = to.meta.title || 'Some Default Title';
+      }
+    },
+  }
 }
 </script>
 
@@ -38,5 +61,11 @@ export default {
 {
   max-width: 100%;
   height: 32px;
+}
+
+.title
+{
+  text-align: center;
+  font-weight: 600;
 }
 </style>
