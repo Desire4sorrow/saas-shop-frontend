@@ -1,11 +1,38 @@
 <template>
   <header class="header">
     <div class="container">
-      <template v-if="this.$route.path === '/account' || this.$route.path === '/account/profile'">
+      <template v-if="this.$route.path === '/account'
+                || this.$route.path === '/account/cabinet'
+                || this.$route.path === '/account/cabinet/profile'
+                || this.$route.path === '/account/cabinet/method'">
         <div class="profile-container">
-          <a href="/" class="link">
-            <img class="image" src="@/assets/image/avatar.png" alt="">
-          </a>
+          <img class="image" src="@/assets/image/avatar.png" alt="">
+          <ul class="menu">
+            <li class="menu-item">
+              <router-link :to="{ name: 'Profile' }" class="menu-link">
+                <span class="image-container">
+                  <img src="@/assets/image/icon/user.svg" alt="" class="image">
+                </span>
+                <span class="link-text">Профиль</span>
+              </router-link>
+            </li>
+            <li class="menu-item">
+              <router-link :to="{ name: 'Method' }" class="menu-link">
+                <span class="image-container">
+                  <img src="@/assets/image/icon/credit-card.svg" alt="" class="image">
+                </span>
+                <span class="link-text">Способы оплаты</span>
+              </router-link>
+            </li>
+            <li class="menu-item">
+              <a href="#" class="menu-link">
+                <span class="image-container">
+                  <img src="@/assets/image/icon/exit.svg" alt="" class="image">
+                </span>
+                <span class="link-text">Выйти</span>
+              </a>
+            </li>
+          </ul>
         </div>
       </template>
       <template v-else>
@@ -66,12 +93,9 @@ export default {
 
 .profile-container
 {
-  text-align: end;
-}
-
-.profile-container .link
-{
-  display: inline-block;
+  width: fit-content;
+  margin: 0 0 0 auto;
+  position: relative;
 }
 
 .profile-container .image
@@ -84,5 +108,66 @@ export default {
 {
   text-align: center;
   font-weight: 600;
+}
+
+.profile-container:hover .menu
+{
+  display: block;
+}
+
+.menu
+{
+  display: none;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 5px rgba(51, 51, 51, 0.08), 0 1px 10px rgba(51, 51, 51, 0.06), 0 2px 4px rgba(51, 51, 51, 0.16);
+  border-radius: 5px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  list-style: none;
+  padding-left: 0;
+}
+
+.menu-item
+{
+  padding: 12px 16px;
+}
+
+.menu-item:not(:last-child)
+{
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.menu-link
+{
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.menu-item:hover .link-text
+{
+  color: #FF9900;
+}
+
+.menu-link .image-container
+{
+  min-width: 24px;
+  width: 24px;
+}
+
+.menu-link .image-container .image
+{
+  max-width: 100%;
+}
+
+.menu-link .link-text
+{
+  text-decoration: none !important;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+  white-space: nowrap;
+  margin-left: 10px;
 }
 </style>

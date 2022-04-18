@@ -37,7 +37,6 @@ export default {
   methods: {
     onclickProduct: function (count) {
       this.productSelected = count;
-      console.log(count)
     }
   }
 }
