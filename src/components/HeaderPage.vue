@@ -9,6 +9,7 @@
         </div>
       </template>
       <template v-else>
+
         <div class="title">
           {{ title }}
         </div>
