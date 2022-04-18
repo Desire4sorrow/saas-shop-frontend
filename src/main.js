@@ -9,6 +9,7 @@ import {routes} from './router'
 import 'bootstrap/dist/js/bootstrap.bundle'
 
 const router = Router.createRouter({
+    history: Router.createWebHashHistory(),
     routes,
 })
 
