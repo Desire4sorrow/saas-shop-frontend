@@ -21,9 +21,10 @@ let initOptions = {
     clientId : 'saas-shop-client',
     onLoad  : 'login-required',
     checkLoginIframe: false
-  }
+}
 
-  let keycloak = Keycloak(initOptions);
+let keycloak = Keycloak(initOptions);
+window.keycloak = keycloak
 
 keycloak.init({onLoad: initOptions.onLoad}).then( auth => {
     if (!auth) {
