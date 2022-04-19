@@ -49,7 +49,7 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required, minLength, maxLength } from '@vuelidate/validators'
-import {HTTP} from "@/config";
+import axios from "axios";
 let qs = require('qs');
 
 export default {
@@ -100,7 +100,7 @@ export default {
     console.log(this.licensesCount, this.tariffId, this.workspace)
   },
   methods: {
-    createOrder: function () {
+    doPayment: function () {
       let data = {
         workspace_name: this.workspace,
         tariff_variant_id: this.tariffId,
@@ -109,14 +109,42 @@ export default {
       }
       data.requisites = JSON.stringify(this.requisites)
 
-      HTTP.post('/order/create', qs.stringify(data))
+      axios.post('/order/create', qs.stringify(data))
           .then((res) => {
-            console.log(res.data)
             location.href = res.data.pay_form_url
           })
           .catch((error) => {
             console.log(error)
           })
+    },
+    createOrder: async function() {
+      let data = {
+        workspace_name: this.workspace,
+        tariff_variant_id: this.tariffId,
+        licenses_count: this.licensesCount,
+        payment_method: this.method,
+      }
+
+      data.requisites = JSON.stringify(this.requisites)
+
+      let config = {
+        method: 'post',
+        url: 'http://testvm.plotpad.ru:4964/api/order/create',
+        headers: {
+          Authorization: 'Bearer ' + window.keycloak.token,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: qs.stringify(data)
+      };
+
+      axios(config)
+          .then(function (response) {
+            console.log(response)
+            location.href = response.data.pay_form_url;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     }
   }
 }
