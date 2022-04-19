@@ -9,12 +9,12 @@
           </div>
         </div>
         <div class="menu-header">
-          <img class="icon-menu" src="@/assets/image/icon/more.svg" alt="">
+          <img class="icon-menu" src="" alt="">
           <ul class="menu">
             <li class="menu-item">
               <a href="#" class="menu-link">
                 <span class="image-container">
-                  <img src="@/assets/image/icon/bill.svg" alt="" class="image">
+                  <img src="" alt="" class="image">
                 </span>
                 <span class="link-text">Открыть счёт</span>
               </a>
@@ -22,7 +22,7 @@
             <li class="menu-item">
               <a href="#" class="menu-link">
                 <span class="image-container">
-                  <img src="@/assets/image/icon/file.svg" alt="" class="image">
+                  <img src="" alt="" class="image">
                 </span>
                 <span class="link-text">Запросить акт</span>
               </a>

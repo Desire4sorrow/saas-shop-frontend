@@ -3,12 +3,12 @@
        :class="{active: this.$route.name === this.card.name}">
     <div class="image-container">
       <template v-if="card.name === 'Profile'">
-        <img src="@/assets/image/icon/user-white.svg" class="image" alt="" v-if="this.$route.name === this.card.name">
-        <img src="@/assets/image/icon/user.svg" class="image" alt="" v-else>
+        <img src="" class="image" alt="" v-if="this.$route.name === this.card.name">
+        <img src="" class="image" alt="" v-else>
       </template>
       <template v-if="card.name === 'Method'">
-        <img src="@/assets/image/icon/credit-card-white.svg" class="image" alt="" v-if="this.$route.name === this.card.name">
-        <img src="@/assets/image/icon/credit-card.svg" class="image" alt="" v-else>
+        <img src="" class="image" alt="" v-if="this.$route.name === this.card.name">
+        <img src="" class="image" alt="" v-else>
       </template>
     </div>
     <div class="title">

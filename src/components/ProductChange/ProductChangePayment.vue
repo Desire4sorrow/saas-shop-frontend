@@ -3,7 +3,7 @@
     <button type="button" class="change-card" data-bs-toggle="modal" data-bs-target="#modalChangePayment">
       <span class="title">Изменить способ оплаты</span>
       <span class="image-container">
-        <img class="image" src="@/assets/image/icon/credit-card.svg" alt="">
+        <img class="image" src="" alt="">
       </span>
     </button>
   </div>
@@ -19,7 +19,7 @@
         <div class="modal-body">
           <label class="card-payment-container">
             <span class="image-container">
-              <img src="@/assets/image/icon/credit-card.svg" alt="" class="image">
+              <img src="" alt="" class="image">
             </span>
             <span class="data-container">
               <span class="title">Банковская карта</span>
@@ -31,7 +31,7 @@
           </label>
 <!--          <label class="card-payment-container">
             <span class="image-container">
-              <img src="@/assets/image/icon/file.svg" alt="" class="image">
+              <img src="./assets/image/icon/file.svg" alt="" class="image">
             </span>
             <span class="data-container">
               <span class="title">Расчётный счёт</span>

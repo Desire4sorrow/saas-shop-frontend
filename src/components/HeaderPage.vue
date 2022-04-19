@@ -6,12 +6,12 @@
                 || this.$route.path === '/cabinet/profile'
                 || this.$route.path === '/cabinet/method'">
         <div class="profile-container">
-          <img class="image" src="@/assets/image/avatar.png" alt="">
+          <img class="image" src="" alt="">
           <ul class="menu">
             <li class="menu-item">
               <router-link :to="{ name: 'Profile' }" class="menu-link">
                 <span class="image-container">
-                  <img src="@/assets/image/icon/user.svg" alt="" class="image">
+                  <img src="" alt="" class="image">
                 </span>
                 <span class="link-text">Профиль</span>
               </router-link>
@@ -19,7 +19,7 @@
             <li class="menu-item">
               <router-link :to="{ name: 'Method' }" class="menu-link">
                 <span class="image-container">
-                  <img src="@/assets/image/icon/credit-card.svg" alt="" class="image">
+                  <img src="" alt="" class="image">
                 </span>
                 <span class="link-text">Способы оплаты</span>
               </router-link>
@@ -27,7 +27,7 @@
             <li class="menu-item">
               <button class="btn menu-link" @click="logout()">
                 <span class="image-container">
-                  <img src="@/assets/image/icon/exit.svg" alt="" class="image">
+                  <img src="" alt="" class="image">
                 </span>
                 <span class="link-text">Выйти</span>
               </button>
@@ -37,7 +37,7 @@
       </template>
       <template v-else>
         <button type="button" class="btn button-prev" @click="$router.go(-1)">
-          <img src="@/assets/image/icon/arrow-back.svg" class="image" alt="">
+          <img src="" class="image" alt="">
         </button>
         <div class="title">
           {{ title }}
