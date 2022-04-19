@@ -13,7 +13,9 @@ const router = Router.createRouter({
     routes,
 })
 
-Vue.createApp(App).use(router, VueAxios, axios).mount('#app')
+const app = Vue.createApp({})
+
+app.use(router, VueAxios, axios).mount('#app')
 
 let initOptions = {
     url : 'http://testvm.plotpad.ru:8443',
@@ -24,7 +26,6 @@ let initOptions = {
 }
 
 let keycloak = Keycloak(initOptions);
-window.test = 'Ready'
 window.keycloak = keycloak
 
 keycloak.init({onLoad: initOptions.onLoad}).then( auth => {
@@ -55,4 +56,4 @@ keycloak.init({onLoad: initOptions.onLoad}).then( auth => {
     Vue.$log.error("Authenticated Failed");
 });
 
-Vue.provide('$keycloak', keycloak)
+app.provide('$keycloak', keycloak)

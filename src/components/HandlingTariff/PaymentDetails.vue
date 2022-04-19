@@ -57,6 +57,7 @@ export default {
     return { v$: useVuelidate() }
   },
   name: 'PaymentDetails',
+  inject: ['$keycloak'],
   props: ['licensesCount', 'tariffId', 'workspace', 'method'],
   data() {
     return {
@@ -109,7 +110,11 @@ export default {
       }
       data.requisites = JSON.stringify(this.requisites)
 
-      HTTP.post('/order/create', qs.stringify(data))
+      HTTP.post('/order/create', qs.stringify(data), {
+        headers: {
+          authorization: 'Bearer ' + this.$keycloak.token,
+        }
+      })
           .then((res) => {
             location.href = res.data.pay_form_url
           })
