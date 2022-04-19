@@ -25,12 +25,12 @@
               </router-link>
             </li>
             <li class="menu-item">
-              <a href="#" class="menu-link">
+              <button class="btn menu-link" @click="logout()">
                 <span class="image-container">
                   <img src="@/assets/image/icon/exit.svg" alt="" class="image">
                 </span>
                 <span class="link-text">Выйти</span>
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -48,11 +48,19 @@
 </template>
 
 <script>
+
+
 export default {
   data() {
     return {
       title: '',
     }
+  },
+  props: ['keycloaks'],
+  methods: {
+    logout: function() {
+      this.$keycloak.logout()
+    },
   },
   watch: {
     $route: {
@@ -160,6 +168,11 @@ export default {
 .menu-link .image-container .image
 {
   max-width: 100%;
+}
+
+.menu-link.btn{
+  padding: 0;
+  width: 100%;
 }
 
 .menu-link .link-text

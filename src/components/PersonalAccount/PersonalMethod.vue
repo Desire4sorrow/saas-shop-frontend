@@ -1,14 +1,18 @@
 <template>
   <div class="product-cards-container">
     <div class="title">Банковские карты</div>
-
+      <BankCardItem v-for="el in cardList" :key="el" :card="el"/>
   </div>
 </template>
 
 <script>
 import {HTTP} from "@/config";
+import BankCardItem from '@/components/PersonalAccount/BankCardItem.vue'
 
 export default {
+  components: {
+    BankCardItem,
+  },
   data() {
     return {
       cardList: []
