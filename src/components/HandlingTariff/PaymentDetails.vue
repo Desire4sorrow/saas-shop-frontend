@@ -109,17 +109,13 @@ export default {
       }
       data.requisites = JSON.stringify(this.requisites)
 
-      axios.post('/order/create', qs.stringify(data), {
-        headers: {
-          authorization: 'Bearer ' + window.keycloak.token,
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }).then((res) => {
-          location.href = res.data.pay_form_url
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      axios.post('/order/create', qs.stringify(data))
+          .then((res) => {
+            location.href = res.data.pay_form_url
+          })
+          .catch((error) => {
+            console.log(error)
+          })
     }
   }
 }
