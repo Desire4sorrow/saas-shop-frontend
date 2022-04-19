@@ -49,7 +49,7 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required, minLength, maxLength } from '@vuelidate/validators'
-import axios from "axios";
+import {HTTP} from "@/config";
 let qs = require('qs');
 
 export default {
@@ -109,7 +109,7 @@ export default {
       }
       data.requisites = JSON.stringify(this.requisites)
 
-      axios.post('/order/create', qs.stringify(data))
+      HTTP.post('/order/create', qs.stringify(data))
           .then((res) => {
             location.href = res.data.pay_form_url
           })
