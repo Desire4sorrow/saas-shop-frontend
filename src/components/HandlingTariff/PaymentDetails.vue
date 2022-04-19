@@ -108,7 +108,7 @@ export default {
         payment_method: this.method
       }
       data.requisites = JSON.stringify(this.requisites)
-      console.log('1', window.keycloak.token)
+      console.log('1', window.keycloak.token, window.test)
       HTTP.post('/order/create', qs.stringify(data), {
         headers: {
           authorization: 'Bearer ' + this.$keycloak.token,

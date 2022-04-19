@@ -25,6 +25,7 @@ let initOptions = {
 
 let keycloak = Keycloak(initOptions);
 window.keycloak = keycloak
+window.test = 'Ready'
 
 keycloak.init({onLoad: initOptions.onLoad}).then( auth => {
     if (!auth) {
