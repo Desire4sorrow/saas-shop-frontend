@@ -5,7 +5,7 @@
         <div class="data-header">
           <div class="caption">{{ date(this.order.created_at) }}</div>
           <div class="price">
-            {{ this.order.total_price }}
+            {{ totalPrice(this.order.tariff_variant.period, this.order.licenses_count, this.order.tariff_variant.price) }}
           </div>
         </div>
         <div class="menu-header">
@@ -60,7 +60,7 @@
         <a href="#" class="btn button-card error" v-else-if="isError">
           Ошибка оплаты
         </a>
-        <a href="#" class="btn button-card" v-else>
+        <a href="#" class="btn button-card" v-else @click="doPayment()">
           Оплатить
         </a>
       </div>
@@ -69,6 +69,9 @@
 </template>
 
 <script>
+import axios from "axios";
+var qs = require('qs');
+
 export default {
   props: ['order', 'date', 'totalPrice', 'period', 'onePrice', 'method'],
   data() {
@@ -78,6 +81,35 @@ export default {
 
     return { isWaiting, isSuccess, isError }
   },
+  methods: {
+    doPayment: async function() {
+      var data = qs.stringify({
+        'tariff_variant_id': '1',
+        'workspace_name': 'google',
+        'licenses_count': '10',
+        'payment_method': 'bank_card',
+        'requisites': '{\n    "organization_name": "ООО \\"Хомячки\\"",\n    "organization_address": "424006, РФ, Республика Марий Эл, г. Йошкар-Ола, улица Карла Маркса, дом 109б кабинет 506",\n    "ogrn": "1027700132195",\n    "inn": "7707083893",\n    "kpp": "773601001"\n  }\n'
+      });
+      var config = {
+        method: 'post',
+        url: 'http://localhost:4964/api/order/create',
+        headers: {
+          Authorization: 'Bearer ' + window.keycloak.token,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data : data
+      };
+
+      axios(config)
+          .then(function (response) {
+            console.log(response)
+            location.href = response.data.pay_form_url;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    }
+  }
 }
 </script>
 
@@ -87,7 +119,6 @@ export default {
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 5px;
-  margin-top: 24px;
 }
 
 .header-card

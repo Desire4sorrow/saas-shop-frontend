@@ -29,7 +29,7 @@
                    class="payment-input" value="bank_card"
                    v-model="methodPaymentLocal" @change="changeMethod()">
           </label>
-<!--          <label class="card-payment-container">
+          <label class="card-payment-container">
             <span class="image-container">
               <img src="@/assets/image/icon/file.svg" alt="" class="image">
             </span>
@@ -40,7 +40,7 @@
             <input type="radio" name="methodPayment"
                    class="payment-input" value="details_payment"
                    v-model="methodPaymentLocal" @change="changeMethod()">
-          </label>-->
+          </label>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn button-close" data-bs-dismiss="modal">Отменить</button>

@@ -30,14 +30,13 @@ export default {
   },
   props: ['productList'],
   data() {
-    return {
-      productSelected: this.productList[0],
-    }
+    let productSelected = this.productList[0];
+
+    return { productSelected }
   },
   methods: {
     onclickProduct: function (count) {
       this.productSelected = count;
-      console.log(this.productList)
     }
   }
 }

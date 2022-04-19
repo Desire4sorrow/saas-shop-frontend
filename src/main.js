@@ -13,6 +13,8 @@ const router = Router.createRouter({
     routes,
 })
 
+Vue.createApp(App).use(router, VueAxios, axios).mount('#app')
+
 let initOptions = {
     url : 'http://localhost:8080',
     realm : 'saas-shop',
@@ -20,8 +22,6 @@ let initOptions = {
     onLoad  : 'login-required',
     checkLoginIframe: false
 }
-
-Vue.createApp(App).use(router, VueAxios, axios).mount('#app')
 
 let keycloak = Keycloak(initOptions);
 window.keycloak = keycloak

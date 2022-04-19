@@ -6,15 +6,17 @@
       <ProductDescriptionItem :title="'Способ оплаты'" :subtitle="paymentMethod(this.product.orders[0].payment_method)"/>
       <ProductDescriptionItem :title="'Тип'" :subtitle="typePeriod(this.product.orders[0].tariff_variant.period)"/>
       <ProductDescriptionItem :title="'Общая сумма'"
-                              :subtitle="this.product.total_price"/>
+                              :subtitle="totalPrice(this.product.orders[0].tariff_variant.period, this.product.orders[0].tariff_variant.price, this.product.licenses_count)"/>
       <ProductDescriptionItem :title="'Следующая оплата'" :subtitle="date(product.next_pay_date)"/>
     </div>
   </div>
   <div class="product-cards-container">
     <div class="title">Действия</div>
     <div class="row">
-      <ProductChangeTariff :productId="product.orders[0].tariff_variant.tariff.product.id"/>
-      <ProductChangeLicenses :product="product"/>
+      <ProductChangeTariff />
+      <ProductChangeLicenses
+          :countLicenses="product.licenses_count"
+          :maxLicenses="product.orders[0].tariff_variant.tariff.maximum_licenses_count"/>
       <ProductChangePayment
           :methodPayment="product.orders[0].payment_method"/>
     </div>
@@ -24,7 +26,7 @@
     <div class="row">
       <CardBills v-for="order in product.orders"
                  :key="order" :order="order"
-                 :date="date"  :period="typePeriod" :onePrice="onePrice" :method="paymentMethod"/>
+                 :date="date" :totalPrice="totalPrice" :period="typePeriod" :onePrice="onePrice" :method="paymentMethod"/>
     </div>
   </div>
 </template>
@@ -61,20 +63,19 @@ export default {
     },
     typePeriod: function (period) {
       if (period === 30) return 'Месячный'
-      if (period === 360) return 'Годовой'
+      if (period === 365) return 'Годовой'
     },
-    /*totalPrice: function (price) {
-      return price.toLocaleString() + ' ₽'
-    },*/
+    totalPrice: function (period, count, price) {
+      if (this.typePeriod(period) === 'Годовой')
+      {
+        return ((price * count) * 12).toLocaleString() + ' ₽'
+      }
+      return (price * count).toLocaleString() + ' ₽'
+    },
     date: function (dateJSON) {
       let date = new Date(dateJSON);
 
-      if (this.product.next_pay_date) {
-        return date.getDate() + ' ' + this.month[date.getMonth()] + ' ' + date.getFullYear()
-      }
-      else {
-        return '-'
-      }
+      return date.getDate() + ' ' + this.month[date.getMonth()] + ' ' + date.getFullYear();
     }
   }
 }
