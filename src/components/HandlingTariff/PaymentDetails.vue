@@ -109,7 +109,12 @@ export default {
       }
       data.requisites = JSON.stringify(this.requisites)
 
-      HTTP.post('/order/create', qs.stringify(data))
+      HTTP.post('/order/create', qs.stringify(data), {
+        headers: {
+          authorization: 'Bearer ' + window.keycloak.token,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
           .then((res) => {
             location.href = res.data.pay_form_url
           })
