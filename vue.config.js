@@ -4,5 +4,6 @@ module.exports = defineConfig({
   devServer: {
     port: 4000,
     proxy: 'http://localhost:4964'
-  }
+  },
+  publicPath: process.env.NODE_ENV === 'production' ? '/account/' : '/'
 })
