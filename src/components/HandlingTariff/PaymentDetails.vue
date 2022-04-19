@@ -57,7 +57,6 @@ export default {
     return { v$: useVuelidate() }
   },
   name: 'PaymentDetails',
-  inject: ['$keycloak', '$test'],
   props: ['licensesCount', 'tariffId', 'workspace', 'method'],
   data() {
     return {
@@ -109,7 +108,7 @@ export default {
         payment_method: this.method
       }
       data.requisites = JSON.stringify(this.requisites)
-      console.log(this.$keycloak.token, this.$test)
+      console.log('1', window.keycloak.token)
       HTTP.post('/order/create', qs.stringify(data), {
         headers: {
           authorization: 'Bearer ' + this.$keycloak.token,
