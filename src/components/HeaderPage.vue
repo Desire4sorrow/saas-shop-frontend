@@ -2,7 +2,8 @@
   <header class="header">
     <div class="container">
       <template v-if="url.includes(this.$route.name)">
-        <router-link v-if="url.includes(this.$route.name) && this.$route.name !== 'BodyPage'" class="button-prev" :to="{ name: 'BodyPage' }">
+        <router-link v-if="url.includes(this.$route.name) && this.$route.name !== 'BodyPage'"
+                     class="button-prev" :to="{ name: 'BodyPage' }">
           <img src="/assets/image/icon/arrow-back.svg" class="image" alt="">
         </router-link>
         <div class="profile-container">

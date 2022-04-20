@@ -4,21 +4,19 @@
       <div class="form-container">
         <div class="form-group">
           <label class="form-label">
-            <span class="title">Название пространства</span>
-            <input type="text" class="form-control" placeholder="Введите название пространства" v-model="workspace">
-            <span class="alert alert-danger" :class="{view: isAlertDanger}">Этот пространство уже занято.</span>
-            <span class="alert alert-success" :class="{view: isAlertSuccess}">Этот пространство свободно.</span>
+            <span class="title" :class="{warning: alert}">URL-адрес</span>
+            <span class="input-container">
+              <input type="text" class="form-control" :class="{warning: alert}" placeholder="Например, название компании" v-model="workspace">
+              <span class="input-example">.example.ru</span>
+            </span>
+            <span class="subtitle warning" v-if="alert">Такой адрес уже существует.</span>
+            <span class="subtitle" v-else>По этой ссылке будет доступен продукт, который вы приобрели.</span>
           </label>
         </div>
       </div>
-      <button type="button" class="btn button-check" v-if="isDisabled" @click="checkWorkspace()"
-              :disabled="workspace.length === 0">
-        Проверить
+      <button type="button" class="btn button-check" @click="checkWorkspace()" :disabled="isDisabled">
+        Установить
       </button>
-      <router-link class="btn button-details" v-else
-                   :to="{ name: 'PaymentDetails', params: { licensesCount: this.licensesCount, tariffId: this.tariffId, workspace: this.workspace, method: this.method }}">
-        Заполнение реквизитов
-      </router-link>
     </div>
   </div>
 </template>
@@ -27,18 +25,18 @@
 import {HTTP} from "@/config";
 
 export default {
-  props: ['licensesCount', 'tariffId', 'method'],
   data() {
     return {
       workspace: '',
       isDisabled: true,
-      isAlertDanger: false,
-      isAlertSuccess: false,
+      alert: false
     }
   },
   watch: {
     workspace: function () {
-      this.isDisabled = true
+      this.workspace = this.workspace.trim();
+      this.alert = false;
+      (this.workspace !== '') ? this.isDisabled = false : this.isDisabled = true
     }
   },
   methods: {
@@ -47,26 +45,29 @@ export default {
         workspace_name: this.workspace,
       }
 
-      HTTP.get('/order/workspace/is_free', {params: data}, {
+      HTTP.get('/order/workspace/is_free', { params: data }, {
         headers: {
           authorization: 'Bearer ' + window.moctoken,
         }
-      }).then((res) => {
-          if (res.data.status) {
-            this.isDisabled = !this.isDisabled
-            this.isAlertSuccess = true
-            setTimeout(() => {
-              this.isAlertSuccess = false
-            }, 3000)
-          }
-          else {
-            this.workspace = ''
-            this.isAlertDanger = true
-            setTimeout(() => {
-              this.isAlertDanger = false
-            }, 3000)
-          }
-        })
+      }).then((response) => {
+        if (!response.data.status) {
+          this.isDisabled = true
+          this.alert = true
+        }
+        else if (response.data.status) {
+          //data['licenses_count'] = this.$route.query.licenses_count
+          //data['tariff_variant_id'] = this.$route.query.tariff_variant_id
+
+          this.$router.push({
+            name: 'PaymentMethod',
+            params: {
+              workspace_name: this.workspace,
+              licenses_count: this.$route.query.licenses_count,
+              tariff_variant_id: this.$route.query.tariff_variant_id
+            }
+          })
+        }
+      })
         .catch((error) => {
           console.log(error)
         })
@@ -100,31 +101,39 @@ export default {
   width: 100%;
 }
 
-.form-label .alert
+.form-label .title,
+.form-label .subtitle
 {
-  position: absolute;
-  z-index: 10;
-  top: 20px;
-  left: 20px;
-  transition: .9s;
-  display: none;
-}
-
-.form-label .alert.view
-{
+  font-size: 12px;
+  font-weight: 500;
   display: block;
 }
 
 .form-label .title
 {
-  font: 500 12px 'Manrope', sans-serif;
   margin-bottom: 8px;
-  display: inline-block;
+}
+
+.form-label .subtitle
+{
+  color: rgba(0, 0, 0, 0.56);
+  margin-top: 8px;
+}
+
+.form-label .subtitle.warning,
+.form-label .title.warning
+{
+  color: #F15D48;
 }
 
 .form-control
 {
-  padding: 14px 16px;
+  padding: 14px 120px 14px 16px;
+}
+
+.form-control.warning
+{
+  border-color: #F15D48;
 }
 
 .form-control:focus
@@ -133,7 +142,22 @@ export default {
   border-color: #ff9700;
 }
 
-.button-details,
+.input-container
+{
+  position: relative;
+  display: block;
+}
+
+.input-example
+{
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translate(0, -50%);
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.56);
+}
+
 .button-check
 {
   color: #fff;
@@ -143,23 +167,17 @@ export default {
   margin-top: 16px;
 }
 
-.button-details:focus,
 .button-check:focus
 {
   box-shadow: none;
 }
 
-.button-details
+.button-check
 {
   background-color: #ff9700;
 }
 
-.button-check
-{
-  background-color: #c6c6c6;
-}
-
-.button-details:hover
+.button-check:hover
 {
   background-color: #d98200;
 }

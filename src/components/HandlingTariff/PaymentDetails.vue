@@ -49,7 +49,7 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required, minLength, maxLength } from '@vuelidate/validators'
-import axios from "axios";
+import {HTTP} from "@/config";
 let qs = require('qs');
 
 export default {
@@ -57,7 +57,6 @@ export default {
     return { v$: useVuelidate() }
   },
   name: 'PaymentDetails',
-  props: ['licensesCount', 'tariffId', 'workspace', 'method'],
   data() {
     return {
       requisites: {
@@ -99,30 +98,24 @@ export default {
   methods: {
     createOrder: function () {
       let data = {
-        workspace_name: this.workspace,
-        tariff_variant_id: this.tariffId,
-        licenses_count: this.licensesCount,
-        payment_method: this.method
+        workspace_name: this.$route.params.workspace_name,
+        tariff_variant_id: this.$route.params.tariff_variant_id,
+        licenses_count: this.$route.params.licenses_count,
+        payment_method: this.$route.params.payment_method
       }
       data.requisites = JSON.stringify(this.requisites)
 
-      var config = {
-        method: 'post',
-        url: 'http://localhost:4964/api/order/create',
+      HTTP.post('/order/create', qs.stringify(data), {
         headers: {
           Authorization: 'Bearer ' + window.keycloak.token,
           'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        data : qs.stringify(data)
-      };
-
-      axios(config)
-          .then((res) => {
-            location.href = res.data.pay_form_url
-          })
-          .catch((error) => {
-            console.log(error)
-          })
+        }
+      }).then((res) => {
+          location.href = res.data.pay_form_url
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     }
   }
 }

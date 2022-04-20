@@ -19,6 +19,7 @@ export const routes = [
         path: '/method',
         name: 'PaymentMethod',
         component: PaymentMethod,
+        props: true,
         meta: {
             title: 'Выберите способ оплаты'
         }
@@ -36,9 +37,8 @@ export const routes = [
         path: '/workspace',
         name: 'PaymentWorkspace',
         component: PaymentWorkspace,
-        props: true,
         meta: {
-            title: 'Создание пространства'
+            title: 'Установите URL-адрес'
         }
     },
     {

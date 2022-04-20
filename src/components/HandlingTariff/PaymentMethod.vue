@@ -1,17 +1,15 @@
 <template>
   <div class="container method-container">
-    <div class="method-card">
-    <router-link :to="{ name: 'PaymentWorkspace', params: { licensesCount: this.$route.query.licenses_count, tariffId: this.$route.query.tariff_variant_id, method: 'bank_card' }}" class="btn link-card">
-        <span class="image-container">
-          <img src="/assets/image/icon/credit-card.svg" alt="" class="image">
-        </span>
-        <span class="data-container">
-          <span class="title">Банковская карта</span>
-          <span class="subtitle">Оплата картой на сайте</span>
-        </span>
-      </router-link>
+    <div class="method-card" @click="choiceMethod('bank_card')">
+      <div class="image-container">
+        <img src="/assets/image/icon/credit-card.svg" alt="" class="image">
+      </div>
+      <div class="data-container">
+        <div class="title">Банковская карта</div>
+        <div class="subtitle">Оплата картой на сайте</div>
+      </div>
     </div>
-<!--    <div class="method-card">
+<!--<div class="method-card">
       <router-link to="/method" class="link-card">
         <span class="image-container">
           <img src="/assets/image/icon/file.svg" alt="" class="image">
@@ -27,7 +25,19 @@
 
 <script>
 export default {
-
+  methods: {
+    choiceMethod: function (method) {
+      this.$router.push({
+        name: 'PaymentDetails',
+        params: {
+          workspace_name: this.$route.params.workspace_name,
+          licenses_count: this.$route.params.licenses_count,
+          tariff_variant_id: this.$route.params.tariff_variant_id,
+          payment_method: method
+        }
+      })
+    },
+  }
 }
 </script>
 
@@ -44,25 +54,14 @@ export default {
   border-radius: 5px;
   max-width: 600px;
   margin: 0 auto;
+  display: flex;
+  padding: 24px;
 }
 
 .method-card:hover
 {
   border-color: #FF9900;
-}
-
-.method-card:hover .link-card
-{
-  color: inherit;
-}
-
-.link-card
-{
-  display: flex;
-  padding: 24px;
-  width: 100%;
-  text-decoration: none;
-  color: #000;
+  cursor: pointer;
 }
 
 .method-card:not(:last-child)
