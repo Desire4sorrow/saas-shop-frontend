@@ -28,7 +28,7 @@ export default {
   created() {
     HTTP.get('/workspace/list', {
       headers: {
-        authorization: 'Bearer ' + window.moctoken,
+        authorization: 'Bearer ' + window.keycloak.token,
       }
     }).then(response => {
         response.data.forEach((el) => {
