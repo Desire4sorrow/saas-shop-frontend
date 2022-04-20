@@ -47,15 +47,10 @@
 </template>
 
 <script>
-import useVuelidate from '@vuelidate/core'
-import { required, minLength, maxLength } from '@vuelidate/validators'
 import {HTTP} from "@/config";
 let qs = require('qs');
 
 export default {
-  setup () {
-    return { v$: useVuelidate() }
-  },
   name: 'PaymentDetails',
   data() {
     return {
@@ -67,32 +62,6 @@ export default {
         organization_address: '',
         telephone: ''
       },
-    }
-  },
-  validations () {
-    return {
-      requisites: {
-        organization_name: {
-          required
-        },
-        ogrn: {
-          required,
-          minLength: minLength(13),
-          maxLength: maxLength(13)
-        },
-        inn: {
-          required
-        },
-        kpp: {
-          required
-        },
-        organization_address: {
-          required
-        },
-        telephone: {
-          required
-        }
-      }
     }
   },
   methods: {

@@ -3,7 +3,7 @@
     <button type="button" class="change-card"  data-bs-toggle="modal" data-bs-target="#modalChangeLicenses">
       <span class="title">Изменить количество лицензий</span>
       <span class="image-container">
-        <img class="image" src="/assets/image/icon/file.svg" alt="">
+        <img class="image" src="@/assets/image/icon/file.svg" alt="">
       </span>
     </button>
   </div>
@@ -30,7 +30,7 @@
           </div>
           <div class="input-warning" :class="{active: this.active}">
             <div class="image-container">
-              <img class="image" src="/assets/image/icon/warning.svg" alt="">
+              <img class="image" src="@/assets/image/icon/warning.svg" alt="">
             </div>
             <div class="title">
               Если вы уменьшите количество лицензий,

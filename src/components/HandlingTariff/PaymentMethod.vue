@@ -2,7 +2,7 @@
   <div class="container method-container">
     <div class="method-card" @click="choiceMethod('bank_card')">
       <div class="image-container">
-        <img src="/assets/image/icon/credit-card.svg" alt="" class="image">
+        <img src="@/assets/image/icon/credit-card.svg" alt="" class="image">
       </div>
       <div class="data-container">
         <div class="title">Банковская карта</div>
@@ -12,7 +12,7 @@
 <!--<div class="method-card">
       <router-link to="/method" class="link-card">
         <span class="image-container">
-          <img src="/assets/image/icon/file.svg" alt="" class="image">
+          <img src="@/assets/image/icon/file.svg" alt="" class="image">
         </span>
         <span class="data-container">
           <span class="title">Расчётный счёт</span>

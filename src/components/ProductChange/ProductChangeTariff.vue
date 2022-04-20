@@ -3,7 +3,7 @@
     <button type="button" class="change-card" data-bs-toggle="modal" data-bs-target="#modalChangeTariff">
       <span class="title">Изменить тариф</span>
       <span class="image-container">
-        <img class="image" src="/assets/image/icon/bill.svg" alt="">
+        <img class="image" src="@/assets/image/icon/bill.svg" alt="">
       </span>
     </button>
   </div>

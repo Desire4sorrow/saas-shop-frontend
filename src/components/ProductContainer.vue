@@ -6,7 +6,7 @@
                        :active="productSelected === product"
                        :onclick="onclickProduct"
                        :product="product" />
-      <a class="btn button-product-addition" href="#">
+      <a class="btn button-product-addition" href="https://mrspro.ru/">
         Добавить продукт
       </a>
     </div>

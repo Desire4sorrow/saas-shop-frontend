@@ -3,7 +3,7 @@
     <button type="button" class="change-card" data-bs-toggle="modal" data-bs-target="#modalChangePayment">
       <span class="title">Изменить способ оплаты</span>
       <span class="image-container">
-        <img class="image" src="/assets/image/icon/credit-card.svg" alt="">
+        <img class="image" src="@/assets/image/icon/credit-card.svg" alt="">
       </span>
     </button>
   </div>
