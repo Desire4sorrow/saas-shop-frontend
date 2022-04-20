@@ -69,7 +69,7 @@ export default {
 
       HTTP.post('/order/update', qs.stringify(data), {
         headers: {
-          authorization: 'Bearer ' + window.moctoken,
+          authorization: 'Bearer ' + window.keycloak.token,
         }
       }).then(function (res) {
           console.log(res)

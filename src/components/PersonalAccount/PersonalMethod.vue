@@ -24,7 +24,7 @@ export default {
   created() {
     HTTP.get('/card_binding/list ', {
       headers: {
-        authorization: 'Bearer ' + window.moctoken,
+        authorization: 'Bearer ' + window.keycloak.token,
       }
     }).then((res) => {
       res.data.forEach((el) => {

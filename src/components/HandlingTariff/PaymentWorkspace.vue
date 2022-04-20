@@ -47,7 +47,7 @@ export default {
 
       HTTP.get('/order/workspace/is_free', { params: data }, {
         headers: {
-          authorization: 'Bearer ' + window.moctoken,
+          authorization: 'Bearer ' + window.keycloak.token,
         }
       }).then((response) => {
         if (!response.data.status) {

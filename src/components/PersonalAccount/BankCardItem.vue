@@ -59,7 +59,7 @@ export default {
 
       HTTP.post('/card_binding/unbind', qs.stringify(data), {
         headers: {
-          authorization: 'Bearer ' + window.moctoken,
+          authorization: 'Bearer ' + window.keycloak.token,
         }
       }).then((el) => {
         console.log(el)
