@@ -27,7 +27,7 @@ window.moctoken = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJoMDBoOWE3Z
 
 keycloak.init({onLoad: initOptions.onLoad}).then( auth => {
     if (!auth) {
-      window.location.reload();
+      //window.location.reload();
     } else {
 
       new Vue({
