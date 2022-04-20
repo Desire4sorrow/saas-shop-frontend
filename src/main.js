@@ -27,7 +27,7 @@ window.moctoken = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJoMDBoOWE3Z
 
 keycloak.init({onLoad: initOptions.onLoad}).then( auth => {
     if (!auth) {
-      //window.location.reload();
+      window.location.reload();
     } else {
 
       new Vue({
@@ -36,7 +36,7 @@ keycloak.init({onLoad: initOptions.onLoad}).then( auth => {
     }
 
      setInterval(() => {
-      keycloak.updateToken(70).then((refreshed) => {
+      keycloak.updateToken(700).then((refreshed) => {
         if (refreshed) {
           Vue.$log.info('Token refreshed' + refreshed);
         } else {
