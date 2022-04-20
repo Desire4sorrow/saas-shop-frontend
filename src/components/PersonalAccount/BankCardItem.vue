@@ -8,21 +8,24 @@
         {{ inputTitle() }}
       </div>
     </div>
-    <button type="button" class="btn button-card">
+    <button type="button" class="btn button-card" @click="removeCard()">
       Удалить
     </button>
   </div>
 </template>
 
 <script>
+import { HTTP } from "@/config";
+let qs = require('qs');
+
 export default {
   props: ['card'],
   data() {
     return {
       dataCard: [
-        { name: 'VISA', image: './assets/image/icon/vise.svg'},
-        { name: 'MASTERCARD', image: './assets/image/icon/mastercard.svg'},
-        { name: 'MIR', image: './assets/image/icon/mir.svg'}
+        { name: 'VISA', image: '/assets/image/icon/vise.svg'},
+        { name: 'MASTERCARD', image: '/assets/image/icon/mastercard.svg'},
+        { name: 'MIR', image: '/assets/image/icon/mir.svg'}
       ]
     }
   },
@@ -49,6 +52,21 @@ export default {
       }
       return name
     },
+    removeCard: function () {
+      let data = {
+        card_binding_id: this.card.card_binding_id
+      }
+
+      HTTP.post('/card_binding/unbind', qs.stringify(data), {
+        headers: {
+          authorization: 'Bearer ' + window.moctoken,
+        }
+      }).then((el) => {
+        console.log(el)
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
   }
 }
 </script>
@@ -63,6 +81,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 16px;
 }
 
 .image-container

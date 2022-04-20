@@ -26,12 +26,17 @@ export default {
     }
   },
   created() {
-    HTTP.get('/workspace/list')
-        .then(response => {
-          response.data.forEach((el) => {
-            this.productList.push(el)
-          })
+    HTTP.get('/workspace/list', {
+      headers: {
+        authorization: 'Bearer ' + window.moctoken,
+      }
+    }).then(response => {
+        response.data.forEach((el) => {
+          this.productList.push(el)
         })
+      }).catch((error) => {
+      console.log(error)
+    })
   }
 }
 </script>

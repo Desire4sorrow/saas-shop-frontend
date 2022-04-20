@@ -47,26 +47,29 @@ export default {
         workspace_name: this.workspace,
       }
 
-      HTTP.get('/order/workspace/is_free', {params: data})
-          .then((res) => {
-            if (res.data.status) {
-              this.isDisabled = !this.isDisabled
-              this.isAlertSuccess = true
-              setTimeout(() => {
-                this.isAlertSuccess = false
-              }, 3000)
-            }
-            else {
-              this.workspace = ''
-              this.isAlertDanger = true
-              setTimeout(() => {
-                this.isAlertDanger = false
-              }, 3000)
-            }
-          })
-          .catch((error) => {
-            console.log(error)
-          })
+      HTTP.get('/order/workspace/is_free', {params: data}, {
+        headers: {
+          authorization: 'Bearer ' + window.moctoken,
+        }
+      }).then((res) => {
+          if (res.data.status) {
+            this.isDisabled = !this.isDisabled
+            this.isAlertSuccess = true
+            setTimeout(() => {
+              this.isAlertSuccess = false
+            }, 3000)
+          }
+          else {
+            this.workspace = ''
+            this.isAlertDanger = true
+            setTimeout(() => {
+              this.isAlertDanger = false
+            }, 3000)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
   }
 }

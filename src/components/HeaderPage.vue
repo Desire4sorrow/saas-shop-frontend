@@ -1,17 +1,17 @@
 <template>
   <header class="header">
     <div class="container">
-      <template v-if="this.$route.path === '/'
-                || this.$route.path === '/cabinet'
-                || this.$route.path === '/cabinet/profile'
-                || this.$route.path === '/cabinet/method'">
+      <template v-if="url.includes(this.$route.name)">
+        <router-link v-if="url.includes(this.$route.name) && this.$route.name !== 'BodyPage'" class="button-prev" :to="{ name: 'BodyPage' }">
+          <img src="/assets/image/icon/arrow-back.svg" class="image" alt="">
+        </router-link>
         <div class="profile-container">
-          <img class="image" src="" alt="">
+          <img class="image" src="/assets/image/avatar.png" alt="">
           <ul class="menu">
             <li class="menu-item">
               <router-link :to="{ name: 'Profile' }" class="menu-link">
                 <span class="image-container">
-                  <img src="" alt="" class="image">
+                  <img src="/assets/image/icon/user.svg" alt="" class="image">
                 </span>
                 <span class="link-text">Профиль</span>
               </router-link>
@@ -19,7 +19,7 @@
             <li class="menu-item">
               <router-link :to="{ name: 'Method' }" class="menu-link">
                 <span class="image-container">
-                  <img src="" alt="" class="image">
+                  <img src="/assets/image/icon/credit-card.svg" alt="" class="image">
                 </span>
                 <span class="link-text">Способы оплаты</span>
               </router-link>
@@ -27,7 +27,7 @@
             <li class="menu-item">
               <button class="btn menu-link" @click="logout()">
                 <span class="image-container">
-                  <img src="" alt="" class="image">
+                  <img src="/assets/image/icon/exit.svg" alt="" class="image">
                 </span>
                 <span class="link-text">Выйти</span>
               </button>
@@ -37,7 +37,7 @@
       </template>
       <template v-else>
         <button type="button" class="btn button-prev" @click="$router.go(-1)">
-          <img src="" class="image" alt="">
+          <img src="/assets/image/icon/arrow-back.svg" class="image" alt="">
         </button>
         <div class="title">
           {{ title }}
@@ -48,18 +48,17 @@
 </template>
 
 <script>
-
-
 export default {
   data() {
     return {
       title: '',
+      url: ['BodyPage', 'PersonalAccount', 'Profile', 'Method']
     }
   },
   props: ['keycloaks'],
   methods: {
     logout: function() {
-      this.$keycloak.logout()
+      this.keycloak.logout()
     },
   },
   watch: {

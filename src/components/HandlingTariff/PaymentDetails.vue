@@ -49,7 +49,7 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required, minLength, maxLength } from '@vuelidate/validators'
-import {HTTP} from "@/config";
+import axios from "axios";
 let qs = require('qs');
 
 export default {
@@ -96,9 +96,6 @@ export default {
       }
     }
   },
-  created() {
-    console.log(this.licensesCount, this.tariffId, this.workspace)
-  },
   methods: {
     createOrder: function () {
       let data = {
@@ -108,12 +105,18 @@ export default {
         payment_method: this.method
       }
       data.requisites = JSON.stringify(this.requisites)
-      console.log('1', window.keycloak.token, window.test)
-      HTTP.post('/order/create', qs.stringify(data), {
+
+      var config = {
+        method: 'post',
+        url: 'http://localhost:4964/api/order/create',
         headers: {
-          authorization: 'Bearer ' + this.$keycloak.token,
-        }
-      })
+          Authorization: 'Bearer ' + window.keycloak.token,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data : qs.stringify(data)
+      };
+
+      axios(config)
           .then((res) => {
             location.href = res.data.pay_form_url
           })

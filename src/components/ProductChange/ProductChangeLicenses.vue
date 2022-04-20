@@ -3,7 +3,7 @@
     <button type="button" class="change-card"  data-bs-toggle="modal" data-bs-target="#modalChangeLicenses">
       <span class="title">Изменить количество лицензий</span>
       <span class="image-container">
-        <img class="image" src="" alt="">
+        <img class="image" src="/assets/image/icon/file.svg" alt="">
       </span>
     </button>
   </div>
@@ -30,7 +30,7 @@
           </div>
           <div class="input-warning" :class="{active: this.active}">
             <div class="image-container">
-              <img class="image" src="" alt="">
+              <img class="image" src="/assets/image/icon/warning.svg" alt="">
             </div>
             <div class="title">
               Если вы уменьшите количество лицензий,
@@ -67,14 +67,17 @@ export default {
         licenses_count: this.countLicensesLocal,
       }
 
-      HTTP.post('/order/update', qs.stringify(data))
-          .then(function (res) {
-            console.log(res)
-            location.href = res.data.pay_form_url
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+      HTTP.post('/order/update', qs.stringify(data), {
+        headers: {
+          authorization: 'Bearer ' + window.moctoken,
+        }
+      }).then(function (res) {
+          console.log(res)
+          location.href = res.data.pay_form_url
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
     countPlus: function () {
       let currentValue = this.countLicensesLocal;

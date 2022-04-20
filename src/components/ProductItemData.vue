@@ -52,9 +52,6 @@ export default {
 
     return { month }
   },
-  created() {
-    console.log(this.product.orders)
-  },
   methods: {
     onePrice: function (value) {
       return value.toLocaleString() + ' ₽ / лицензия'

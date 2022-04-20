@@ -3,7 +3,7 @@
     <div class="method-card">
     <router-link :to="{ name: 'PaymentWorkspace', params: { licensesCount: this.$route.query.licenses_count, tariffId: this.$route.query.tariff_variant_id, method: 'bank_card' }}" class="btn link-card">
         <span class="image-container">
-          <img src="" alt="" class="image">
+          <img src="/assets/image/icon/credit-card.svg" alt="" class="image">
         </span>
         <span class="data-container">
           <span class="title">Банковская карта</span>
@@ -14,7 +14,7 @@
 <!--    <div class="method-card">
       <router-link to="/method" class="link-card">
         <span class="image-container">
-          <img src="" alt="" class="image">
+          <img src="/assets/image/icon/file.svg" alt="" class="image">
         </span>
         <span class="data-container">
           <span class="title">Расчётный счёт</span>

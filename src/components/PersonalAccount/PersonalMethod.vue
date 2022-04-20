@@ -2,6 +2,9 @@
   <div class="product-cards-container">
     <div class="title">Банковские карты</div>
       <BankCardItem v-for="el in cardList" :key="el" :card="el"/>
+      <button type="button" class="btn add-card">
+        Добавить карту
+      </button>
   </div>
 </template>
 
@@ -19,13 +22,18 @@ export default {
     }
   },
   created() {
-    HTTP.get('/card_binding/list ')
-        .then((res) => {
-          res.data.forEach((el) => {
-            this.cardList.push(el)
-          })
-        })
-        .catch()
+    HTTP.get('/card_binding/list ', {
+      headers: {
+        authorization: 'Bearer ' + window.moctoken,
+      }
+    }).then((res) => {
+      res.data.forEach((el) => {
+        this.cardList.push(el)
+      })
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 }
 </script>
@@ -36,5 +44,20 @@ export default {
   font-weight: 700;
   font-size: 20px;
   margin-bottom: 8px;
+}
+
+.add-card
+{
+  font-weight: 600;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 5px;
+  color: rgba(0, 0, 0, 0.56);
+  width: 100%;
+  padding: 13px;
+}
+
+.add-card:hover
+{
+  background-color: rgba(0, 0, 0, .1);
 }
 </style>
