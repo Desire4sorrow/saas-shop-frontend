@@ -23,9 +23,9 @@ export default {
   data() {
     return {
       dataCard: [
-        { name: 'VISA', image: '/assets/image/icon/vise.svg'},
-        { name: 'MASTERCARD', image: '/assets/image/icon/mastercard.svg'},
-        { name: 'MIR', image: '/assets/image/icon/mir.svg'}
+        { name: 'VISA', image: require('/assets/image/icon/vise.svg')},
+        { name: 'MASTERCARD', image: require('/assets/image/icon/mastercard.svg')},
+        { name: 'MIR', image: require('/assets/image/icon/mir.svg')}
       ]
     }
   },
