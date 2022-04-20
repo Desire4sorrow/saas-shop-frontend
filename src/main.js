@@ -14,7 +14,7 @@ const router = Router.createRouter({
 })
 
 let initOptions = {
-    url : 'http://testvm.plotpad.ru:8443',
+    url : 'https://testvm.plotpad.ru:8443',
     realm : 'saas-shop',
     clientId : 'saas-shop-client',
     onLoad  : 'login-required',
