@@ -66,7 +66,7 @@ export default {
           authorization: 'Bearer ' + window.keycloak.token,
         }
       }).then((response) => {
-        console.log(response)
+        location.href = response.data.pay_form_url
       }).catch((error) => {
         console.log(error)
       })
