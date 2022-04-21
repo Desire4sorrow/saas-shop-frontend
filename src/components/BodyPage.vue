@@ -31,7 +31,6 @@ export default {
         authorization: 'Bearer ' + window.keycloak.token,
       }
     }).then(response => {
-      console.log(response)
         response.data.forEach((el) => {
           this.productList.push(el)
         })

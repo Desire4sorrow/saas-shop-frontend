@@ -120,7 +120,7 @@ export default {
 .modal-dialog
 {
   max-width: 600px;
-  margin-top: 200px;
+  margin-top: 120px;
 }
 
 .modal-header

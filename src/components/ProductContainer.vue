@@ -11,9 +11,8 @@
       </a>
     </div>
     <div class="col-md-9">
-      <ProductItemData
-          :key="productSelected"
-          :product="productSelected"/>
+      <ProductItemData :key="productSelected"
+                       :product="productSelected"/>
     </div>
   </div>
 </template>

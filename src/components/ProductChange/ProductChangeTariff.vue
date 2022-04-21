@@ -18,7 +18,7 @@
               Месячный
             </div>
             <label class="period">
-              <input type="checkbox" class="period-input">
+              <input type="checkbox" class="period-input" v-model="checked">
               <span class="slider"></span>
             </label>
             <div class="period-title">
@@ -31,48 +31,8 @@
         <div class="modal-body">
           <div class="container px-0">
             <div class="row">
-              <div class="col-lg-6">
-                <div class="tariff-card">
-                  <div class="title-card">Базовый</div>
-                  <div class="price">
-                    <span class="price-bold">1 500 ₽</span> / лицензия
-                  </div>
-                  <ul class="list">
-                    <li class="list-item">
-                      <span class="icon-check"></span>
-                      Первое преимущество
-                    </li>
-                    <li class="list-item">
-                      <span class="icon-check"></span>
-                      Второе преимущество
-                    </li>
-                    <li class="list-item none">
-                      <span class="icon-close"></span>
-                      Третье преимущество
-                    </li>
-                    <li class="list-item none">
-                      <span class="icon-close"></span>
-                      Четвертое преимущество
-                    </li>
-                    <li class="list-item none">
-                      <span class="icon-close"></span>
-                      Пятое преимущество
-                    </li>
-                  </ul>
-                  <div class="input-container">
-                    <div class="title">Кол-во лицензий:</div>
-                    <div class="input-control">
-                      <div class="control-minus"></div>
-                      <input class="input"
-                             type="number" name="count" min="1">
-                      <div class="control-plus"></div>
-                    </div>
-                  </div>
-                  <button class="card-button" type="button">
-                    Купить за <span class="button-value"></span> ₽
-                  </button>
-                </div>
-              </div>
+              <ChangeTariffItem v-for="el in arrTariffs" :key="el" :checked="checked" :tariffItem="el"
+                                :list="list" :lengthList="lengthList" :orderId="tariff.productId"/>
             </div>
           </div>
         </div>
@@ -82,15 +42,49 @@
 </template>
 
 <script>
-//import {HTTP} from "@/config";
+import ChangeTariffItem from "./ChangeTariffItem"
+import axios from "axios";
 
 export default {
-  name: 'ProductChangeTariff',
-  props: ['productId'],
-  /*created() {
-    HTTP.get('/products/39?populate[0]=tariffs.tariff_variants')
-  }*/
+  components: {
+    ChangeTariffItem
+  },
+  props: ['tariff'],
+  data() {
+    return {
+      arrTariffs: [],
+      checked: false,
+      list: [],
+      lengthList: []
+    }
+  },
+  created() {
+    axios.get('http://localhost:3005/api/products/' + this.tariff.productId + '?populate[0]=tariffs.tariff_variants')
+         .then((response) => {
+           response.data.tariffs.forEach((el) => {
+             if (el.id !== this.tariff.tariffId) {
+               this.arrTariffs.push(el)
+               this.getList(el.description, el.id)
+             }
+           })
+         })
+        .catch((error) => {
+          console.log(error)
+        })
+  },
+  methods: {
+    getList: function (des, id) {
+      let list = des.split('|').map(function (item) {
+        return item.trim()
+      })
 
+      if (this.list.length < list.length) {
+        this.list = list
+      }
+
+      this.lengthList.push({id: id, length: list.length})
+    }
+  }
 }
 </script>
 
@@ -116,171 +110,6 @@ export default {
 .modal-header .btn-close
 {
   margin: 0;
-}
-
-.tariff-card
-{
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 5px;
-  padding: 24px;
-}
-
-.title-card
-{
-  color: #FF9900;
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 16px;
-}
-
-.tariff-card .price
-{
-  font-weight: 700;
-  color: rgba(0, 0, 0, 0.56);
-  margin-bottom: 40px;
-}
-
-.tariff-card .price-bold
-{
-  font-size: 32px;
-  color: #000;
-}
-
-.tariff-card .list
-{
-  list-style: none;
-  padding-left: 0;
-}
-
-.tariff-card .list .list-item
-{
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 16px;
-  padding-left: 30px;
-  position: relative;
-}
-
-.tariff-card .list .list-item.none
-{
-  opacity: .3;
-}
-
-.icon-check
-{
-  position: absolute;
-  display: inline-block;
-  width: 14px;
-  height: 10px;
-  left: 0;
-  top: 6px;
-}
-
-.icon-check:before
-{
-  position: absolute;
-  left: -4px;
-  top: 10%;
-  height: 80%;
-  width: 2px;
-  background-color: #000;
-  content: "";
-  transform: translateX(10px) rotate(-45deg);
-  transform-origin: left bottom;
-  border-radius: 10px 10px 0 0;
-}
-
-.icon-check:after
-{
-  position: absolute;
-  left: -4px;
-  top: 68%;
-  height: 2px;
-  width: 80%;
-  background-color: #000;
-  content: "";
-  transform: translateX(10px) rotate(-45deg);
-  transform-origin: left bottom;
-  border-radius: 0 10px 10px 0;
-}
-
-.icon-close {
-  position: absolute;
-  left: 2px;
-  top: 3px;
-  width: 12px;
-  height: 12px;
-}
-
-.icon-close:before,
-.icon-close:after {
-  position: absolute;
-  left: 5px;
-  content: '';
-  height: 14px;
-  width: 2px;
-  background-color: #000;
-  border-radius: 10px;
-}
-
-.icon-close:before {
-  transform: rotate(45deg);
-}
-
-.icon-close:after {
-  transform: rotate(-45deg);
-}
-
-.input-container
-{
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 5px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 44px;
-}
-
-.input-container .title
-{
-  font-weight: 500;
-}
-
-.input-container .input-control
-{
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-}
-
-.input-container .input
-{
-  border: none;
-  text-align: center;
-  font-weight: 500;
-  font-size: 18px;
-  width: 50px;
-  background-color: transparent;
-}
-
-.card-button
-{
-  display: block;
-  text-decoration: none;
-  text-align: center;
-  color: #FF9900;
-  background-color: rgba(255, 153, 0, 0.16);
-  width: 100%;
-  font-size: 14px;
-  font-weight: 600;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  border-radius: 5px;
-  margin-top: 16px;
-  cursor: pointer;
-  border: none;
 }
 
 .period-container
