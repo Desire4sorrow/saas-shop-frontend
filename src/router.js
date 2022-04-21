@@ -8,7 +8,7 @@ import PersonalMethod from "@/components/PersonalAccount/PersonalMethod";
 
 export const routes = [
     {
-        path: '/',
+        path: '/*',
         name: 'BodyPage',
         component: BodyPage,
         meta: {
