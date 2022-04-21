@@ -51,8 +51,8 @@ keycloak.init({onLoad: initOptions.onLoad}).then( auth => {
       });
     }, 20000)
 
-    }).catch(() => {
-    Vue.$log.error("Authenticated Failed");
+    }).catch((error) => {
+    console.log(error)
 });
 
 Vue.provide('$keycloak', keycloak)
