@@ -29,7 +29,8 @@ if (location.host === 'localhost:4000') {
 
 keycloak.init({onLoad: initOptions.onLoad}).then( auth => {
     if (!auth) {
-      window.location.reload();
+      //window.location.reload()
+        console.error('not auth')
     } else {
 
       new Vue({
