@@ -9,7 +9,7 @@ import NotFound from "@/components/NotFound";
 
 export const routes = [
     {
-        path: '/',
+        path: '/*',
         name: 'BodyPage',
         component: BodyPage,
         meta: {
