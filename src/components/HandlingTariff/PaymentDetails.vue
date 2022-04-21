@@ -11,19 +11,23 @@
         <div class="form-group">
           <label class="form-label">
             <span class="title">ОГРН</span>
-            <input type="text" class="form-control" placeholder="Введите ОГРН" v-model="requisites.ogrn">
+
+            <input type="number" class="form-control" name="ogrn" placeholder="Введите ОГРН" v-model="requisites.ogrn"
+                   oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength=14>
           </label>
         </div>
         <div class="form-group">
           <label class="form-label">
             <span class="title">ИНН</span>
-            <input type="text" class="form-control" placeholder="Введите ИНН" v-model="requisites.inn">
+            <input type="number" class="form-control" placeholder="Введите ИНН" v-model="requisites.inn"
+                   oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength=12>
           </label>
         </div>
         <div class="form-group">
           <label class="form-label">
             <span class="title">КПП</span>
-            <input type="text" class="form-control" placeholder="Введите КПП" v-model="requisites.kpp">
+            <input type="number" class="form-control" placeholder="Введите КПП" v-model="requisites.kpp"
+                   oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength=9>
           </label>
         </div>
         <div class="form-group">
@@ -35,11 +39,12 @@
         <div class="form-group">
           <label class="form-label">
             <span class="title">Номер телефона</span>
-            <input type="text" class="form-control" name="telephone" placeholder="Введите номер телефона" v-model="requisites.telephone">
+            <input type="number" class="form-control" name="telephone" placeholder="Введите номер телефона" v-model="requisites.telephone"
+                   oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength=11>
           </label>
         </div>
       </div>
-      <button class="btn button-details" role="button" @click="createOrder()">
+      <button class="btn button-details" role="button" @click="createOrder(); checkNumbers()">
         Сформировать счёт
       </button>
     </div>
@@ -64,7 +69,43 @@ export default {
       },
     }
   },
+  computed: {
+    isInnValid() {
+      let inn = String(this.requisites.inn)
+      return (inn.length == 10 || inn.length == 12);
+    },
+    isPhoneNumberValid() {
+      let phone = String(this.requisites.telephone)
+      return phone.length === 11;
+    },
+    isKppValid() {
+      let kpp = String(this.requisites.kpp)
+      return kpp.length == 9;
+    },
+    isOgrnValid() {
+      let ogrn = String(this.requisites.ogrn)
+      return (ogrn.length === 12 || ogrn.length === 14);
+    }
+  },
   methods: {
+    checkNumbers(){
+      if( this.isPhoneNumberValid, this.isOgrnValid, this.isKppValid, this.isInnValid ) {
+        alert('Все правильно')
+      }
+      else if (!this.isPhoneNumberValid) {
+        alert('Неверный формат номера телефона')
+      }
+      else if(!this.isOgrnValid) {
+        alert('Неверный формат ОГРН')
+      }
+      else if(!this.isKppValid) {
+        alert('Неверный формат КПП')
+      }
+      else {
+        alert('Неверный формат ИНН')
+      }
+    },
+
     createOrder: function () {
       let data = {
         workspace_name: this.$route.params.workspace_name,
@@ -88,6 +129,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style scoped>
@@ -147,4 +189,5 @@ export default {
 {
   background-color: #d98200;
 }
+
 </style>
