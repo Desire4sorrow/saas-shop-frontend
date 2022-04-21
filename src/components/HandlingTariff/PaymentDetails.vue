@@ -72,7 +72,7 @@ export default {
   computed: {
     isInnValid() {
       let inn = String(this.requisites.inn)
-      return (inn.length == 10 || inn.length == 12);
+      return (inn.length === 10 || inn.length === 12);
     },
     isPhoneNumberValid() {
       let phone = String(this.requisites.telephone)
@@ -80,7 +80,7 @@ export default {
     },
     isKppValid() {
       let kpp = String(this.requisites.kpp)
-      return kpp.length == 9;
+      return kpp.length === 9;
     },
     isOgrnValid() {
       let ogrn = String(this.requisites.ogrn)
