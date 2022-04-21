@@ -1,7 +1,7 @@
 <template>
   <div class="product-cards-container">
     <div class="title">Банковские карты</div>
-      <BankCardItem v-for="el in cardList" :key="el" :card="el"/>
+      <BankCardItem v-for="el in cardList" :key="el" :card="el" :deleteCard="deleteCard"/>
       <button type="button" class="btn add-card">
         Добавить карту
       </button>
@@ -34,6 +34,17 @@ export default {
       .catch((error) => {
         console.log(error)
       })
+  },
+  methods: {
+    deleteCard: function (id) {
+      let newArr = []
+      this.cardList.forEach((el) => {
+        if (el.card_binding_id !== id){
+          newArr.push(el)
+        }
+      })
+      this.cardList = newArr
+    },
   }
 }
 </script>

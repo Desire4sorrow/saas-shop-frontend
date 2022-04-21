@@ -101,7 +101,7 @@ export default {
       this.variant.push({name: 'Цена', value: this.onePrice(obj.tariff_variant.price)})
       this.variant.push({name: 'Способ оплаты', value: this.paymentMethod(obj.payment_method)})
       this.variant.push({name: 'Тип', value: this.typePeriod(obj.tariff_variant.period)})
-      this.variant.push({name: 'Общая сумма', value: this.totalPrice(obj.total_amount)})
+      this.variant.push({name: 'Общая сумма', value: this.totalPrice(this.product.total_amount)})
       if (this.product.next_pay_date !== null) {
         this.variant.push({name: 'Следующая оплата', value: this.date(this.product.next_pay_date)})
       }
