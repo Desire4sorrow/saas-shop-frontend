@@ -118,7 +118,6 @@ export default {
       HTTP.post('/order/create', qs.stringify(data), {
         headers: {
           Authorization: 'Bearer ' + window.keycloak.token,
-          'Content-Type': 'application/x-www-form-urlencoded'
         }
       }).then((res) => {
           location.href = res.data.pay_form_url

@@ -9,7 +9,7 @@
     <div class="row">
       <ProductChangeTariff :tariff="tariff"/>
       <ProductChangeLicenses :product="product"/>
-      <ProductChangePayment :methodPayment="product.orders[0].payment_method"/>
+  <!--<ProductChangePayment :methodPayment="product.orders[0].payment_method"/>-->
     </div>
   </div>
   <div class="product-cards-container">
@@ -26,14 +26,14 @@
 import ProductDescriptionItem from "@/components/ProductDescriptionItem";
 import ProductChangeTariff from "@/components/ProductChange/ProductChangeTariff";
 import ProductChangeLicenses from "@/components/ProductChange/ProductChangeLicenses";
-import ProductChangePayment from "@/components/ProductChange/ProductChangePayment";
+//import ProductChangePayment from "@/components/ProductChange/ProductChangePayment";
 import CardBills from "@/components/CardBills";
 
 export default {
   name: 'ProductItemData',
   components: {
     CardBills,
-    ProductChangePayment,
+    //ProductChangePayment,
     ProductChangeLicenses,
     ProductDescriptionItem,
     ProductChangeTariff,
@@ -59,11 +59,12 @@ export default {
         if (el.payment_status === 'not_paid') arrPaid.push(el)
       })
       this.sortByPaid(arrPaid, 'createdAt')
+      this.dateEntry(arrPaid[0])
     }
     else {
       this.sortByPaid(arrPaid, 'paid_at')
+      this.dateEntry(arrPaid[0])
     }
-    this.dateEntry(arrPaid[0])
   },
   methods: {
     sortByPaid: function (arr, method) {
@@ -100,8 +101,13 @@ export default {
       this.variant.push({name: 'Цена', value: this.onePrice(obj.tariff_variant.price)})
       this.variant.push({name: 'Способ оплаты', value: this.paymentMethod(obj.payment_method)})
       this.variant.push({name: 'Тип', value: this.typePeriod(obj.tariff_variant.period)})
-      this.variant.push({name: 'Общая сумма', value: this.totalPrice(obj.total_price)})
-      this.variant.push({name: 'Следующая оплата', value: this.date(this.product.next_pay_date)})
+      this.variant.push({name: 'Общая сумма', value: this.totalPrice(obj.total_amount)})
+      if (this.product.next_pay_date !== null) {
+        this.variant.push({name: 'Следующая оплата', value: this.date(this.product.next_pay_date)})
+      }
+      else {
+        this.variant.push({name: 'Следующая оплата', value: '-'})
+      }
     }
   }
 }
