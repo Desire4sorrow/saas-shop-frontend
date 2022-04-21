@@ -5,46 +5,41 @@
         <div class="form-group">
           <label class="form-label">
             <span class="title">Название организации</span>
-            <input type="text" class="form-control" placeholder="Введите название организации" v-model="requisites.organization_name">
+            <input type="text" class="form-control" placeholder="Введите название организации" v-model="organization_name">
           </label>
         </div>
         <div class="form-group">
           <label class="form-label">
             <span class="title">ОГРН</span>
-
-            <input type="number" class="form-control" name="ogrn" placeholder="Введите ОГРН" v-model="requisites.ogrn"
-                   oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength=14>
+            <input type="number" class="form-control" name="ogrn" placeholder="Введите ОГРН" v-model="ogrn">
           </label>
         </div>
         <div class="form-group">
           <label class="form-label">
             <span class="title">ИНН</span>
-            <input type="number" class="form-control" placeholder="Введите ИНН" v-model="requisites.inn"
-                   oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength=12>
+            <input type="number" class="form-control" name="inn" placeholder="Введите ИНН" v-model="inn">
           </label>
         </div>
         <div class="form-group">
           <label class="form-label">
             <span class="title">КПП</span>
-            <input type="number" class="form-control" placeholder="Введите КПП" v-model="requisites.kpp"
-                   oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength=9>
+            <input type="number" class="form-control" name="kpp" placeholder="Введите КПП" v-model="kpp">
           </label>
         </div>
         <div class="form-group">
           <label class="form-label">
             <span class="title">Юридический адрес</span>
-            <input type="text" class="form-control" placeholder="Введите юридический адрес" v-model="requisites.organization_address">
+            <input type="text" class="form-control" placeholder="Введите юридический адрес" v-model="organization_address">
           </label>
         </div>
         <div class="form-group">
           <label class="form-label">
             <span class="title">Номер телефона</span>
-            <input type="number" class="form-control" name="telephone" placeholder="Введите номер телефона" v-model="requisites.telephone"
-                   oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength=11>
+            <input type="number" class="form-control" name="telephone" placeholder="Введите номер телефона" v-model="telephone">
           </label>
         </div>
       </div>
-      <button class="btn button-details" role="button" @click="createOrder(); checkNumbers()">
+      <button class="btn button-details" role="button" @click="createOrder()">
         Сформировать счёт
       </button>
     </div>
@@ -59,53 +54,33 @@ export default {
   name: 'PaymentDetails',
   data() {
     return {
-      requisites: {
-        organization_name: '',
-        ogrn: '',
-        inn: '',
-        kpp: '',
-        organization_address: '',
-        telephone: ''
-      },
+      organization_name: '',
+      ogrn: '',
+      inn: '',
+      kpp: '',
+      organization_address: '',
+      telephone: '',
+      isButton: true,
     }
   },
-  computed: {
-    isInnValid() {
-      let inn = String(this.requisites.inn)
-      return (inn.length === 10 || inn.length === 12);
+  watch: {
+    ogrn: function () {
+      if (String(this.ogrn).length > 13){
+        this.ogrn = String(this.ogrn).slice(0, 13)
+      }
     },
-    isPhoneNumberValid() {
-      let phone = String(this.requisites.telephone)
-      return phone.length === 11;
+    inn: function () {
+      if (String(this.inn).length > 10){
+        this.inn = String(this.inn).slice(0, 10)
+      }
     },
-    isKppValid() {
-      let kpp = String(this.requisites.kpp)
-      return kpp.length === 9;
+    kpp: function () {
+      if (String(this.kpp).length > 9){
+        this.kpp = String(this.kpp).slice(0, 9)
+      }
     },
-    isOgrnValid() {
-      let ogrn = String(this.requisites.ogrn)
-      return (ogrn.length === 12 || ogrn.length === 14);
-    }
   },
   methods: {
-    checkNumbers(){
-      if( this.isPhoneNumberValid, this.isOgrnValid, this.isKppValid, this.isInnValid ) {
-        //alert('Все правильно')
-      }
-      else if (!this.isPhoneNumberValid) {
-        alert('Неверный формат номера телефона')
-      }
-      else if(!this.isOgrnValid) {
-        alert('Неверный формат ОГРН')
-      }
-      else if(!this.isKppValid) {
-        alert('Неверный формат КПП')
-      }
-      else {
-        alert('Неверный формат ИНН')
-      }
-    },
-
     createOrder: function () {
       let data = {
         workspace_name: this.$route.params.workspace_name,
@@ -113,7 +88,15 @@ export default {
         licenses_count: this.$route.params.licenses_count,
         payment_method: this.$route.params.payment_method
       }
-      data.requisites = JSON.stringify(this.requisites)
+      let requisites = {
+        organization_name: this.organization_name,
+        ogrn: this.ogrn,
+        inn: this.inn,
+        kpp: this.kpp,
+        organization_address: this.organization_address,
+        telephone: this.telephone
+      }
+      data.requisites = JSON.stringify(requisites)
 
       HTTP.post('/order/create', qs.stringify(data), {
         headers: {
@@ -189,4 +172,13 @@ export default {
   background-color: #d98200;
 }
 
+.form-control[type=number]::-webkit-outer-spin-button,
+.form-control[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.form-control[type=number]{
+  -moz-appearance:textfield;
+}
 </style>

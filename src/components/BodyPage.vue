@@ -30,10 +30,10 @@ export default {
         authorization: 'Bearer ' + window.keycloak.token,
       }
     }).then(response => {
-        response.data.forEach((el) => {
-          this.productList.push(el)
-        })
-      }).catch((error) => {
+      response.data.forEach((el) => {
+        this.productList.push(el)
+      })
+    }).catch((error) => {
       console.log(error)
     })
   }
