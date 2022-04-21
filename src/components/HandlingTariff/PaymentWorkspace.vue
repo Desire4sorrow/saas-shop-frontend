@@ -45,7 +45,8 @@ export default {
         workspace_name: this.workspace,
       }
 
-      HTTP.get('/order/workspace/is_free', { params: data }, {
+      HTTP.get('/order/workspace/is_free', {
+        params: data ,
         headers: {
           authorization: 'Bearer ' + window.keycloak.token,
         }

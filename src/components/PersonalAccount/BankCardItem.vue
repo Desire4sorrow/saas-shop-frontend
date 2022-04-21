@@ -29,6 +29,9 @@ export default {
       ]
     }
   },
+  created() {
+    console.log(this.card)
+  },
   methods: {
     imagePath: function () {
       let imagePath = ''
@@ -62,7 +65,7 @@ export default {
           authorization: 'Bearer ' + window.keycloak.token,
         }
       }).then((el) => {
-        console.log(el)
+        el.data.status ? this.$router.push({ name: 'Method'}) : ''
       }).catch((error) => {
         console.log(error)
       })

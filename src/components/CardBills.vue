@@ -5,27 +5,27 @@
         <div class="data-header">
           <div class="caption">{{ date(this.order.createdAt) }}</div>
           <div class="price">
-            {{ totalPrice(this.order.total_price) }}
+            {{ totalPrice(this.order.total_amount) }}
           </div>
         </div>
         <div class="menu-header">
           <img class="icon-menu" src="@/assets/image/icon/more.svg" alt="">
           <ul class="menu">
             <li class="menu-item">
-              <a href="#" class="menu-link">
+              <button class="btn menu-link">
                 <span class="image-container">
                   <img src="@/assets/image/icon/bill.svg" alt="" class="image">
                 </span>
                 <span class="link-text">Открыть счёт</span>
-              </a>
+              </button>
             </li>
             <li class="menu-item">
-              <a href="#" class="menu-link">
+              <button class="btn menu-link" @click="requestAct()">
                 <span class="image-container">
                   <img src="@/assets/image/icon/file.svg" alt="" class="image">
                 </span>
                 <span class="link-text">Запросить акт</span>
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -51,24 +51,26 @@
           <div class="item-title">Способ оплаты</div>
           <div class="item-description">{{ method(this.order.payment_method) }}</div>
         </div>
-        <a href="#" class="btn button-card waiting" v-if="isWaiting">
+        <div class="btn button-card waiting" v-if="isWaiting">
           Ожидает подтверждения
-        </a>
-        <a href="#" class="btn button-card success" v-else-if="isSuccess">
+        </div>
+        <div class="btn button-card success" v-else-if="isSuccess">
           Оплачен
-        </a>
-        <a href="#" class="btn button-card error" v-else-if="isError">
+        </div>
+        <div class="btn button-card error" v-else-if="isError">
           Ошибка оплаты
-        </a>
-        <a href="#" class="btn button-card" v-else>
+        </div>
+        <button class="btn button-card" v-else @click="pay()">
           Оплатить
-        </a>
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import {HTTP} from "@/config";
+
 export default {
   props: ['order', 'date', 'totalPrice', 'period', 'onePrice', 'method'],
   data() {
@@ -77,7 +79,41 @@ export default {
     let isError = (this.order.payment_status === 'fail');
 
     return { isWaiting, isSuccess, isError }
-  }
+  },
+  methods: {
+    pay: function () {
+      let data = {
+        order_id: this.order.order_id,
+      }
+
+      HTTP.get('/order/pay_url', {
+        params: data,
+        headers: {
+          authorization: 'Bearer ' + window.keycloak.token,
+        }
+      }).then((response) => {
+        location.href = response.data.pay_form_url
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    requestAct: function () {
+      let data = {
+        order_id: this.order.order_id,
+      }
+
+      HTTP.get('/order/act', {
+        params: data,
+        headers: {
+          authorization: 'Bearer ' + window.keycloak.token,
+        }
+      }).then((response) => {
+        console.log(response)
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+  },
 }
 </script>
 
@@ -167,6 +203,7 @@ export default {
   display: flex;
   align-items: center;
   text-decoration: none;
+  padding: 0;
 }
 
 .menu-item:hover .link-text

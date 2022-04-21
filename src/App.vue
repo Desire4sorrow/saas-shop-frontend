@@ -1,5 +1,5 @@
 <template>
-  <HeaderPage :keycloaks=keycloak />
+  <HeaderPage />
   <router-view :keycloaks=keycloak></router-view>
 </template>
 

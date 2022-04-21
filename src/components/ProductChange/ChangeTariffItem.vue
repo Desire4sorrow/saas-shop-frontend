@@ -53,7 +53,6 @@ export default {
         this.length = el.length
       }
     })
-    //console.log(this.tariffItem)
   },
   methods: {
     changeTariff: function () {
