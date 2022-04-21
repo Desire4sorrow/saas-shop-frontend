@@ -41,6 +41,7 @@ keycloak.init({onLoad: initOptions.onLoad}).then( auth => {
 
      setInterval(() => {
       keycloak.updateToken(70).then((refreshed) => {
+        console.log(refreshed)
         if (refreshed) {
           Vue.$log.info('Token refreshed' + refreshed);
         } else {
@@ -49,6 +50,7 @@ keycloak.init({onLoad: initOptions.onLoad}).then( auth => {
             + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
         }
       }).catch(() => {
+        console.error('Failed to refresh token')
         Vue.$log.error('Failed to refresh token');
       });
     }, 20000)
