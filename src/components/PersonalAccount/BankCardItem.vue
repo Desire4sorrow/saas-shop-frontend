@@ -19,7 +19,7 @@ import { HTTP } from "@/config";
 let qs = require('qs');
 
 export default {
-  props: ['card'],
+  props: ['card', 'deleteCard'],
   data() {
     return {
       dataCard: [
@@ -28,9 +28,6 @@ export default {
         { name: 'MIR', image: require('@/assets/image/icon/mir.svg')}
       ]
     }
-  },
-  created() {
-    console.log(this.card)
   },
   methods: {
     imagePath: function () {
@@ -65,7 +62,7 @@ export default {
           authorization: 'Bearer ' + window.keycloak.token,
         }
       }).then((el) => {
-        el.data.status ? this.$router.push({ name: 'Method'}) : ''
+        el.data.status ? this.deleteCard(this.card.card_binding_id) : ''
       }).catch((error) => {
         console.log(error)
       })
