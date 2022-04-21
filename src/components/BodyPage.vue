@@ -15,7 +15,6 @@ import EmptyContainer from "@/components/EmptyContainer";
 import ProductContainer from "@/components/ProductContainer";
 
 export default {
-  name: 'BodyPage',
   components: {
     ProductContainer,
     EmptyContainer
