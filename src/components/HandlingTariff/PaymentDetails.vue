@@ -90,7 +90,7 @@ export default {
   methods: {
     checkNumbers(){
       if( this.isPhoneNumberValid, this.isOgrnValid, this.isKppValid, this.isInnValid ) {
-        alert('Все правильно')
+        //alert('Все правильно')
       }
       else if (!this.isPhoneNumberValid) {
         alert('Неверный формат номера телефона')
