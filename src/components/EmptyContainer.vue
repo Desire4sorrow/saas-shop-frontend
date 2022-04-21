@@ -44,7 +44,7 @@ export default {
 
 .empty-container .button:hover
 {
-  background-color: #fff;
+  background-color: transparent;
   color: #FF9900;
 }
 </style>
