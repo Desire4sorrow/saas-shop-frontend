@@ -56,10 +56,9 @@ export default {
       url: ['BodyPage', 'PersonalAccount', 'Profile', 'Method']
     }
   },
-  props: ['keycloaks'],
   methods: {
     logout: function() {
-      this.keycloak.logout()
+      window.keycloak.logout()
     },
   },
   watch: {
