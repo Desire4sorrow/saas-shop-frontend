@@ -59,7 +59,7 @@ export default {
     }
   },
   created() {
-    axios.get('http://localhost:3005/api/products/' + this.tariff.productId + '?populate[0]=tariffs.tariff_variants')
+    axios.get('http://testvm.plotpad.ru:3005/api/products/' + this.tariff.productId + '?populate[0]=tariffs.tariff_variants')
          .then((response) => {
            response.data.tariffs.forEach((el) => {
              if (el.id !== this.tariff.tariffId) {
