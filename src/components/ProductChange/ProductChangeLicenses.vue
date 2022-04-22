@@ -52,7 +52,7 @@ import {HTTP} from "@/config";
 let qs = require('qs');
 
 export default {
-  name: 'ProductChangeLicenses',
+  inject: ['$keycloak'],
   props: ['product'],
   data() {
     let active = false;
@@ -69,7 +69,7 @@ export default {
 
       HTTP.post('/order/update', qs.stringify(data), {
         headers: {
-          authorization: 'Bearer ' + window.keycloak.token,
+          authorization: 'Bearer ' + this.$keycloak.token,
         }
       }).then(function (res) {
           console.log(res)

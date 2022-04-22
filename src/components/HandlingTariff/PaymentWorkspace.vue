@@ -25,6 +25,7 @@
 import {HTTP} from "@/config";
 
 export default {
+  inject: ['$keycloak'],
   data() {
     return {
       workspace: '',
@@ -48,7 +49,7 @@ export default {
       HTTP.get('/order/workspace/is_free', {
         params: data ,
         headers: {
-          authorization: 'Bearer ' + window.keycloak.token,
+          authorization: 'Bearer ' + this.$keycloak.token,
         }
       }).then((response) => {
         if (!response.data.status) {

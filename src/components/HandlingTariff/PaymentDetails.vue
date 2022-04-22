@@ -51,7 +51,7 @@ import {HTTP} from "@/config";
 let qs = require('qs');
 
 export default {
-  name: 'PaymentDetails',
+  inject: ['$keycloak'],
   data() {
     return {
       organization_name: '',
@@ -109,7 +109,7 @@ export default {
 
       HTTP.post('/order/create', qs.stringify(data), {
         headers: {
-          Authorization: 'Bearer ' + window.keycloak.token,
+          Authorization: 'Bearer ' + this.$keycloak.token,
         }
       }).then((res) => {
           location.href = res.data.pay_form_url

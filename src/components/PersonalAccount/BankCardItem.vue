@@ -19,6 +19,7 @@ import { HTTP } from "@/config";
 let qs = require('qs');
 
 export default {
+  inject: ['$keycloak'],
   props: ['card', 'deleteCard'],
   data() {
     return {
@@ -59,7 +60,7 @@ export default {
 
       HTTP.post('/card_binding/unbind', qs.stringify(data), {
         headers: {
-          authorization: 'Bearer ' + window.keycloak.token,
+          authorization: 'Bearer ' + this.$keycloak.token,
         }
       }).then((el) => {
         el.data.status ? this.deleteCard(this.card.card_binding_id) : ''

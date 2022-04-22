@@ -19,6 +19,7 @@ export default {
     ProductContainer,
     EmptyContainer
   },
+  inject: ['$keycloak'],
   data() {
     return {
       productList: []
@@ -27,7 +28,7 @@ export default {
   created() {
     HTTP.get('/workspace/list', {
       headers: {
-        authorization: 'Bearer ' + window.keycloak.token,
+        authorization: 'Bearer ' + this.$keycloak.token,
       }
     }).then(response => {
       response.data.forEach((el) => {

@@ -40,6 +40,7 @@ import {HTTP} from "@/config";
 let qs = require('qs');
 
 export default {
+  inject: ['$keycloak'],
   props: ['tariffItem', 'checked', 'list', 'lengthList', 'orderId'],
   data() {
     return {
@@ -63,7 +64,7 @@ export default {
 
       HTTP.post('/order/update', qs.stringify(data), {
         headers: {
-          authorization: 'Bearer ' + window.keycloak.token,
+          authorization: 'Bearer ' + this.$keycloak.token,
         }
       }).then((response) => {
         location.href = response.data.pay_form_url

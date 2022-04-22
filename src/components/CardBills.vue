@@ -72,6 +72,7 @@
 import {HTTP} from "@/config";
 
 export default {
+  inject: ['$keycloak'],
   props: ['order', 'date', 'totalPrice', 'period', 'onePrice', 'method'],
   data() {
     let isWaiting = (this.order.payment_status === 'waiting');
@@ -89,7 +90,7 @@ export default {
       HTTP.get('/order/pay_url', {
         params: data,
         headers: {
-          authorization: 'Bearer ' + window.keycloak.token,
+          authorization: 'Bearer ' + this.$keycloak.token,
         }
       }).then((response) => {
         location.href = response.data.pay_form_url
@@ -105,7 +106,7 @@ export default {
       HTTP.get('/order/act', {
         params: data,
         headers: {
-          authorization: 'Bearer ' + window.keycloak.token,
+          authorization: 'Bearer ' + this.$keycloak.token,
         }
       }).then((response) => {
         console.log(response)

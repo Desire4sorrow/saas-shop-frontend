@@ -13,6 +13,7 @@ import {HTTP} from "@/config";
 import BankCardItem from '@/components/PersonalAccount/BankCardItem.vue'
 
 export default {
+  inject: ['$keycloak'],
   components: {
     BankCardItem,
   },
@@ -24,7 +25,7 @@ export default {
   created() {
     HTTP.get('/card_binding/list ', {
       headers: {
-        authorization: 'Bearer ' + window.keycloak.token,
+        authorization: 'Bearer ' + this.$keycloak.token,
       }
     }).then((res) => {
       res.data.forEach((el) => {
