@@ -50,6 +50,7 @@
 
 <script>
 export default {
+  inject: ['$keycloak'],
   data() {
     return {
       title: '',
@@ -58,7 +59,7 @@ export default {
   },
   methods: {
     logout: function() {
-      window.keycloak.logout()
+      this.$keycloak.logout()
     },
   },
   watch: {
