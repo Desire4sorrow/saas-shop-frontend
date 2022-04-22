@@ -5,39 +5,44 @@
         <div class="form-group">
           <label class="form-label">
             <span class="title">Название организации</span>
-            <input type="text" class="form-control" placeholder="Введите название организации" v-model.trim="organization_name">
+            <input type="text" class="form-control" placeholder="Введите название организации" @focusout="checkInput(3)"
+                   v-model.trim="organization_name">
           </label>
         </div>
         <div class="form-group">
           <label class="form-label">
             <span class="title">ОГРН</span>
-            <input type="number" class="form-control" name="ogrn" placeholder="Введите ОГРН" v-model="ogrn">
+            <input type="number" class="form-control" name="ogrn" placeholder="Введите ОГРН" @focusout="checkInput(13)"
+                   v-model="ogrn">
           </label>
         </div>
         <div class="form-group">
           <label class="form-label">
             <span class="title">ИНН</span>
-            <input type="number" class="form-control" name="inn" placeholder="Введите ИНН" v-model="inn">
+            <input type="number" class="form-control" name="inn" placeholder="Введите ИНН" @focusout="checkInput(10)"
+                   v-model="inn">
           </label>
         </div>
         <div class="form-group">
           <label class="form-label">
             <span class="title">КПП</span>
-            <input type="number" class="form-control" name="kpp" placeholder="Введите КПП" v-model="kpp">
+            <input type="number" class="form-control" name="kpp" placeholder="Введите КПП" @focusout="checkInput(9)"
+                   v-model="kpp">
           </label>
         </div>
         <div class="form-group">
           <label class="form-label">
             <span class="title">Юридический адрес</span>
-            <input type="text" class="form-control" placeholder="Введите юридический адрес" v-model.trim="organization_address">
+            <input type="text" class="form-control" placeholder="Введите юридический адрес" @focusout="checkInput(10)"
+                   v-model.trim="organization_address">
           </label>
         </div>
-        <div class="form-group">
+<!--        <div class="form-group">
           <label class="form-label">
             <span class="title">Номер телефона</span>
             <input type="number" class="form-control" name="telephone" placeholder="Введите номер телефона" v-model="telephone">
           </label>
-        </div>
+        </div>-->
       </div>
       <button class="btn button-details" role="button" @click="createOrder()" :disabled="isButton">
         Сформировать счёт
@@ -59,37 +64,66 @@ export default {
       inn: '',
       kpp: '',
       organization_address: '',
-      telephone: '',
       isButton: true,
     }
   },
   watch: {
     organization_name: function () {
+      if (String(this.organization_name).length >= 3) {
+        this.removeWarning(event)
+      }
       this.checkedButton()
     },
     ogrn: function () {
       if (String(this.ogrn).length > 13){
         this.ogrn = String(this.ogrn).slice(0, 13)
+        this.removeWarning(event)
       }
       this.checkedButton()
     },
     inn: function () {
       if (String(this.inn).length > 10){
         this.inn = String(this.inn).slice(0, 10)
+        this.removeWarning(event)
       }
       this.checkedButton()
     },
     kpp: function () {
       if (String(this.kpp).length > 9){
         this.kpp = String(this.kpp).slice(0, 9)
+        this.removeWarning(event)
       }
       this.checkedButton()
     },
     organization_address: function () {
+      if (String(this.organization_address).length >= 10) {
+        this.removeWarning(event)
+      }
       this.checkedButton()
     },
   },
   methods: {
+    checkInput: function (length) {
+      if (Number(event.target.value.length) < length) {
+        event.target.classList.add('warning')
+        event.target.previousSibling.classList.add('warning')
+      }
+      else {
+        this.removeWarning(event)
+      }
+    },
+    removeWarning: function (ev) {
+      ev.target.classList.remove('warning')
+      ev.target.previousSibling.classList.remove('warning')
+    },
+    checkedButton: function () {
+      let boolCheck = true
+      if ((String(this.organization_name).length >= 3) && (String(this.ogrn).length === 13) && (String(this.inn).length === 10) &&
+          (String(this.kpp).length === 9) && (String(this.organization_address).length >= 10)) {
+        boolCheck = false
+      }
+      this.isButton = boolCheck
+    },
     createOrder: function () {
       let data = {
         workspace_name: this.$route.params.workspace_name,
@@ -117,17 +151,6 @@ export default {
         .catch((error) => {
           console.log(error)
         })
-    },
-    checkedButton: function () {
-      let boolCheck = true;
-      boolCheck = !(String(this.organization_name).length >= 3);
-      boolCheck = !(String(this.ogrn).length === 13);
-      boolCheck = !(String(this.inn).length === 10);
-      boolCheck = !(String(this.kpp).length === 9);
-      boolCheck = !(String(this.organization_address).length >= 10);
-      console.log(boolCheck)
-      //boolCheck = String(this.telephone).length >= 10;
-      this.isButton = boolCheck
     },
   }
 }
@@ -166,9 +189,19 @@ export default {
   display: inline-block;
 }
 
+.form-label .title.warning
+{
+  color: #F15D48;
+}
+
 .form-control
 {
   padding: 14px 16px;
+}
+
+.form-control.warning
+{
+  border-color: #F15D48;
 }
 
 .form-control:focus
@@ -200,5 +233,9 @@ export default {
 
 .form-control[type=number]{
   -moz-appearance:textfield;
+}
+
+.warning-text.none{
+  display: none;
 }
 </style>

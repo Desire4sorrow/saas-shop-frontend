@@ -7,7 +7,7 @@
   <div class="product-cards-container">
     <div class="title">Действия</div>
     <div class="row">
-      <ProductChangeTariff :tariff="tariff"/>
+      <ProductChangeTariff :tariff="tariff" :product="product"/>
       <ProductChangeLicenses :product="product"/>
   <!--<ProductChangePayment :methodPayment="product.orders[0].payment_method"/>-->
     </div>
@@ -45,7 +45,8 @@ export default {
       variant: [],
       tariff: {
         tariffId: '',
-        productId: ''
+        productId: '',
+        period: '',
       },
     }
   },
@@ -97,6 +98,7 @@ export default {
     dateEntry: function (obj) {
       this.tariff.tariffId = obj.tariff_variant.tariff.id
       this.tariff.productId = obj.tariff_variant.tariff.product.id
+      this.tariff.period = obj.tariff_variant.period
       this.variant.push({name: 'Тариф', value: obj.tariff_variant.tariff.name})
       this.variant.push({name: 'Цена', value: this.onePrice(obj.tariff_variant.price)})
       this.variant.push({name: 'Способ оплаты', value: this.paymentMethod(obj.payment_method)})

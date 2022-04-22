@@ -35,7 +35,7 @@ export default {
   },
   watch: {
     workspace: function () {
-      this.workspace = this.workspace.trim();
+      this.workspace = this.workspace.trim().toLowerCase();
       this.alert = false;
       (this.workspace !== '') ? this.isDisabled = false : this.isDisabled = true
     }

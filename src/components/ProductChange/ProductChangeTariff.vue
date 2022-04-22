@@ -49,7 +49,7 @@ export default {
   components: {
     ChangeTariffItem
   },
-  props: ['tariff'],
+  props: ['tariff', 'product'],
   data() {
     return {
       arrTariffs: [],
@@ -59,7 +59,15 @@ export default {
     }
   },
   created() {
-    axios.get('http://testvm.plotpad.ru:3005/api/products/' + this.tariff.productId + '?populate[0]=tariffs.tariff_variants')
+    if (Number(this.tariff.period) === 30) {
+      this.checked = false
+    }
+    else if (Number(this.tariff.period) === 360) {
+      this.checked = true
+    }
+
+    let typeUrl = (location.host === 'testvm.plotpad.ru') ? 'http://testvm.plotpad.ru:3005/api/products/' : 'http://localhost:3005/api/products/'
+    axios.get(typeUrl + this.tariff.productId + '?populate[0]=tariffs.tariff_variants')
          .then((response) => {
            response.data.tariffs.forEach((el) => {
              if (el.id !== this.tariff.tariffId) {

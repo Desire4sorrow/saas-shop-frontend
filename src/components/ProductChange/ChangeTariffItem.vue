@@ -1,7 +1,7 @@
 <template>
   <div class="col-lg-6">
     <div class="tariff-card">
-      <div class="title-card">{{ tariffItem.name }}</div>
+      <div class="title-card">{{ tariffItem.name  }}</div>
       <div class="price">
         <span class="price-bold">
           {{ (checked) ? tariffItem.tariff_variants[1].price.toLocaleString() :
@@ -61,13 +61,31 @@ export default {
         order_id: this.orderId,
         tariff_variant_id: (this.checked) ? this.tariffItem.tariff_variants[1].id : this.tariffItem.tariff_variants[0].id ,
       }
+      console.log(data)
+      HTTP.post('/order/update', qs.stringify(data), {
+        headers: {
+          authorization: 'Bearer ' + this.$keycloak.token,
+        }
+      }).then((response) => {
+        console.log(response)
+        this.changeLicenses()
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    changeLicenses: function () {
+      let data = {
+        order_id: this.orderId,
+        licenses_count: this.countLicenses,
+      }
 
       HTTP.post('/order/update', qs.stringify(data), {
         headers: {
           authorization: 'Bearer ' + this.$keycloak.token,
         }
       }).then((response) => {
-        location.href = response.data.pay_form_url
+        console.log(response)
+        //location.href = response.data.pay_form_url
       }).catch((error) => {
         console.log(error)
       })
