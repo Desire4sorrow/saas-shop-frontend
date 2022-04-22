@@ -5,10 +5,22 @@
 </template>
 
 <script>
+import {routes} from "@/router";
+
 export default {
+  data() {
+    return {
+      redirect: ['/cabinet/profile', '/cabinet/method'],
+    }
+  },
   created() {
+    routes.forEach((el) => {
+      if (el.name !== 'NotFound') {
+        this.redirect.push(el.path)
+      }
+    })
     let url = this.$route.fullPath.split('&')
-    if (url.length && url[0] === '/main'){
+    if (this.redirect.includes(url[0])){
       this.$router.push({ path: url[0] })
     }
   }
