@@ -5,7 +5,7 @@
         <div class="form-group">
           <label class="form-label">
             <span class="title">Название организации</span>
-            <input type="text" class="form-control" placeholder="Введите название организации" v-model="organization_name">
+            <input type="text" class="form-control" placeholder="Введите название организации" v-model.trim="organization_name">
           </label>
         </div>
         <div class="form-group">
@@ -29,7 +29,7 @@
         <div class="form-group">
           <label class="form-label">
             <span class="title">Юридический адрес</span>
-            <input type="text" class="form-control" placeholder="Введите юридический адрес" v-model="organization_address">
+            <input type="text" class="form-control" placeholder="Введите юридический адрес" v-model.trim="organization_address">
           </label>
         </div>
         <div class="form-group">
@@ -39,7 +39,7 @@
           </label>
         </div>
       </div>
-      <button class="btn button-details" role="button" @click="createOrder()">
+      <button class="btn button-details" role="button" @click="createOrder()" :disabled="isButton">
         Сформировать счёт
       </button>
     </div>
@@ -64,20 +64,29 @@ export default {
     }
   },
   watch: {
+    organization_name: function () {
+      this.checkedButton()
+    },
     ogrn: function () {
       if (String(this.ogrn).length > 13){
         this.ogrn = String(this.ogrn).slice(0, 13)
       }
+      this.checkedButton()
     },
     inn: function () {
       if (String(this.inn).length > 10){
         this.inn = String(this.inn).slice(0, 10)
       }
+      this.checkedButton()
     },
     kpp: function () {
       if (String(this.kpp).length > 9){
         this.kpp = String(this.kpp).slice(0, 9)
       }
+      this.checkedButton()
+    },
+    organization_address: function () {
+      this.checkedButton()
     },
   },
   methods: {
@@ -108,7 +117,18 @@ export default {
         .catch((error) => {
           console.log(error)
         })
-    }
+    },
+    checkedButton: function () {
+      let boolCheck = true;
+      boolCheck = !(String(this.organization_name).length >= 3);
+      boolCheck = !(String(this.ogrn).length === 13);
+      boolCheck = !(String(this.inn).length === 10);
+      boolCheck = !(String(this.kpp).length === 9);
+      boolCheck = !(String(this.organization_address).length >= 10);
+      console.log(boolCheck)
+      //boolCheck = String(this.telephone).length >= 10;
+      this.isButton = boolCheck
+    },
   }
 }
 

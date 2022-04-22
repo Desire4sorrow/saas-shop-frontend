@@ -5,6 +5,7 @@ import PaymentWorkspace from "@/components/HandlingTariff/PaymentWorkspace"
 import PersonalAccount from "@/components/PersonalAccount/PersonalAccount.vue"
 import PersonalProfile from "@/components/PersonalAccount/PersonalProfile";
 import PersonalMethod from "@/components/PersonalAccount/PersonalMethod";
+import NotFound from "@/components/NotFound";
 
 export const routes = [
     {
@@ -67,5 +68,13 @@ export const routes = [
                 }
             }
         ]
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: NotFound,
+        meta: {
+            title: '404'
+        }
     }
 ]

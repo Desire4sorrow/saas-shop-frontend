@@ -6,7 +6,12 @@
 
 <script>
 export default {
-
+  created() {
+    let url = this.$route.fullPath.split('&')
+    if (url.length && url[0] === '/main'){
+      this.$router.push({ path: url[0] })
+    }
+  }
 }
 </script>
 
