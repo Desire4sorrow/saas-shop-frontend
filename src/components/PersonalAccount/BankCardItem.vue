@@ -6,10 +6,14 @@
       </div>
       <div class="title">
         {{ inputTitle() }}
+        <span class="card-number">{{ cardNumber }}</span>
       </div>
     </div>
     <button type="button" class="btn button-card" @click="removeCard()">
-      Удалить
+      <span class="spinner-border spinner-border-sm" role="status" v-if="status">
+          <span class="visually-hidden">Loading...</span>
+        </span>
+      <span v-if="!status">Удалить</span>
     </button>
   </div>
 </template>
@@ -23,13 +27,21 @@ export default {
   props: ['card', 'deleteCard'],
   data() {
     return {
+      status: true,
       dataCard: [
         { name: 'VISA', image: require('@/assets/image/icon/vise.svg')},
         { name: 'MASTERCARD', image: require('@/assets/image/icon/mastercard.svg')},
         { name: 'MIR', image: require('@/assets/image/icon/mir.svg')}
-      ]
+      ],
+      cardNumber: '',
     }
   },
+ created() {
+   let arrNumber = this.card.card_number.replaceAll('X', '*').match(/.{1,4}/g)
+   for (const el in arrNumber){
+     this.cardNumber += arrNumber[el] + ' '
+   }
+ },
   methods: {
     imagePath: function () {
       let imagePath = ''
@@ -121,5 +133,10 @@ export default {
 {
   display: flex;
   align-items: center;
+}
+
+.card-number
+{
+  margin-left: 6px;
 }
 </style>
