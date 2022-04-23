@@ -47,6 +47,7 @@ export default {
         tariffId: '',
         productId: '',
         period: '',
+        orderId: ''
       },
     }
   },
@@ -98,6 +99,7 @@ export default {
     dateEntry: function (obj) {
       this.tariff.tariffId = obj.tariff_variant.tariff.id
       this.tariff.productId = obj.tariff_variant.tariff.product.id
+      this.tariff.orderId = obj.order_id
       this.tariff.period = obj.tariff_variant.period
       this.variant.push({name: 'Тариф', value: obj.tariff_variant.tariff.name})
       this.variant.push({name: 'Цена', value: this.onePrice(obj.tariff_variant.price)})

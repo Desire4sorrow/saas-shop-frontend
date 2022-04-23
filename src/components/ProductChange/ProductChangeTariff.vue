@@ -32,7 +32,7 @@
           <div class="container px-0">
             <div class="row">
               <ChangeTariffItem v-for="el in arrTariffs" :key="el" :checked="checked" :tariffItem="el"
-                                :list="list" :lengthList="lengthList" :orderId="tariff.productId"/>
+                                :list="list" :lengthList="lengthList" :orderId="tariff.orderId"/>
             </div>
           </div>
         </div>
