@@ -27,7 +27,7 @@ export default {
   props: ['card', 'deleteCard'],
   data() {
     return {
-      status: true,
+      status: false,
       dataCard: [
         { name: 'VISA', image: require('@/assets/image/icon/vise.svg')},
         { name: 'MASTERCARD', image: require('@/assets/image/icon/mastercard.svg')},
@@ -70,13 +70,17 @@ export default {
         card_binding_id: this.card.card_binding_id
       }
 
+      this.status = true
+
       HTTP.post('/card_binding/unbind', qs.stringify(data), {
         headers: {
           authorization: 'Bearer ' + this.$keycloak.token,
         }
       }).then((el) => {
+        this.status = false
         el.data.status ? this.deleteCard(this.card.card_binding_id) : ''
       }).catch((error) => {
+        this.status = false
         console.log(error)
       })
     },
