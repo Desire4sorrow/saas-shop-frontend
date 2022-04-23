@@ -67,10 +67,15 @@ export default {
           authorization: 'Bearer ' + this.$keycloak.token,
         }
       }).then((response) => {
-        console.log(response)
-        this.changeLicenses()
+        if (response.data.pay_form_url){
+          this.changeLicenses()
+        }
+        else{
+          location.reload()
+        }
       }).catch((error) => {
         console.log(error)
+        location.reload()
       })
     },
     changeLicenses: function () {
@@ -84,10 +89,10 @@ export default {
           authorization: 'Bearer ' + this.$keycloak.token,
         }
       }).then((response) => {
-        console.log(response)
-        //location.href = response.data.pay_form_url
+        location.href = response.data.pay_form_url
       }).catch((error) => {
         console.log(error)
+        location.reload()
       })
     },
     totalPrice: function (){
