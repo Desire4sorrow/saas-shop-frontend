@@ -41,7 +41,7 @@ keycloak.init({onLoad: initOptions.onLoad})
             }).catch((error) => {
                 console.log(error)
             })
-        }, 6000)
+        }, 60000)
 
     }).catch((error) => {
         console.log(error)
