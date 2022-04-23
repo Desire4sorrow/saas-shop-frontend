@@ -3,7 +3,7 @@
     <div class="card-bills">
       <div class="header-card">
         <div class="data-header">
-          <div class="caption">{{ date(this.order.createdAt) }}</div>
+          <div class="caption">{{ date((this.order.work_at) ? this.order.work_at : this.order.createdAt) }}</div>
           <div class="price">
             {{ totalPrice(this.order.total_amount) }}
           </div>
@@ -12,7 +12,7 @@
           <img class="icon-menu" src="@/assets/image/icon/more.svg" alt="">
           <ul class="menu">
             <li class="menu-item">
-              <button class="btn menu-link">
+              <button class="btn menu-link" @click="requestOrder()">
                 <span class="image-container">
                   <img src="@/assets/image/icon/bill.svg" alt="" class="image">
                 </span>
@@ -75,11 +75,11 @@ export default {
   inject: ['$keycloak'],
   props: ['order', 'date', 'totalPrice', 'period', 'onePrice', 'method'],
   data() {
-    let isWaiting = (this.order.payment_status === 'waiting');
-    let isSuccess = (this.order.payment_status === 'success');
-    let isError = (this.order.payment_status === 'fail');
-
-    return { isWaiting, isSuccess, isError }
+    return {
+      isWaiting: (this.order.payment_status === 'waiting'),
+      isSuccess: (this.order.payment_status === 'success'),
+      isError: (this.order.payment_status === 'fail'),
+    }
   },
   methods: {
     pay: function () {
@@ -114,6 +114,10 @@ export default {
         console.log(error)
       })
     },
+    requestOrder: function () {
+      let documentPath = this.order.offer_invoice_document.filename
+      window.open('http://localhost:4964/documents/offer_invoice/' + documentPath)
+    }
   },
 }
 </script>
@@ -189,11 +193,6 @@ export default {
   padding-left: 0;
 }
 
-.menu-item
-{
-  padding: 16px;
-}
-
 .menu-item:not(:last-child)
 {
   border-bottom: 1px solid #E0E0E0;
@@ -204,7 +203,7 @@ export default {
   display: flex;
   align-items: center;
   text-decoration: none;
-  padding: 0;
+  padding: 16px;
 }
 
 .menu-item:hover .link-text

@@ -15,7 +15,10 @@
         </div>
       </div>
       <button type="button" class="btn button-check" @click="checkWorkspace()" :disabled="isDisabled">
-        Установить
+        <span class="spinner-border spinner-border-sm" role="status" v-if="status">
+          <span class="visually-hidden">Loading...</span>
+        </span>
+        <span v-if="!status">Установить</span>
       </button>
     </div>
   </div>
@@ -30,7 +33,8 @@ export default {
     return {
       workspace: '',
       isDisabled: true,
-      alert: false
+      alert: false,
+      status: false,
     }
   },
   watch: {
@@ -45,6 +49,8 @@ export default {
       let data = {
         workspace_name: this.workspace,
       }
+      this.status = true
+      this.isDisabled = true
 
       HTTP.get('/order/workspace/is_free', {
         params: data ,
@@ -52,6 +58,7 @@ export default {
           authorization: 'Bearer ' + this.$keycloak.token,
         }
       }).then((response) => {
+        this.status = false
         if (!response.data.status) {
           this.isDisabled = true
           this.alert = true
@@ -59,6 +66,7 @@ export default {
         else if (response.data.status) {
           //data['licenses_count'] = this.$route.query.licenses_count
           //data['tariff_variant_id'] = this.$route.query.tariff_variant_id
+          this.isDisabled = false
 
           this.$router.push({
             name: 'PaymentMethod',

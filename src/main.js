@@ -23,34 +23,25 @@ let keycloak = Keycloak(initOptions);
 
 keycloak.init({onLoad: initOptions.onLoad})
     .then(auth => {
-    if (!auth) {
-        window.location.reload()
-        console.log('!auth')
-    } else {
-        //console.log('Auth')
-        const app = Vue.createApp(App)
-        app.provide('$keycloak', keycloak)
+        if (!auth) {
+            window.location.reload()
+            console.log('!auth')
+        } else {
+            //console.log('Auth')
+            const app = Vue.createApp(App)
+            app.provide('$keycloak', keycloak)
 
-        app.use(router)
-        app.mount('#app')
-    }
+            app.use(router)
+            app.mount('#app')
+        }
 
-    /*setInterval(() => {
-        keycloak.updateToken(70)
-                .then((refreshed) => {
-                    console.log(refreshed)
-                    if (refreshed) {
-                        Vue.$log.info('Token refreshed' + refreshed);
-                    } else {
-                        Vue.$log.warn('Token not refreshed, valid for '
-                            + Math.round(keycloak.tokenParsed.exp
-                            + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
-                    }
-                }).catch(() => {
-                    console.error('Failed to refresh token')
-                    Vue.$log.error('Failed to refresh token');
-                });
-    }, 6000)*/
+        setInterval(() => {
+            keycloak.updateToken(70).then((response) => {
+                console.log(response)
+            }).catch((error) => {
+                console.log(error)
+            })
+        }, 6000)
 
     }).catch((error) => {
         console.log(error)
