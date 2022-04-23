@@ -19,7 +19,7 @@
                 <span class="link-text">Открыть счёт</span>
               </button>
             </li>
-            <li class="menu-item">
+            <li class="menu-item" v-if="this.order.act_document === null">
               <button class="btn menu-link" @click="requestAct()">
                 <span class="image-container">
                   <img src="@/assets/image/icon/file.svg" alt="" class="image">
