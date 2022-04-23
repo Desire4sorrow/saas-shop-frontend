@@ -35,7 +35,7 @@ keycloak.init({onLoad: initOptions.onLoad})
         app.mount('#app')
     }
 
-    /*setInterval(() => {
+    setInterval(() => {
         keycloak.updateToken(70)
                 .then((refreshed) => {
                     console.log(refreshed)
@@ -50,7 +50,7 @@ keycloak.init({onLoad: initOptions.onLoad})
                     console.error('Failed to refresh token')
                     Vue.$log.error('Failed to refresh token');
                 });
-    }, 6000)*/
+    }, 6000)
 
     }).catch((error) => {
         console.log(error)
