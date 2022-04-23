@@ -50,7 +50,7 @@ keycloak.init({onLoad: initOptions.onLoad})
                     console.error('Failed to refresh token')
                     Vue.$log.error('Failed to refresh token');
                 });
-    }, 6000)
+    }, 60000)
 
     }).catch((error) => {
         console.log(error)
