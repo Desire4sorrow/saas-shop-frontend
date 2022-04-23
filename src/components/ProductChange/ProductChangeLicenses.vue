@@ -100,7 +100,8 @@ export default {
 
       if (currentValue < 1) return;
       if (currentValue < this.product.licenses_count) {
-        this.active = true;
+        //this.active = true;
+        return
       }
       if (currentValue === this.product.licenses_count) {
         this.$refs.buttonChanged.disabled = true;
