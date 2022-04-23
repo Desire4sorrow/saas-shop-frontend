@@ -8,14 +8,14 @@
     <div class="title">Действия</div>
     <div class="row">
       <ProductChangeTariff :tariff="tariff" :product="product"/>
-      <ProductChangeLicenses :product="product"/>
+      <ProductChangeLicenses :tariff="tariff" :product="product"/>
   <!--<ProductChangePayment :methodPayment="product.orders[0].payment_method"/>-->
     </div>
   </div>
   <div class="product-cards-container">
     <div class="title">Счета и документы</div>
     <div class="row">
-      <CardBills v-for="order in product.orders"
+      <CardBills v-for="order in sortProduct"
                  :key="order" :order="order"
                  :date="date" :totalPrice="totalPrice" :period="typePeriod" :onePrice="onePrice" :method="paymentMethod"/>
     </div>
@@ -49,26 +49,34 @@ export default {
         period: '',
         orderId: ''
       },
+      sortProduct: this.product.orders
     }
   },
   created() {
-    let arrPaid = []
-    this.product.orders.forEach((el) => {
-      if (el.payment_status === 'success') arrPaid.push(el)
-    })
-    if (arrPaid.length === 0) {
-      this.product.orders.forEach((el) => {
-        if (el.payment_status === 'not_paid') arrPaid.push(el)
-      })
-      this.sortByPaid(arrPaid, 'createdAt')
-      this.dateEntry(arrPaid[0])
-    }
-    else {
-      this.sortByPaid(arrPaid, 'paid_at')
-      this.dateEntry(arrPaid[0])
-    }
+    this.sortingPaid()
+    this.productSorting()
   },
   methods: {
+    productSorting: function () {
+      this.sortProduct = this.sortProduct.sort((a, b) => Date.parse(a.createdAt) < Date.parse(b.createdAt) ? 1 : -1)
+    },
+    sortingPaid: function () {
+      let arrPaid = []
+      this.product.orders.forEach((el) => {
+        if (el.payment_status === 'success') arrPaid.push(el)
+      })
+      if (arrPaid.length === 0) {
+        this.product.orders.forEach((el) => {
+          if (el.payment_status === 'not_paid') arrPaid.push(el)
+        })
+        this.sortByPaid(arrPaid, 'createdAt')
+        this.dateEntry(arrPaid[0])
+      }
+      else {
+        this.sortByPaid(arrPaid, 'paid_at')
+        this.dateEntry(arrPaid[0])
+      }
+    },
     sortByPaid: function (arr, method) {
       if (method === 'paid_at') {
         arr.sort((a, b) => Date.parse(a.paid_at) < Date.parse(b.paid_at) ? 1 : -1)

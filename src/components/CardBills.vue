@@ -108,8 +108,8 @@ export default {
         headers: {
           authorization: 'Bearer ' + this.$keycloak.token,
         }
-      }).then((response) => {
-        console.log(response)
+      }).then(() => {
+        location.reload()
       }).catch((error) => {
         console.log(error)
       })
@@ -128,7 +128,7 @@ export default {
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 5px;
-  margin-top: 24px;
+  margin-bottom: 24px;
 }
 
 .header-card

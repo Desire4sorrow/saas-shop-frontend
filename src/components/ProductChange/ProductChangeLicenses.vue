@@ -23,7 +23,7 @@
               <div class="control-minus" @click="countMinus()"></div>
               <input class="input"
                      type="number" name="count" min="1"
-                     :max="product.orders[0].tariff_variant.tariff.maximum_licenses_count"
+                     :max="maxCount"
                      :value="countLicensesLocal">
               <div class="control-plus" @click="countPlus()"></div>
             </div>
@@ -40,7 +40,9 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn button-close" data-bs-dismiss="modal">Отменить</button>
-          <button type="button" class="btn button-check" ref="buttonChanged" disabled @click="changeLicenses()">Изменить</button>
+          <button type="button" class="btn button-check" ref="buttonChanged" disabled @click="changeLicenses()">
+            Изменить
+          </button>
         </div>
       </form>
     </div>
@@ -49,18 +51,33 @@
 
 <script>
 import {HTTP} from "@/config";
+import axios from "axios";
 let qs = require('qs');
 
 export default {
   inject: ['$keycloak'],
-  props: ['product'],
+  props: ['product', 'tariff'],
   data() {
-    let active = false;
-    let countLicensesLocal = this.product.licenses_count;
-
-    return { active, countLicensesLocal }
+    return {
+      active: false,
+      countLicensesLocal: this.product.licenses_count,
+      maxCount: ''
+    }
+  },
+  created() {
+    this.getCountLicenses()
   },
   methods: {
+    getCountLicenses: function () {
+      let typeUrl = (location.host === 'testvm.plotpad.ru') ? 'http://testvm.plotpad.ru:3005/api/tariff/' : 'http://localhost:3005/api/tariff/'
+      axios.get(typeUrl + this.tariff.tariffId)
+          .then((response) => {
+            this.maxCount = response.data.maximum_licenses_count
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+    },
     changeLicenses: function (){
       let data = {
         order_id: this.product.order_id,
@@ -71,11 +88,15 @@ export default {
         headers: {
           authorization: 'Bearer ' + this.$keycloak.token,
         }
-      }).then(function (res) {
-          console.log(res)
-          location.href = res.data.pay_form_url
+      }).then((res) => {
+          if (this.product.licenses_count > this.countLicensesLocal) {
+            location.reload()
+          }
+          else {
+            location.href = res.data.pay_form_url
+          }
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
         });
     },
