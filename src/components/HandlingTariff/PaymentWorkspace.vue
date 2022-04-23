@@ -79,6 +79,8 @@ export default {
         }
       })
         .catch((error) => {
+          this.status = false
+          this.isDisabled = false
           console.log(error)
         })
     },

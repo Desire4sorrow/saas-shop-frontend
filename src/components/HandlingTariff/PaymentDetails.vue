@@ -45,7 +45,10 @@
         </div>-->
       </div>
       <button class="btn button-details" role="button" @click="createOrder()" :disabled="isButton">
-        Сформировать счёт
+        <span class="spinner-border spinner-border-sm" role="status" v-if="status">
+          <span class="visually-hidden">Loading...</span>
+        </span>
+        <span v-if="!status">Сформировать счёт</span>
       </button>
     </div>
   </div>
@@ -65,6 +68,7 @@ export default {
       kpp: '',
       organization_address: '',
       isButton: true,
+      status: false,
     }
   },
   watch: {
@@ -141,16 +145,22 @@ export default {
       }
       data.requisites = JSON.stringify(requisites)
 
+      this.status = true
+      this.isButton = true
+
       HTTP.post('/order/create', qs.stringify(data), {
         headers: {
           Authorization: 'Bearer ' + this.$keycloak.token,
         }
       }).then((res) => {
-          location.href = res.data.pay_form_url
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+        this.status = false
+        location.href = res.data.pay_form_url
+      })
+      .catch((error) => {
+        this.isButton = false
+        this.status = false
+        console.log(error)
+      })
     },
   }
 }
