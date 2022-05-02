@@ -54,12 +54,9 @@
 </template>
 
 <script>
-import { HTTP } from "@/config";
-let qs = require("qs");
-
 export default {
-  inject: ["$keycloak"],
-  props: ["tariffItem", "checked", "list", "lengthList", "orderId"],
+  inject: ["$keycloak", "$orderApi"],
+  props: ["tariffItem", "checked", "list", "lengthList", "orderId", 'tariff', 'workspace'],
   data() {
     return {
       countLicenses: 1,
@@ -74,50 +71,35 @@ export default {
     });
   },
   methods: {
-    changeTariff: function () {
-      let data = {
-        order_id: this.orderId,
-        tariff_variant_id: this.checked
-          ? this.tariffItem.tariff_variants[1].id
-          : this.tariffItem.tariff_variants[0].id,
-      };
-      console.log(data);
-
-      HTTP.post("/order/update", qs.stringify(data), {
-        headers: {
-          authorization: "Bearer " + this.$keycloak.token,
+    changeTariff() {
+      this.$orderApi.post(
+        "workspace/update",
+        {
+          workspace_name: this.workspace.name,
+          tariff_variant_id: this.checked
+            ? this.tariffItem.tariff_variants[1].id
+            : this.tariffItem.tariff_variants[0].id,
         },
-      })
-        .then((response) => {
-          if (response.data.pay_form_url) {
+        (data) => {
+          if (data.pay_form_url) {
             this.changeLicenses();
           } else {
             location.reload();
           }
-        })
-        .catch((error) => {
-          console.log(error);
-          location.reload();
-        });
+        }
+      );
     },
     changeLicenses: function () {
-      let data = {
-        order_id: this.orderId,
-        licenses_count: this.countLicenses,
-      };
-
-      HTTP.post("/order/update", qs.stringify(data), {
-        headers: {
-          authorization: "Bearer " + this.$keycloak.token,
+      this.$orderApi.post(
+        "workspace/update",
+        {
+          workspace_name: this.workspace.name,
+          licenses_count: this.countLicenses,
         },
-      })
-        .then((response) => {
-          location.href = response.data.pay_form_url;
-        })
-        .catch((error) => {
-          console.log(error);
-          location.reload();
-        });
+        (data) => {
+          location.href = data.pay_form_url;
+        }
+      );
     },
     totalPrice: function () {
       if (this.checked) {

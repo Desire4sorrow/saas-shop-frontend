@@ -83,7 +83,7 @@
 import axios from "axios";
 
 export default {
-  inject: ["$keycloak", '$orderApi'],
+  inject: ["$keycloak", "$orderApi"],
   props: ["product", "tariff"],
   data() {
     return {
@@ -111,16 +111,20 @@ export default {
         });
     },
     changeLicenses: function () {
-      this.$orderApi.post("workspace/update", {
-        workspace_name: this.product.name,
-        licenses_count: this.countLicensesLocal,
-      }, (data) => {
-        if (this.product.licenses_count > this.countLicensesLocal) {
-          location.reload();
-        } else {
-          location.href = data.pay_form_url;
+      this.$orderApi.post(
+        "workspace/update",
+        {
+          workspace_name: this.product.name,
+          licenses_count: this.countLicensesLocal,
+        },
+        (data) => {
+          if (this.product.licenses_count > this.countLicensesLocal) {
+            location.reload();
+          } else {
+            location.href = data.pay_form_url;
+          }
         }
-      });
+      );
     },
     countPlus: function () {
       let currentValue = this.countLicensesLocal;
