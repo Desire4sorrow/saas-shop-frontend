@@ -1,19 +1,32 @@
 <template>
   <div class="col-lg-6">
     <div class="tariff-card">
-      <div class="title-card">{{ tariffItem.name  }}</div>
+      <div class="title-card">{{ tariffItem.name }}</div>
       <div class="price">
         <span class="price-bold">
-          {{ (checked) ? tariffItem.tariff_variants[1].price.toLocaleString() :
-                         tariffItem.tariff_variants[0].price.toLocaleString() }} ₽
-        </span> / лицензия
+          {{
+            checked
+              ? tariffItem.tariff_variants[1].price.toLocaleString()
+              : tariffItem.tariff_variants[0].price.toLocaleString()
+          }}
+          ₽
+        </span>
+        / лицензия
       </div>
       <ul class="list">
-        <li class="list-item" v-for="item in list.slice(0, this.length)" :key="item">
+        <li
+          class="list-item"
+          v-for="item in list.slice(0, this.length)"
+          :key="item"
+        >
           <span class="icon-check"></span>
           {{ item }}
         </li>
-        <li class="list-item none" v-for="item in list.slice(this.length, this.list.length)" :key="item">
+        <li
+          class="list-item none"
+          v-for="item in list.slice(this.length, this.list.length)"
+          :key="item"
+        >
           <span class="icon-close"></span>
           {{ item }}
         </li>
@@ -22,9 +35,14 @@
         <div class="title">Кол-во лицензий:</div>
         <div class="input-control">
           <div class="control-minus" @click="countMinus()"></div>
-          <input class="input"
-                 type="number" name="count" min="1" v-model="countLicenses"
-                 :max="tariffItem.maximum_licenses_count">
+          <input
+            class="input"
+            type="number"
+            name="count"
+            min="1"
+            v-model="countLicenses"
+            :max="tariffItem.maximum_licenses_count"
+          />
           <div class="control-plus" @click="countPlus()"></div>
         </div>
       </div>
@@ -36,135 +54,137 @@
 </template>
 
 <script>
-import {HTTP} from "@/config";
-let qs = require('qs');
+import { HTTP } from "@/config";
+let qs = require("qs");
 
 export default {
-  inject: ['$keycloak'],
-  props: ['tariffItem', 'checked', 'list', 'lengthList', 'orderId'],
+  inject: ["$keycloak"],
+  props: ["tariffItem", "checked", "list", "lengthList", "orderId"],
   data() {
     return {
       countLicenses: 1,
       length: 0,
-    }
+    };
   },
   created() {
     this.lengthList.forEach((el) => {
       if (el.id === this.tariffItem.id) {
-        this.length = el.length
+        this.length = el.length;
       }
-    })
+    });
   },
   methods: {
     changeTariff: function () {
       let data = {
         order_id: this.orderId,
-        tariff_variant_id: (this.checked) ? this.tariffItem.tariff_variants[1].id : this.tariffItem.tariff_variants[0].id ,
-      }
-      console.log(data)
-      HTTP.post('/order/update', qs.stringify(data), {
+        tariff_variant_id: this.checked
+          ? this.tariffItem.tariff_variants[1].id
+          : this.tariffItem.tariff_variants[0].id,
+      };
+      console.log(data);
+
+      HTTP.post("/order/update", qs.stringify(data), {
         headers: {
-          authorization: 'Bearer ' + this.$keycloak.token,
-        }
-      }).then((response) => {
-        if (response.data.pay_form_url){
-          this.changeLicenses()
-        }
-        else{
-          location.reload()
-        }
-      }).catch((error) => {
-        console.log(error)
-        location.reload()
+          authorization: "Bearer " + this.$keycloak.token,
+        },
       })
+        .then((response) => {
+          if (response.data.pay_form_url) {
+            this.changeLicenses();
+          } else {
+            location.reload();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          location.reload();
+        });
     },
     changeLicenses: function () {
       let data = {
         order_id: this.orderId,
         licenses_count: this.countLicenses,
-      }
+      };
 
-      HTTP.post('/order/update', qs.stringify(data), {
+      HTTP.post("/order/update", qs.stringify(data), {
         headers: {
-          authorization: 'Bearer ' + this.$keycloak.token,
-        }
-      }).then((response) => {
-        location.href = response.data.pay_form_url
-      }).catch((error) => {
-        console.log(error)
-        location.reload()
+          authorization: "Bearer " + this.$keycloak.token,
+        },
       })
+        .then((response) => {
+          location.href = response.data.pay_form_url;
+        })
+        .catch((error) => {
+          console.log(error);
+          location.reload();
+        });
     },
-    totalPrice: function (){
+    totalPrice: function () {
       if (this.checked) {
-        return (this.tariffItem.tariff_variants[1].price * this.countLicenses).toLocaleString()
-      }
-      else {
-        return (this.tariffItem.tariff_variants[0].price * this.countLicenses).toLocaleString()
+        return (
+          this.tariffItem.tariff_variants[1].price * this.countLicenses
+        ).toLocaleString();
+      } else {
+        return (
+          this.tariffItem.tariff_variants[0].price * this.countLicenses
+        ).toLocaleString();
       }
     },
     countPlus: function () {
-      if ((this.countLicenses + 1) <= this.tariffItem.maximum_licenses_count) {
-        this.countLicenses += 1
+      if (this.countLicenses + 1 <= this.tariffItem.maximum_licenses_count) {
+        this.countLicenses += 1;
       }
     },
     countMinus: function () {
-      if ((this.countLicenses - 1) >= 1) {
-        this.countLicenses -= 1
+      if (this.countLicenses - 1 >= 1) {
+        this.countLicenses -= 1;
       }
-    }
+    },
   },
   watch: {
     countLicenses: function () {
       if (this.countLicenses > this.tariffItem.maximum_licenses_count) {
-        this.countLicenses = this.tariffItem.maximum_licenses_count
+        this.countLicenses = this.tariffItem.maximum_licenses_count;
+      } else if (this.countLicenses < 1) {
+        this.countLicenses = 1;
       }
-      else if (this.countLicenses < 1) {
-        this.countLicenses = 1
-      }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
-.tariff-card
-{
+.tariff-card {
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 5px;
   padding: 24px;
 }
 
-.title-card
-{
-  color: #FF9900;
+.title-card {
+  color: #ff9900;
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 16px;
 }
 
-.tariff-card .price
-{
+.tariff-card .price {
   font-weight: 700;
   color: rgba(0, 0, 0, 0.56);
   margin-bottom: 40px;
 }
 
-.tariff-card .price-bold
-{
+.tariff-card .price-bold {
   font-size: 32px;
   color: #000;
 }
 
-.tariff-card .list
-{
+.tariff-card .list {
   list-style: none;
   padding-left: 0;
 }
 
-.tariff-card .list .list-item
-{
+.tariff-card .list .list-item {
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 16px;
@@ -172,13 +192,11 @@ export default {
   position: relative;
 }
 
-.tariff-card .list .list-item.none
-{
-  opacity: .3;
+.tariff-card .list .list-item.none {
+  opacity: 0.3;
 }
 
-.icon-check
-{
+.icon-check {
   position: absolute;
   display: inline-block;
   width: 14px;
@@ -187,8 +205,7 @@ export default {
   top: 6px;
 }
 
-.icon-check:before
-{
+.icon-check:before {
   position: absolute;
   left: -4px;
   top: 10%;
@@ -201,8 +218,7 @@ export default {
   border-radius: 10px 10px 0 0;
 }
 
-.icon-check:after
-{
+.icon-check:after {
   position: absolute;
   left: -4px;
   top: 68%;
@@ -227,7 +243,7 @@ export default {
 .icon-close:after {
   position: absolute;
   left: 5px;
-  content: '';
+  content: "";
   height: 14px;
   width: 2px;
   background-color: #000;
@@ -242,8 +258,7 @@ export default {
   transform: rotate(-45deg);
 }
 
-.input-container
-{
+.input-container {
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 5px;
   padding: 16px;
@@ -253,20 +268,17 @@ export default {
   margin-top: 44px;
 }
 
-.input-container .title
-{
+.input-container .title {
   font-weight: 500;
 }
 
-.input-container .input-control
-{
+.input-container .input-control {
   display: flex;
   align-items: center;
   overflow: hidden;
 }
 
-.input-container .input
-{
+.input-container .input {
   border: none;
   text-align: center;
   font-weight: 500;
@@ -275,24 +287,21 @@ export default {
   background-color: transparent;
 }
 
-.input-container .input:focus-visible
-{
+.input-container .input:focus-visible {
   outline: none;
 }
 
 .input-container .input::-webkit-outer-spin-button,
-.input-container .input::-webkit-inner-spin-button
-{
+.input-container .input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.card-button
-{
+.card-button {
   display: block;
   text-decoration: none;
   text-align: center;
-  color: #FF9900;
+  color: #ff9900;
   background-color: rgba(255, 153, 0, 0.16);
   width: 100%;
   font-size: 14px;
@@ -306,8 +315,7 @@ export default {
 }
 
 .control-minus,
-.control-plus
-{
+.control-plus {
   width: 16px;
   height: 16px;
   cursor: pointer;
@@ -315,9 +323,8 @@ export default {
 }
 
 .control-plus::before,
-.control-plus::after
-{
-  content: '';
+.control-plus::after {
+  content: "";
   width: 16px;
   height: 2px;
   background-color: #707070;
@@ -326,17 +333,15 @@ export default {
   border-radius: 5px;
 }
 
-.control-plus::after
-{
+.control-plus::after {
   transform: rotate(90deg);
 }
 
-.control-minus::before
-{
-  content: '';
+.control-minus::before {
+  content: "";
   width: 16px;
   height: 2px;
-  background-color: #D1D1D1;
+  background-color: #d1d1d1;
   position: absolute;
   top: calc(50% - 1px);
   border-radius: 5px;
