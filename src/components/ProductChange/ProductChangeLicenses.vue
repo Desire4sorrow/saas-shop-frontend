@@ -80,12 +80,10 @@
 </template>
 
 <script>
-import { HTTP } from "@/config";
 import axios from "axios";
-let qs = require("qs");
 
 export default {
-  inject: ["$keycloak"],
+  inject: ["$keycloak", '$orderApi'],
   props: ["product", "tariff"],
   data() {
     return {
@@ -113,26 +111,16 @@ export default {
         });
     },
     changeLicenses: function () {
-      let data = {
-        order_id: this.product.order_id,
+      this.$orderApi.post("workspace/update", {
+        workspace_name: this.product.name,
         licenses_count: this.countLicensesLocal,
-      };
-
-      HTTP.post("/order/update", qs.stringify(data), {
-        headers: {
-          authorization: "Bearer " + this.$keycloak.token,
-        },
-      })
-        .then((res) => {
-          if (this.product.licenses_count > this.countLicensesLocal) {
-            location.reload();
-          } else {
-            location.href = res.data.pay_form_url;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      }, (data) => {
+        if (this.product.licenses_count > this.countLicensesLocal) {
+          location.reload();
+        } else {
+          location.href = data.pay_form_url;
+        }
+      });
     },
     countPlus: function () {
       let currentValue = this.countLicensesLocal;
