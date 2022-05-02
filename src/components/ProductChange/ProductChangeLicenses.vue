@@ -1,46 +1,76 @@
 <template>
   <div class="col-xl-4">
-    <button type="button" class="change-card"  data-bs-toggle="modal" data-bs-target="#modalChangeLicenses">
+    <button
+      type="button"
+      class="change-card"
+      data-bs-toggle="modal"
+      data-bs-target="#modalChangeLicenses"
+    >
       <span class="title">Изменить количество лицензий</span>
       <span class="image-container">
-        <img class="image" src="@/assets/image/icon/file.svg" alt="">
+        <img class="image" src="@/assets/image/icon/file.svg" alt="" />
       </span>
     </button>
   </div>
 
-  <div class="modal fade" id="modalChangeLicenses" tabindex="-1" aria-hidden="true">
+  <div
+    class="modal fade"
+    id="modalChangeLicenses"
+    tabindex="-1"
+    aria-hidden="true"
+  >
     <div class="modal-dialog">
       <form class="modal-content">
         <div class="modal-header">
           <div class="modal-title">Изменение количества лицензий</div>
-          <button type="button" class="btn-close"
-                  data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <div class="input-container">
             <div class="title">Кол-во лицензий:</div>
             <div class="input-control">
               <div class="control-minus" @click="countMinus()"></div>
-              <input class="input"
-                     type="number" name="count" min="1"
-                     :max="maxCount"
-                     :value="countLicensesLocal">
+              <input
+                class="input"
+                type="number"
+                name="count"
+                min="1"
+                :max="maxCount"
+                :value="countLicensesLocal"
+              />
               <div class="control-plus" @click="countPlus()"></div>
             </div>
           </div>
-          <div class="input-warning" :class="{active: this.active}">
+          <div class="input-warning" :class="{ active: this.active }">
             <div class="image-container">
-              <img class="image" src="@/assets/image/icon/warning.svg" alt="">
+              <img class="image" src="@/assets/image/icon/warning.svg" alt="" />
             </div>
             <div class="title">
-              Если вы уменьшите количество лицензий,
-              некоторые пользователи потеряют доступ к лицензионным функциям.
+              Если вы уменьшите количество лицензий, некоторые пользователи
+              потеряют доступ к лицензионным функциям.
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn button-close" data-bs-dismiss="modal">Отменить</button>
-          <button type="button" class="btn button-check" ref="buttonChanged" disabled @click="changeLicenses()">
+          <button
+            type="button"
+            class="btn button-close"
+            data-bs-dismiss="modal"
+          >
+            Отменить
+          </button>
+          <button
+            type="button"
+            class="btn button-check"
+            ref="buttonChanged"
+            disabled
+            @click="changeLicenses()"
+          >
             Изменить
           </button>
         </div>
@@ -50,50 +80,54 @@
 </template>
 
 <script>
-import {HTTP} from "@/config";
+import { HTTP } from "@/config";
 import axios from "axios";
-let qs = require('qs');
+let qs = require("qs");
 
 export default {
-  inject: ['$keycloak'],
-  props: ['product', 'tariff'],
+  inject: ["$keycloak"],
+  props: ["product", "tariff"],
   data() {
     return {
       active: false,
       countLicensesLocal: this.product.licenses_count,
-      maxCount: ''
-    }
+      maxCount: "",
+    };
   },
   created() {
-    this.getCountLicenses()
+    this.getCountLicenses();
   },
   methods: {
     getCountLicenses: function () {
-      let typeUrl = (location.host === 'testvm.plotpad.ru') ? 'http://testvm.plotpad.ru:3005/api/tariff/' : 'http://localhost:3005/api/tariff/'
-      axios.get(typeUrl + this.tariff.tariffId)
-          .then((response) => {
-            this.maxCount = response.data.maximum_licenses_count
-          })
-          .catch((error) => {
-            console.log(error)
-          })
+      let typeUrl =
+        location.host === "testvm.plotpad.ru"
+          ? "http://testvm.plotpad.ru:3005/api/tariff/"
+          : "http://localhost:3005/api/tariff/";
+      axios
+        .get(typeUrl + this.tariff.tariffId)
+        .then((response) => {
+          this.maxCount = response.data.maximum_licenses_count;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
-    changeLicenses: function (){
+    changeLicenses: function () {
       let data = {
         order_id: this.product.order_id,
         licenses_count: this.countLicensesLocal,
-      }
+      };
 
-      HTTP.post('/order/update', qs.stringify(data), {
+      HTTP.post("/order/update", qs.stringify(data), {
         headers: {
-          authorization: 'Bearer ' + this.$keycloak.token,
-        }
-      }).then((res) => {
+          authorization: "Bearer " + this.$keycloak.token,
+        },
+      })
+        .then((res) => {
           if (this.product.licenses_count > this.countLicensesLocal) {
-            location.reload()
-          }
-          else {
-            location.href = res.data.pay_form_url
+            location.reload();
+          } else {
+            location.href = res.data.pay_form_url;
           }
         })
         .catch((error) => {
@@ -104,7 +138,13 @@ export default {
       let currentValue = this.countLicensesLocal;
       currentValue += 1;
 
-      if (!(this.product.orders[0].tariff_variant.tariff.maximum_licenses_count >= currentValue)) return;
+      if (
+        !(
+          this.product.orders[0].tariff_variant.tariff.maximum_licenses_count >=
+          currentValue
+        )
+      )
+        return;
       if (currentValue === this.product.licenses_count) {
         this.$refs.buttonChanged.disabled = true;
         this.countLicensesLocal = currentValue;
@@ -132,36 +172,31 @@ export default {
 
       this.$refs.buttonChanged.disabled = false;
       this.countLicensesLocal = currentValue;
-    }
+    },
   },
-}
+};
 </script>
 
 <style scoped>
-.modal-dialog
-{
+.modal-dialog {
   max-width: 600px;
   margin-top: 120px;
 }
 
-.modal-header
-{
+.modal-header {
   border-bottom: none;
 }
 
-.modal-footer
-{
+.modal-footer {
   border-top: none;
 }
 
-.modal-title
-{
+.modal-title {
   font-size: 20px;
   font-weight: 700;
 }
 
-.button-close
-{
+.button-close {
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 5px;
   font-size: 14px;
@@ -171,17 +206,15 @@ export default {
   height: 40px;
 }
 
-.button-check
-{
+.button-check {
   min-width: 100px;
   height: 40px;
-  background-color: #FF9900;
+  background-color: #ff9900;
   color: #fff;
   border-radius: 5px;
 }
 
-.input-container
-{
+.input-container {
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 5px;
   padding: 16px;
@@ -190,20 +223,17 @@ export default {
   justify-content: space-between;
 }
 
-.input-container .title
-{
+.input-container .title {
   font-weight: 500;
 }
 
-.input-container .input-control
-{
+.input-container .input-control {
   display: flex;
   align-items: center;
   overflow: hidden;
 }
 
-.input-container .input
-{
+.input-container .input {
   border: none;
   text-align: center;
   font-weight: 500;
@@ -212,13 +242,12 @@ export default {
   background-color: transparent;
 }
 
-.input-warning
-{
-  background-color: #FEEDF0;
+.input-warning {
+  background-color: #feedf0;
   border: 1px solid rgba(241, 93, 72, 0.24);
   border-radius: 5px;
   margin-top: 16px;
-  color: #F15D48;
+  color: #f15d48;
   font-weight: 500;
   padding: 16px;
   justify-content: space-between;
@@ -226,13 +255,11 @@ export default {
   display: none;
 }
 
-.input-warning.active
-{
+.input-warning.active {
   display: flex;
 }
 
-.input-warning .image-container
-{
+.input-warning .image-container {
   min-width: 30px;
   width: 30px;
   height: 30px;
@@ -242,14 +269,12 @@ export default {
   margin-right: 18px;
 }
 
-.input-warning .image-container .image
-{
+.input-warning .image-container .image {
   max-width: 100%;
 }
 
 .control-minus,
-.control-plus
-{
+.control-plus {
   width: 16px;
   height: 16px;
   cursor: pointer;
@@ -257,9 +282,8 @@ export default {
 }
 
 .control-plus::before,
-.control-plus::after
-{
-  content: '';
+.control-plus::after {
+  content: "";
   width: 16px;
   height: 2px;
   background-color: #707070;
@@ -268,14 +292,12 @@ export default {
   border-radius: 6px;
 }
 
-.control-plus::after
-{
+.control-plus::after {
   transform: rotate(90deg);
 }
 
-.control-minus::before
-{
-  content: '';
+.control-minus::before {
+  content: "";
   width: 16px;
   height: 2px;
   background-color: #707070;
@@ -290,12 +312,11 @@ export default {
   margin: 0;
 }
 
-input[type=number] {
-  -moz-appearance:textfield;
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
-.input-container .input:focus-visible
-{
+.input-container .input:focus-visible {
   outline: none;
 }
 </style>
