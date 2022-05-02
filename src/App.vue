@@ -1,6 +1,7 @@
 <template>
   <HeaderPage />
   <router-view :keycloaks=keycloak></router-view>
+  <notifications position="bottom right"/>
 </template>
 
 <script>

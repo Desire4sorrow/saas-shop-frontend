@@ -1,6 +1,8 @@
 import * as Vue from 'vue'
 import * as Router from 'vue-router'
 import Keycloak from 'keycloak-js'
+import Notifications from '@kyvg/vue3-notification'
+import { notify } from "@kyvg/vue3-notification";
 
 import App from './App.vue'
 import { routes } from './router'
@@ -32,7 +34,17 @@ class OrderApi {
         if (errorFn) {
           errorFn(error);
         } else {
-          console.log(error);
+          var text
+          if ('error' in error.response.data) {
+            text = error.response.data.error
+          } else {
+            text = 'Неизвестная ошибка'
+          }
+          notify({
+            title: 'Ошибка',
+            text,
+            type: 'error',
+          });
         }
       });
   }
@@ -43,6 +55,7 @@ function initVueApp(keycloak) {
   app.provide('$keycloak', keycloak)
   app.provide('$orderApi', new OrderApi(keycloak))
   app.use(router)
+  app.use(Notifications)
   app.mount('#app')
 }
 
