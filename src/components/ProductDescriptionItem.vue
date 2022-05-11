@@ -1,14 +1,14 @@
 <template>
   <div class="col-xl-4">
-    <div class="title">{{ title }}</div>
-    <div class="subtitle">{{ subtitle }}</div>
+    <div class="title">{{ this.data.name }}</div>
+    <div class="subtitle">{{ this.data.value }}</div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'ProductDescriptionItem',
-  props: ['title', 'subtitle'],
+  props: ['data'],
 }
 </script>
 

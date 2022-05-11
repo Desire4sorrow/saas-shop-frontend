@@ -3,29 +3,29 @@
     <div class="card-bills">
       <div class="header-card">
         <div class="data-header">
-          <div class="caption">{{ date(this.order.created_at) }}</div>
+          <div class="caption">{{ date((this.order.work_at) ? this.order.work_at : this.order.createdAt) }}</div>
           <div class="price">
-            {{ totalPrice(this.order.tariff_variant.period, this.order.licenses_count, this.order.tariff_variant.price) }}
+            {{ totalPrice(this.order.total_amount) }}
           </div>
         </div>
         <div class="menu-header">
           <img class="icon-menu" src="@/assets/image/icon/more.svg" alt="">
           <ul class="menu">
             <li class="menu-item">
-              <a href="#" class="menu-link">
+              <button class="btn menu-link" @click="requestOrder()">
                 <span class="image-container">
                   <img src="@/assets/image/icon/bill.svg" alt="" class="image">
                 </span>
                 <span class="link-text">Открыть счёт</span>
-              </a>
+              </button>
             </li>
-            <li class="menu-item">
-              <a href="#" class="menu-link">
+            <li class="menu-item" v-if="this.order.act_document === null">
+              <button class="btn menu-link" @click="requestAct()">
                 <span class="image-container">
                   <img src="@/assets/image/icon/file.svg" alt="" class="image">
                 </span>
                 <span class="link-text">Запросить акт</span>
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -51,65 +51,74 @@
           <div class="item-title">Способ оплаты</div>
           <div class="item-description">{{ method(this.order.payment_method) }}</div>
         </div>
-        <a href="#" class="btn button-card waiting" v-if="isWaiting">
+        <div class="btn button-card waiting" v-if="isWaiting">
           Ожидает подтверждения
-        </a>
-        <a href="#" class="btn button-card success" v-else-if="isSuccess">
+        </div>
+        <div class="btn button-card success" v-else-if="isSuccess">
           Оплачен
-        </a>
-        <a href="#" class="btn button-card error" v-else-if="isError">
+        </div>
+        <div class="btn button-card error" v-else-if="isError">
           Ошибка оплаты
-        </a>
-        <a href="#" class="btn button-card" v-else @click="doPayment()">
+        </div>
+        <button class="btn button-card" v-else @click="pay()">
           Оплатить
-        </a>
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-var qs = require('qs');
+import {HTTP} from "@/config";
 
 export default {
+  inject: ['$keycloak'],
   props: ['order', 'date', 'totalPrice', 'period', 'onePrice', 'method'],
   data() {
-    let isWaiting = (this.order.payment_status === 'waiting');
-    let isSuccess = (this.order.payment_status === 'success');
-    let isError = (this.order.payment_status === 'fail');
-
-    return { isWaiting, isSuccess, isError }
+    return {
+      isWaiting: (this.order.payment_status === 'waiting'),
+      isSuccess: (this.order.payment_status === 'success'),
+      isError: (this.order.payment_status === 'fail'),
+    }
   },
   methods: {
-    doPayment: async function() {
-      var data = qs.stringify({
-        'tariff_variant_id': '1',
-        'workspace_name': 'google',
-        'licenses_count': '10',
-        'payment_method': 'bank_card',
-        'requisites': '{\n    "organization_name": "ООО \\"Хомячки\\"",\n    "organization_address": "424006, РФ, Республика Марий Эл, г. Йошкар-Ола, улица Карла Маркса, дом 109б кабинет 506",\n    "ogrn": "1027700132195",\n    "inn": "7707083893",\n    "kpp": "773601001"\n  }\n'
-      });
-      var config = {
-        method: 'post',
-        url: 'http://localhost:4964/api/order/create',
-        headers: {
-          Authorization: 'Bearer ' + window.keycloak.token,
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        data : data
-      };
+    pay: function () {
+      let data = {
+        order_id: this.order.order_id,
+      }
 
-      axios(config)
-          .then(function (response) {
-            console.log(response)
-            location.href = response.data.pay_form_url;
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+      HTTP.get('/order/pay_url', {
+        params: data,
+        headers: {
+          authorization: 'Bearer ' + this.$keycloak.token,
+        }
+      }).then((response) => {
+        location.href = response.data.pay_form_url
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    requestAct: function () {
+      let data = {
+        order_id: this.order.order_id,
+      }
+
+      HTTP.get('/order/act', {
+        params: data,
+        headers: {
+          authorization: 'Bearer ' + this.$keycloak.token,
+        }
+      }).then(() => {
+        location.reload()
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    requestOrder: function () {
+      let documentPath = this.order.offer_invoice_document.filename
+      window.open('http://testvm.plotpad.ru:4964/documents/offer_invoice/' + documentPath)
     }
-  }
+  },
 }
 </script>
 
@@ -119,6 +128,7 @@ export default {
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 5px;
+  margin-bottom: 24px;
 }
 
 .header-card
@@ -183,11 +193,6 @@ export default {
   padding-left: 0;
 }
 
-.menu-item
-{
-  padding: 16px;
-}
-
 .menu-item:not(:last-child)
 {
   border-bottom: 1px solid #E0E0E0;
@@ -198,6 +203,7 @@ export default {
   display: flex;
   align-items: center;
   text-decoration: none;
+  padding: 16px;
 }
 
 .menu-item:hover .link-text

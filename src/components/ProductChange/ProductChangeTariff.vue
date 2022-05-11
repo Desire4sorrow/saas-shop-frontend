@@ -12,16 +12,29 @@
     <div class="modal-dialog">
       <form class="modal-content">
         <div class="modal-header">
-          <div class="modal-title">Выберите способ оплаты</div>
+          <div class="modal-title">Выберите тариф</div>
+          <div class="period-container">
+            <div class="period-title">
+              Месячный
+            </div>
+            <label class="period">
+              <input type="checkbox" class="period-input" v-model="checked">
+              <span class="slider"></span>
+            </label>
+            <div class="period-title">
+              Годовой
+            </div>
+          </div>
           <button type="button" class="btn-close"
-                  data-bs-dismiss="modal" aria-label="Close" @click="close()"></button>
+                  data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          Тут должно быть изменение тарифа ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn button-close" data-bs-dismiss="modal" @click="close()">Отменить</button>
-          <button type="button" class="btn button-check" ref="buttonChanged" disabled>Сохранить</button>
+          <div class="container px-0">
+            <div class="row">
+              <ChangeTariffItem v-for="el in arrTariffs" :key="el" :checked="checked" :tariffItem="el"
+                                :list="list" :lengthList="lengthList" :orderId="tariff.orderId" :tariff="tariff" :workspace="product"/>
+            </div>
+          </div>
         </div>
       </form>
     </div>
@@ -29,21 +42,71 @@
 </template>
 
 <script>
+import ChangeTariffItem from "./ChangeTariffItem"
+import axios from "axios";
+
 export default {
-  name: 'ProductChangeTariff',
+  components: {
+    ChangeTariffItem
+  },
+  props: ['tariff', 'product'],
+  data() {
+    return {
+      arrTariffs: [],
+      checked: false,
+      list: [],
+      lengthList: []
+    }
+  },
+  created() {
+    if (Number(this.tariff.period) === 30) {
+      this.checked = false
+    }
+    else if (Number(this.tariff.period) === 360) {
+      this.checked = true
+    }
+
+    let typeUrl = (location.host === 'testvm.plotpad.ru') ? 'http://testvm.plotpad.ru:3005/api/products/' : 'http://localhost:3005/api/products/'
+    axios.get(typeUrl + this.tariff.productId + '?populate[0]=tariffs.tariff_variants')
+         .then((response) => {
+           response.data.tariffs.forEach((el) => {
+             if (el.id !== this.tariff.tariffId) {
+               this.arrTariffs.push(el)
+               this.getList(el.description, el.id)
+             }
+           })
+         })
+        .catch((error) => {
+          console.log(error)
+        })
+  },
+  methods: {
+    getList: function (des, id) {
+      let list = des.split('|').map(function (item) {
+        return item.trim()
+      })
+
+      if (this.list.length < list.length) {
+        this.list = list
+      }
+
+      this.lengthList.push({id: id, length: list.length})
+    }
+  }
 }
 </script>
 
 <style scoped>
 .modal-dialog
 {
-  max-width: 600px;
-  margin-top: 200px;
+  max-width: 800px;
+  margin-top: 70px;
 }
 
 .modal-body
 {
   background-color: #F5F5F5;
+  border-radius: 0 0 5px 5px;
 }
 
 .modal-title
@@ -52,91 +115,75 @@ export default {
   font-weight: 700;
 }
 
-.button-close
+.modal-header .btn-close
 {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.56);
-  width: 100px;
-  height: 40px;
+  margin: 0;
 }
 
-.button-check
-{
-  min-width: 100px;
-  height: 40px;
-  background-color: #FF9900;
-  color: #fff;
-  border-radius: 5px;
-}
-
-.input-container
-{
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 5px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.input-container .title
-{
-  font-weight: 500;
-}
-
-.input-container .input-control
+.period-container
 {
   display: flex;
   align-items: center;
-  overflow: hidden;
-}
-
-.input-container .input
-{
-  border: none;
-  text-align: center;
-  font-weight: 500;
-  font-size: 18px;
-  width: 50px;
-  background-color: transparent;
-}
-
-.input-warning
-{
-  background-color: #FEEDF0;
-  border: 1px solid rgba(241, 93, 72, 0.24);
-  border-radius: 5px;
-  margin-top: 16px;
-  color: #F15D48;
-  font-weight: 500;
-  padding: 16px;
-  justify-content: space-between;
-  align-items: center;
-  display: none;
-}
-
-.input-warning.active
-{
-  display: flex;
-}
-
-.input-warning .image-container
-{
-  min-width: 30px;
-  width: 30px;
-  height: 30px;
-  display: flex;
   justify-content: center;
-  align-items: center;
-  margin-right: 18px;
 }
 
-.input-warning .image-container .image
+.period-title
 {
-  max-width: 100%;
+  font-weight: 600;
+}
+
+.period
+{
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  margin: 0 16px;
+}
+
+.period-input
+{
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.period-input:checked + .slider
+{
+  background-color: #FF9900;
+}
+
+.period-input:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
+}
+
+.slider
+{
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 100px;
+}
+
+.slider:before
+{
+  content: "";
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  left: 1px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
 }
 
 .control-minus,

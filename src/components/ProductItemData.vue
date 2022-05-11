@@ -1,30 +1,21 @@
 <template>
   <div class="product-description-container">
     <div class="row product-description-row">
-      <ProductDescriptionItem :title="'Тариф'" :subtitle="product.orders[0].tariff_variant.tariff.name"/>
-      <ProductDescriptionItem :title="'Цена'" :subtitle="onePrice(this.product.orders[0].tariff_variant.price)"/>
-      <ProductDescriptionItem :title="'Способ оплаты'" :subtitle="paymentMethod(this.product.orders[0].payment_method)"/>
-      <ProductDescriptionItem :title="'Тип'" :subtitle="typePeriod(this.product.orders[0].tariff_variant.period)"/>
-      <ProductDescriptionItem :title="'Общая сумма'"
-                              :subtitle="totalPrice(this.product.orders[0].tariff_variant.period, this.product.orders[0].tariff_variant.price, this.product.licenses_count)"/>
-      <ProductDescriptionItem :title="'Следующая оплата'" :subtitle="date(product.next_pay_date)"/>
+      <ProductDescriptionItem v-for="el in variant" :key="el" :data="el"/>
     </div>
   </div>
   <div class="product-cards-container">
     <div class="title">Действия</div>
     <div class="row">
-      <ProductChangeTariff />
-      <ProductChangeLicenses
-          :countLicenses="product.licenses_count"
-          :maxLicenses="product.orders[0].tariff_variant.tariff.maximum_licenses_count"/>
-      <ProductChangePayment
-          :methodPayment="product.orders[0].payment_method"/>
+      <ProductChangeTariff :tariff="tariff" :product="product"/>
+      <ProductChangeLicenses :tariff="tariff" :product="product"/>
+  <!--<ProductChangePayment :methodPayment="product.orders[0].payment_method"/>-->
     </div>
   </div>
   <div class="product-cards-container">
     <div class="title">Счета и документы</div>
     <div class="row">
-      <CardBills v-for="order in product.orders"
+      <CardBills v-for="order in sortProduct"
                  :key="order" :order="order"
                  :date="date" :totalPrice="totalPrice" :period="typePeriod" :onePrice="onePrice" :method="paymentMethod"/>
     </div>
@@ -35,25 +26,65 @@
 import ProductDescriptionItem from "@/components/ProductDescriptionItem";
 import ProductChangeTariff from "@/components/ProductChange/ProductChangeTariff";
 import ProductChangeLicenses from "@/components/ProductChange/ProductChangeLicenses";
-import ProductChangePayment from "@/components/ProductChange/ProductChangePayment";
+//import ProductChangePayment from "@/components/ProductChange/ProductChangePayment";
 import CardBills from "@/components/CardBills";
 
 export default {
   name: 'ProductItemData',
   components: {
     CardBills,
-    ProductChangePayment,
+    //ProductChangePayment,
     ProductChangeLicenses,
     ProductDescriptionItem,
     ProductChangeTariff,
   },
   props: ['product'],
   data() {
-    let month = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября','ноября', 'декабря'];
-
-    return { month }
+    return {
+      month: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
+      variant: [],
+      tariff: {
+        tariffId: '',
+        productId: '',
+        period: '',
+        orderId: ''
+      },
+      sortProduct: this.product.orders
+    }
+  },
+  created() {
+    this.sortingPaid()
+    this.productSorting()
   },
   methods: {
+    productSorting: function () {
+      this.sortProduct = this.sortProduct.sort((a, b) => Date.parse(a.createdAt) < Date.parse(b.createdAt) ? 1 : -1)
+    },
+    sortingPaid: function () {
+      let arrPaid = []
+      this.product.orders.forEach((el) => {
+        if (el.payment_status === 'success') arrPaid.push(el)
+      })
+      if (arrPaid.length === 0) {
+        this.product.orders.forEach((el) => {
+          if (el.payment_status === 'not_paid') arrPaid.push(el)
+        })
+        this.sortByPaid(arrPaid, 'createdAt')
+        this.dateEntry(arrPaid[0])
+      }
+      else {
+        this.sortByPaid(arrPaid, 'paid_at')
+        this.dateEntry(arrPaid[0])
+      }
+    },
+    sortByPaid: function (arr, method) {
+      if (method === 'paid_at') {
+        arr.sort((a, b) => Date.parse(a.paid_at) < Date.parse(b.paid_at) ? 1 : -1)
+      }
+      if (method === 'createdAt') {
+        arr.sort((a, b) => Date.parse(a.createdAt) < Date.parse(b.createdAt) ? 1 : -1)
+      }
+    },
     onePrice: function (value) {
       return value.toLocaleString() + ' ₽ / лицензия'
     },
@@ -63,19 +94,32 @@ export default {
     },
     typePeriod: function (period) {
       if (period === 30) return 'Месячный'
-      if (period === 365) return 'Годовой'
+      if (period === 360) return 'Годовой'
     },
-    totalPrice: function (period, count, price) {
-      if (this.typePeriod(period) === 'Годовой')
-      {
-        return ((price * count) * 12).toLocaleString() + ' ₽'
-      }
-      return (price * count).toLocaleString() + ' ₽'
+    totalPrice: function (price) {
+      return price.toLocaleString() + ' ₽'
     },
     date: function (dateJSON) {
       let date = new Date(dateJSON);
 
-      return date.getDate() + ' ' + this.month[date.getMonth()] + ' ' + date.getFullYear();
+      return date.getDate() + ' ' + this.month[date.getMonth()] + ' ' + date.getFullYear()
+    },
+    dateEntry: function (obj) {
+      this.tariff.tariffId = obj.tariff_variant.tariff.id
+      this.tariff.productId = obj.tariff_variant.tariff.product.id
+      this.tariff.orderId = obj.order_id
+      this.tariff.period = obj.tariff_variant.period
+      this.variant.push({name: 'Тариф', value: obj.tariff_variant.tariff.name})
+      this.variant.push({name: 'Цена', value: this.onePrice(obj.tariff_variant.price)})
+      this.variant.push({name: 'Способ оплаты', value: this.paymentMethod(obj.payment_method)})
+      this.variant.push({name: 'Тип', value: this.typePeriod(obj.tariff_variant.period)})
+      this.variant.push({name: 'Общая сумма', value: this.totalPrice(this.product.total_amount)})
+      if (this.product.next_pay_date !== null) {
+        this.variant.push({name: 'Следующая оплата', value: this.date(this.product.next_pay_date)})
+      }
+      else {
+        this.variant.push({name: 'Следующая оплата', value: '-'})
+      }
     }
   }
 }

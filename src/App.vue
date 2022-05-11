@@ -1,12 +1,20 @@
 <template>
-  <router-view></router-view>
+  <HeaderPage />
+  <router-view :keycloaks=keycloak></router-view>
+  <notifications position="bottom right"/>
 </template>
 
 <script>
 import '../node_modules/bootstrap/dist/css/bootstrap.css'
+import HeaderPage from "@/components/HeaderPage";
+import Keycloak from 'keycloak-js'
 
 export default {
   name: 'App',
+  props: {
+      keycloak: Keycloak
+    },
+  components: { HeaderPage }
 }
 </script>
 

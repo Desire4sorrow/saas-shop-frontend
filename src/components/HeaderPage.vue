@@ -1,59 +1,76 @@
 <template>
   <header class="header">
     <div class="container">
-      <div class="row header-row">
-        <div class="col-xl-2">
-          <a class="logo-container" href="/">
-            <img src="@/assets/image/logo.svg" class="logo" alt="" />
-          </a>
+      <template v-if="url.includes(this.$route.name)">
+        <router-link v-if="url.includes(this.$route.name) && this.$route.name !== 'BodyPage'"
+                     class="button-prev" :to="{ name: 'BodyPage' }">
+          <img src="@/assets/image/icon/arrow-back.svg" class="image" alt="">
+        </router-link>
+        <div class="profile-container">
+          <img class="image" src="@/assets/image/avatar.png" alt="">
+          <ul class="menu">
+            <li class="menu-item">
+              <router-link :to="{ name: 'Profile' }" class="menu-link">
+                <span class="image-container">
+                  <img src="@/assets/image/icon/user.svg" alt="" class="image">
+                </span>
+                <span class="link-text">Профиль</span>
+              </router-link>
+            </li>
+            <li class="menu-item">
+              <router-link :to="{ name: 'Method' }" class="menu-link">
+                <span class="image-container">
+                  <img src="@/assets/image/icon/credit-card.svg" alt="" class="image">
+                </span>
+                <span class="link-text">Способы оплаты</span>
+              </router-link>
+            </li>
+            <li class="menu-item">
+              <button class="btn menu-link" @click="logout()">
+                <span class="image-container">
+                  <img src="@/assets/image/icon/exit.svg" alt="" class="image">
+                </span>
+                <span class="link-text">Выйти</span>
+              </button>
+            </li>
+          </ul>
         </div>
-        <div class="col-xl-9">
-          <nav class="navbar navbar-expand-md">
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
-                 aria-labelledby="offcanvasNavbarLabel">
-              <div class="offcanvas-header">
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                        aria-label="Close">
-                </button>
-              </div>
-              <div class="offcanvas-body">
-                <ul class="navbar-nav">
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Продукты</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Решения</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Разработка</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">О нас</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
+      </template>
+      <template v-else>
+        <button type="button" class="btn button-prev" @click="$router.go(-1)">
+          <img src="@/assets/image/icon/arrow-back.svg" class="image" alt="">
+        </button>
+        <div class="title">
+          {{ title }}
         </div>
-        <div class="col-xl-1">
-          <div class="profile-container">
-            <a href="/" class="link">
-              <img class="image" src="@/assets/image/avatar.png" alt="">
-            </a>
-          </div>
-        </div>
-      </div>
+      </template>
     </div>
   </header>
 </template>
 
 <script>
 export default {
-  name: 'HeaderPage'
+  inject: ['$keycloak'],
+  data() {
+    return {
+      title: '',
+      url: ['BodyPage', 'PersonalAccount', 'Profile', 'Method']
+    }
+  },
+  methods: {
+    logout: function() {
+      this.$keycloak.logout()
+    },
+  },
+  watch: {
+    $route: {
+      immediate: true,
+      handler(to) {
+        document.title = to.meta.title || 'Some Default Title';
+        this.title = to.meta.title || 'Some Default Title';
+      }
+    },
+  }
 }
 </script>
 
@@ -62,56 +79,108 @@ export default {
 {
   background-color: #fff;
   border-bottom: 1px solid #E0E0E0;
-  padding: 6px 0;
+  padding: 16px 0;
 }
 
-.header-row
+.button-prev
 {
-  align-items: center;
+  position: absolute;
+  padding: 0;
+  left: 16px;
 }
 
-.logo-container
-{
-  display: inline-block;
-}
-
-.logo-container .logo
+.button-prev .image
 {
   max-width: 100%;
 }
 
-.offcanvas-body
+.button-prev:focus
 {
-  justify-content: center;
-}
-
-.nav-link
-{
-  font-weight: 700;
-  font-size: 15px;
-  color: rgba(0, 0, 0, 0.56);
-  padding-left: 13px !important;
-  padding-right: 13px !important;
-}
-
-.nav-link:hover
-{
-  color: #FF9900;
+  box-shadow: none;
 }
 
 .profile-container
 {
-  text-align: end;
-}
-
-.profile-container .link
-{
-  display: inline-block;
+  width: fit-content;
+  margin: 0 0 0 auto;
+  position: relative;
 }
 
 .profile-container .image
 {
   max-width: 100%;
   height: 32px;
+}
+
+.title
+{
+  text-align: center;
+  font-weight: 600;
+}
+
+.profile-container:hover .menu
+{
+  display: block;
+}
+
+.menu
+{
+  display: none;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 5px rgba(51, 51, 51, 0.08), 0 1px 10px rgba(51, 51, 51, 0.06), 0 2px 4px rgba(51, 51, 51, 0.16);
+  border-radius: 5px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  list-style: none;
+  padding-left: 0;
+}
+
+.menu-item
+{
+  padding: 12px 16px;
+}
+
+.menu-item:not(:last-child)
+{
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.menu-link
+{
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.menu-item:hover .link-text
+{
+  color: #FF9900;
+}
+
+.menu-link .image-container
+{
+  min-width: 24px;
+  width: 24px;
+}
+
+.menu-link .image-container .image
+{
+  max-width: 100%;
+}
+
+.menu-link.btn{
+  padding: 0;
+  width: 100%;
+}
+
+.menu-link .link-text
+{
+  text-decoration: none !important;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+  white-space: nowrap;
+  margin-left: 10px;
 }
 </style>

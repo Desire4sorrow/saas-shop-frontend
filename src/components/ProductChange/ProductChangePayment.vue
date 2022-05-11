@@ -19,7 +19,7 @@
         <div class="modal-body">
           <label class="card-payment-container">
             <span class="image-container">
-              <img src="@/assets/image/icon/credit-card.svg" alt="" class="image">
+              <img src="" alt="" class="image">
             </span>
             <span class="data-container">
               <span class="title">Банковская карта</span>
@@ -31,7 +31,7 @@
           </label>
           <label class="card-payment-container">
             <span class="image-container">
-              <img src="@/assets/image/icon/file.svg" alt="" class="image">
+              <img src="./assets/image/icon/file.svg" alt="" class="image">
             </span>
             <span class="data-container">
               <span class="title">Расчётный счёт</span>
@@ -73,7 +73,7 @@ export default {
 .modal-dialog
 {
   max-width: 600px;
-  margin-top: 200px;
+  margin-top: 120px;
 }
 
 .modal-body

@@ -4,10 +4,13 @@
        @click="onclick(product)">
     <div class="title-card">
       <div class="title-box">
-        <div class="title">{{ product.name }}</div>
+        <div class="title">{{ product.orders[0].tariff_variant.tariff.product.name }}</div>
         <div class="caption">{{ product.app_host }}</div>
       </div>
-      <div class="icon"></div>
+      <div class="icon-container">
+        <img src="@/assets/image/icon/link-white.svg" class="image" alt="" v-if="active">
+        <img src="@/assets/image/icon/link.svg" class="image" alt="" v-else>
+      </div>
     </div>
     <div class="description-container">
       <div class="caption">Статус</div>
@@ -76,13 +79,16 @@ export default {
   margin-right: 10px;
 }
 
-.title-card .icon
+.title-card .icon-container
 {
-  height: 22px;
-  min-width: 22px;
-  width: 22px;
-  border-radius: 50%;
-  border: 2px solid rgba(0, 0, 0, 0.56);
+  height: 24px;
+  min-width: 24px;
+  width: 24px;
+}
+
+.title-card .icon-container .image
+{
+  max-width: 100%;
 }
 
 .title-card .title
