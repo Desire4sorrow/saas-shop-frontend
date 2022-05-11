@@ -7,9 +7,11 @@ COPY package.json /app/
 COPY package-lock.json /app/
 
 RUN npm i
-# RUN npm install -g http-server
+RUN npm install -g http-server
 
 COPY . /app
 
-CMD ["npm", "run", "serve"]
-# CMD ["http-server", "dist"]
+RUN npm run build
+
+# CMD ["npm", "run", "serve"]
+CMD ["http-server", "dist"]

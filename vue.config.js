@@ -5,5 +5,5 @@ module.exports = defineConfig({
     port: 4000,
     proxy: (process.env.NODE_ENV === 'production') ? 'http://testvm.plotpad.ru:4964' : 'http://localhost:9965'
   },
-  publicPath: process.env.NODE_ENV === 'production' ? '/account/' : '/'
+  publicPath: process.env.NODE_ENV === 'production' ? '/account/' : '/account/'
 })
