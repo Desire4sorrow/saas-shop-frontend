@@ -66,7 +66,7 @@ export default {
       this.checked = true
     }
 
-    let typeUrl = (location.host === 'testvm.plotpad.ru') ? 'http://testvm.plotpad.ru:3005/api/products/' : 'http://localhost:3005/api/products/'
+    let typeUrl = process.env.VUE_APP_SERVICE_PRODUCT_URL + '/api/products/' //(location.host === 'testvm.plotpad.ru') ? 'http://testvm.plotpad.ru:3005/api/products/' : 'http://localhost:3005/api/products/'
     axios.get(typeUrl + this.tariff.productId + '?populate[0]=tariffs.tariff_variants')
          .then((response) => {
            response.data.tariffs.forEach((el) => {

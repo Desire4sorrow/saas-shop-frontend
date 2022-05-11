@@ -116,7 +116,7 @@ export default {
     },
     requestOrder: function () {
       let documentPath = this.order.offer_invoice_document.filename
-      window.open('http://testvm.plotpad.ru:4964/documents/offer_invoice/' + documentPath)
+      window.open(process.env.VUE_APP_SERVICE_ORDER_URL + '/documents/offer_invoice/' + documentPath)
     }
   },
 }

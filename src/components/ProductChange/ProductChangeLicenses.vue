@@ -97,10 +97,8 @@ export default {
   },
   methods: {
     getCountLicenses: function () {
-      let typeUrl =
-        location.host === "testvm.plotpad.ru"
-          ? "http://testvm.plotpad.ru:3005/api/tariff/"
-          : "http://localhost:3005/api/tariff/";
+      let typeUrl = process.env.VUE_APP_SERVICE_PRODUCT_URL + '/api/tariff/'//location.host === "testvm.plotpad.ru" ? "http://testvm.plotpad.ru:3005/api/tariff/"
+          //: "http://localhost:3005/api/tariff/";
       axios
         .get(typeUrl + this.tariff.tariffId)
         .then((response) => {
