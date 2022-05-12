@@ -14,4 +14,5 @@ COPY . /app
 RUN npm run build
 
 # CMD ["npm", "run", "serve"]
-CMD ["http-server", "dist"]
+CMD ["npm", "run", "docker-dev"]
+# CMD ["http-server", "dist"]

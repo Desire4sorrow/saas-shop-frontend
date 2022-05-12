@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "docker-dev": "vue-cli-service build && http-server dist"
   },
   "dependencies": {
     "@kyvg/vue3-notification": "^2.3.4",
